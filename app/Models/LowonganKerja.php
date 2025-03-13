@@ -23,4 +23,14 @@ class LowonganKerja extends Model
     public function tipePersyaratan(){
         return $this->belongsToMany(PersyaratanBerkas::class, 'lowongan_persyaratan_berkas', 'lowongan_id', 'persyaratan_berkas_id');
     }
+
+    public function domisiliPerusahaan()
+    {
+        return $this->belongsTo(Regency::class, 'domisili_perusahaan');
+    }
+
+    public function domisiliPenempatan()
+    {
+        return $this->belongsTo(Regency::class, 'domisili_penempatan');
+    }
 }

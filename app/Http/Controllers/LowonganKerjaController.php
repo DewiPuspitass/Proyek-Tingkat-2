@@ -18,7 +18,7 @@ class LowonganKerjaController extends Controller
     public function index()
     {
         return view('lowongan_pekerjaan.index', [
-            'lowongan_kerja' => LowonganKerja::all()
+            'lowongan_kerja' => LowonganKerja::with('domisiliPenempatan')->get()
         ]);
     }
 
@@ -88,15 +88,16 @@ class LowonganKerjaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LowonganKerja $lowonganKerja)
+    public function show(LowonganKerja $lowongan_pekerjaan)
     {
-        //
+        $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);  
+        return view('lowongan_pekerjaan.show', compact('lowongan_pekerjaan'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LowonganKerja $lowonganKerja)
+    public function edit(LowonganKerja $lowongan_pekerjaan)
     {
         //
     }
@@ -104,7 +105,7 @@ class LowonganKerjaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LowonganKerja $lowonganKerja)
+    public function update(Request $request, LowonganKerja $lowongan_pekerjaan)
     {
         //
     }
@@ -112,8 +113,11 @@ class LowonganKerjaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LowonganKerja $lowonganKerja)
+    public function destroy($id)
     {
-        //
+        $LowonganKerja = LowonganKerja::findOrFail($id);
+        $LowonganKerja->delete();
+
+        return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan Berhasil di Hapus');
     }
 }
