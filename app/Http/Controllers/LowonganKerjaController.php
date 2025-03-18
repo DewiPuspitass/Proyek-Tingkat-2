@@ -16,12 +16,30 @@ class LowonganKerjaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('lowongan_pekerjaan.index', [
-            'lowongan_kerja' => LowonganKerja::with('domisiliPenempatan')->get()
-        ]);
+        $search = $request->input('search');
+
+        $lowongan_pekerjaan = LowonganKerja::with(['domisiliPenempatan', 'jurusan'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('nama_pekerjaan', 'like', "%{$search}%")
+                            ->orWhere('nama_perusahaan', 'like', "%{$search}%")
+                            ->orWhereHas('domisiliPenempatan', function ($q) use ($search) {
+                                $q->where('name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('jurusan', function ($q) use ($search) {
+                                $q->where('nama_jurusan', 'like', "%{$search}%");
+                            });
+            })
+            ->paginate(10);
+
+        if ($request->ajax()) {
+            return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
+        }
+
+        return view('lowongan_pekerjaan.index', compact('lowongan_pekerjaan', 'search'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -175,16 +193,15 @@ class LowonganKerjaController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    $lowongan = LowonganKerja::findOrFail($id);
+    {
+        $lowongan = LowonganKerja::findOrFail($id);
 
-    if ($lowongan->foto_loker) {
-        Storage::disk('public')->delete($lowongan->foto_loker);
+        if ($lowongan->foto_loker) {
+            Storage::disk('public')->delete($lowongan->foto_loker);
+        }
+
+        $lowongan->delete();
+
+        return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan Berhasil dihapus');
     }
-
-    $lowongan->delete();
-
-    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan Berhasil dihapus');
-}
-
 }

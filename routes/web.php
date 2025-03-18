@@ -4,6 +4,7 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LowonganKerjaController;
 use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\TipeLowonganController;
+use App\Models\LowonganKerja;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +33,5 @@ Route::resource('tipe_lowongan', TipeLowonganController::class);
 
 // CRUD PERSYARATAN BERKAS
 Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
-
-// FITUR PENCARIAN
-
 
 // FITUR FILTER
