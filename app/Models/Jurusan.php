@@ -16,4 +16,9 @@ class Jurusan extends Model
     {
         return $this->belongsToMany(LowonganKerja::class, 'lowongan_jurusan', 'jurusan_id', 'lowongan_id');
     }
+
+    public function lowonganJurusan()
+    {
+        return $this->hasMany(LowonganJurusan::class, 'jurusan_id');
+    }
 }

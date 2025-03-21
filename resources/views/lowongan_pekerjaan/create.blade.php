@@ -18,7 +18,7 @@
         <label for="">Domisili Penempatan</label><br>
         <select name="domisili_penempatan" id="">
             @foreach ($regensi as $r)
-                <option value="{{ $r->id }}">{{ $r->name }}</option>
+                <option value="{{ $r->name }}">{{ $r->name }}</option>
             @endforeach
         </select><br><br>
         <label for="">Domisili Perusahaan</label><br>
@@ -60,9 +60,9 @@
         <input type="checkbox" name="persyaratan_berkas[]" value="{{ $pb->id }}">{{ $pb->nama_berkas }}<br>
         @endforeach
         <br><br>
-    
+
         <label for="">Link Submit</label>
-        <input type="text" name="link_submit"><br> 
+        <input type="text" name="link_submit"><br>
 
         <label for="">Batas Submit</label>
         <input type="date" name="batas_submit"><br><br>

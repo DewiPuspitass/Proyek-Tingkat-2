@@ -23,7 +23,6 @@ return new class extends Migration
             $table->text("kualifikasi");
             $table->text("persyaratan");
             $table->string('foto_loker');
-            $table->text("persiapan_berkas");
             $table->text("link_submit");
             $table->date("batas_submit");
             $table->string("status");

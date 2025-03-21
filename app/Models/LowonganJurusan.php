@@ -15,11 +15,21 @@ class LowonganJurusan extends Model
         'jurusan_id'
     ];
 
-    public function jurusan(){
-        return $this->hasMany(Jurusan::class, 'jurusan_id', 'id');
+    // public function jurusan(){
+    //     return $this->hasMany(Jurusan::class, 'id', 'id');
+    // }
+
+    // public function lowongan_kerja(){
+    //     return $this->hasMany(LowonganKerja::class, 'id', 'id');
+    // }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id');
     }
 
-    public function lowongan_kerja(){
-        return $this->hasMany(LowonganKerja::class, 'tipe_loker_id', 'id');
+    public function lowongan_kerja()
+    {
+        return $this->belongsTo(LowonganKerja::class, 'lowongan_id');
     }
 }
