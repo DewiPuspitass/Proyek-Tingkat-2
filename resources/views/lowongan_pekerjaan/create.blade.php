@@ -8,8 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
-
-
     <title>Lowongan Kerja</title>
 </head>
 <body class="bg-gray-50 p-8">
@@ -159,7 +157,7 @@
             <!-- Batas Submit -->
             <div class="mb-6 field-container">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Batas Submit <span class="text-red-500">*</span></label>
-                <input type="date" name="batas_submit" value="{{ old('batas_submit') }}"
+                <input type="date" name="batas_submit" value="{{ old('batas_submit') }}" 
                        class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
