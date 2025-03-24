@@ -33,4 +33,9 @@ class LowonganKerja extends Model
     {
         return $this->belongsTo(Regency::class, 'domisili_penempatan');
     }
+
+    public function lowonganJurusan()
+    {
+        return $this->hasMany(LowonganJurusan::class, 'lowongan_id');
+    }
 }

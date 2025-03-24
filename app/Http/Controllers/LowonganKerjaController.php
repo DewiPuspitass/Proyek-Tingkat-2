@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use App\Models\LowonganKerja;
+use App\Models\LowonganJurusan;
 use App\Models\PersyaratanBerkas;
 use App\Models\Regency;
 use App\Models\TipeLowongan;
@@ -79,6 +80,7 @@ class LowonganKerjaController extends Controller
             'batas_submit' => 'required|date',
         ]);
 
+
         $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
 
         $TambahLowongan = LowonganKerja::create([
@@ -95,11 +97,14 @@ class LowonganKerjaController extends Controller
             'link_submit' => $request->link_submit,
             'batas_submit' => $request->batas_submit,
             'status' => 'Aktif',
+
         ]);
+
 
         $TambahLowongan->jurusan()->attach($request->jurusan);
         $TambahLowongan->tipeLoker()->attach($request->tipe_lowongan);
         $TambahLowongan->tipePersyaratan()->attach($request->persyaratan_berkas);
+
 
         return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan!');
     }
@@ -109,7 +114,7 @@ class LowonganKerjaController extends Controller
      */
     public function show(LowonganKerja $lowongan_pekerjaan)
     {
-        $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);  
+        $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);
         return view('lowongan_pekerjaan.show', compact('lowongan_pekerjaan'));
     }
 
@@ -151,19 +156,19 @@ class LowonganKerjaController extends Controller
             'link_submit' => 'required|string|max:255',
             'batas_submit' => 'required|date',
         ]);
-    
+
         $lowongan = LowonganKerja::findOrFail($id);
-    
+
         if ($request->hasFile('foto_loker')) {
             if ($lowongan->foto_loker) {
                 Storage::disk('public')->delete($lowongan->foto_loker);
             }
-            
+
             $imagePath = $request->file('foto_loker')->store('foto_loker', 'public');
         } else {
             $imagePath = $lowongan->foto_loker;
         }
-    
+
         $lowongan->update([
             'nama_pekerjaan' => $request->nama_pekerjaan,
             'nama_perusahaan' => $request->nama_perusahaan,
@@ -179,14 +184,14 @@ class LowonganKerjaController extends Controller
             'batas_submit' => $request->batas_submit,
             'status' => 'Aktif',
         ]);
-    
+
         $lowongan->jurusan()->sync($request->jurusan);
         $lowongan->tipeLoker()->sync($request->tipe_lowongan);
         $lowongan->tipePersyaratan()->sync($request->persyaratan_berkas);
-    
+
         return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil diperbarui!');
     }
-    
+
 
 
     /**
