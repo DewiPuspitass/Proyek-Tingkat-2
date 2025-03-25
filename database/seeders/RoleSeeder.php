@@ -15,45 +15,45 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-    $adminRole = Role::firstOrCreate(['name' => 'admin']);
-    $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
+    // $adminRole = Role::firstOrCreate(['name' => 'admin']);
+    // $siswaRole = Role::firstOrCreate(['name' => 'siswa']);
 
     // Daftar permission yang ingin ditambahkan
-    $permissions = [
-        'manage users',
-        'create lowongan pekerjaan',
-        'edit lowongan pekerjaan',
-        'delete lowongan pekerjaan',
-        'create jurusan',
-        'edit jurusan',
-        'delete jurusan',
-        'create tipe lowongan pekerjaan',
-        'edit tipe lowongan pekerjaan',
-        'delete tipe lowongan pekerjaan',
-        'manage persyaratan berkas'
-    ];
+    // $permissions = [
+    //     'manage users',
+    //     'create lowongan pekerjaan',
+    //     'edit lowongan pekerjaan',
+    //     'delete lowongan pekerjaan',
+    //     'create jurusan',
+    //     'edit jurusan',
+    //     'delete jurusan',
+    //     'create tipe lowongan pekerjaan',
+    //     'edit tipe lowongan pekerjaan',
+    //     'delete tipe lowongan pekerjaan',
+    //     'manage persyaratan berkas'
+    // ];
 
-    // Loop untuk menambahkan permission tanpa duplikasi
-    foreach ($permissions as $permission) {
-        Permission::firstOrCreate(['name' => $permission]);
-    }
+    // foreach ($permissions as $permission) {
+    //     Permission::firstOrCreate(['name' => $permission]);
+    // }
 
-    // Pastikan adminRole memiliki semua permission
-    $adminRole->syncPermissions(Permission::all());
+    // $adminRole->syncPermissions(Permission::all());
 
-    // Cek apakah admin sudah ada, kalau belum, buat
-    $admin = User::where('email', 'admin@gmail.com')->first();
-    if (!$admin) {
+    // $admin = User::where('email', 'admin@gmail.com')->first();
+    // if (!$admin) {
         $admin = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
+            'nis' => '--',
+            'name' => 'Admin2',
+            'email' => 'admin2@gmail.com',
+            'jurusan' => '-',
+            'tahun_angkatan' => '-',
             'password' => bcrypt('password'),
+            'no_telp' => '087822915777'
         ]);
-    }
+    // }
 
-    // Pastikan admin memiliki role "admin"
-    if (!$admin->hasRole('admin')) {
-        $admin->assignRole($adminRole);
-    }
+    // if (!$admin->hasRole('admin')) {
+        $admin->assignRole('admin');
+    // }
     }
 }
