@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/delet_alert.js') }}"></script>
     <title>Peryaratan Berkas</title>
 </head>
 <body style="margin-left: 2em;">
@@ -31,7 +33,7 @@
                             <form action="{{ route('persyaratan_berkas.destroy', $p->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="return confirm('Apakah anda ingin menghapus persyaratan berkas ini?')">Hapus</button>
+                                <button type="submit" onclick="confirmDelete(event, {{ $p->id }})">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -41,8 +43,8 @@
                     <td>Tidak tersedia</td>
                     <td>Tidak tersedia</td>
                 </tr>
-            @endif        
-            
+            @endif
+
         </body>
     </table>
 </body>

@@ -11,7 +11,7 @@
     <form action="{{ route('jurusan.store') }}" method="POST">
         @csrf
         <label for="">Nama Jurusan</label>
-        <input type="text" name="nama_jurusan" required>
+        <input type="text" name="nama_jurusan" value="{{ old('nama_jurusan') }}">
         @if ($errors->has('nama_jurusan'))
             <span style="color: red;">{{ $errors->first('nama_jurusan') }}</span>
         @endif

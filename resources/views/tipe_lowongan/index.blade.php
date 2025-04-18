@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/delet_alert.js') }}"></script>
     <title>Tipe Lowongan</title>
 </head>
 <body style="margin-left: 2em;">
@@ -21,6 +23,14 @@
                     <tr>
                         <td>{{ $t->id }}</td>
                         <td>{{ $t->nama_tipe_lowongan }}</td>
+                        <td>
+                            <a href="{{ route('tipe_lowongan.edit', $t->id) }}">Edit</a>
+                            <form action="{{ route('tipe_lowongan.destroy', $t->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="confirmDelete(event, {{ $t->id }})">Hapus</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             @else

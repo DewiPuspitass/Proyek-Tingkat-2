@@ -32,6 +32,11 @@ class PersyaratanBerkasController extends Controller
     {
         $request->validate([
             'nama_berkas' => 'required|string|max:255'
+        ],[
+
+            'nama_berkas.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_berkas.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_berkas.max' => 'Nama pekerjaan maksimal 255 karakter.',
         ]);
 
         PersyaratanBerkas::create([
@@ -53,24 +58,47 @@ class PersyaratanBerkasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PersyaratanBerkas $persyaratanBerkas)
+    public function edit($persyaratanBerkas)
     {
-        //
+
+        // dd($persyaratanBerkas->id);
+        // $a = PersyaratanBerkas::findOrFail(1);
+
+        return view('persyaratan_berkas.edit', [
+            'persyaratan_berkas' => PersyaratanBerkas::findOrFail($persyaratanBerkas),
+        ]);
+
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PersyaratanBerkas $persyaratanBerkas)
+
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_berkas' => 'required|string|max:255',
+        ],[
+            'nama_berkas.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_berkas.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_berkas.max' => 'Nama pekerjaan maksimal 255 karakter.',   
+        ]);
+
+        $persyaratanBerkas = PersyaratanBerkas::findOrFail($id);
+
+        $persyaratanBerkas->update([
+            'nama_berkas' => $request->input('nama_berkas'),
+        ]);
+
+        return redirect()->route('persyaratan_berkas.index')->with('success', "Jurusan Berhasil Di Perbarui");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PersyaratanBerkas $persyaratanBerkas)
+    public function destroy($id)
     {
-        //
+        $persyaratanBerkas = PersyaratanBerkas::findOrFail($id);
+        $persyaratanBerkas->delete();
+
+        return redirect()->route('persyaratan_berkas.index')->with('success', 'Jurusan Berhasil di Hapus');
     }
 }

@@ -33,6 +33,10 @@ class JurusanController extends Controller
     {
         $request->validate([
             'nama_jurusan' => 'required|string|max:255',
+        ], [
+            'nama_jurusan.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_jurusan.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_jurusan.max' => 'Nama pekerjaan maksimal 255 karakter.',
         ]);
 
         Jurusan::create([
@@ -47,7 +51,7 @@ class JurusanController extends Controller
      */
     public function show(Jurusan $jurusan)
     {
-        
+
     }
 
     /**
@@ -55,6 +59,7 @@ class JurusanController extends Controller
      */
     public function edit(Jurusan $jurusan)
     {
+        dd($jurusan->id);
         return view('jurusan.edit', [
             'jurusan' => Jurusan::findOrFail($jurusan->id),
         ]);
@@ -67,12 +72,16 @@ class JurusanController extends Controller
     {
         $request->validate([
             'nama_jurusan' => 'required|string|max:255',
+        ],[
+            'nama_jurusan.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_jurusan.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_jurusan.max' => 'Nama pekerjaan maksimal 255 karakter.',
         ]);
 
         $jurusan = Jurusan::findOrFail($id);
 
         $jurusan->update([
-            'nama_jurusan' => $request->input('nama_jurusan'), 
+            'nama_jurusan' => $request->input('nama_jurusan'),
         ]);
 
         return redirect()->route('jurusan.index')->with('success', "Jurusan Berhasil Di Perbarui");
