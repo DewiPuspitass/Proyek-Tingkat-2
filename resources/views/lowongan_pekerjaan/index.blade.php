@@ -7,15 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/filterJurusan.js') }}"></script>
 </head>
 
 <body style="margin-left: 2em;">
     <h1>Lowongan Kerja</h1>
-
-    @if (session()->has('success'))
-        <span style="color: green;">{{ session('success') }}</span>
-    @endif
 
     <a href="{{ route('lowongan_pekerjaan.create') }}">Tambah Lowongan Kerja</a> <br><br>
 
@@ -60,7 +57,7 @@
         $(document).ready(function () {
             $('#search').on('keyup', function () {
                 let query = $(this).val();
-                
+
                 $.ajax({
                     url: "{{ route('lowongan_pekerjaan.index') }}",
                     type: "GET",

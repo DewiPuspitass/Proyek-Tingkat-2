@@ -12,10 +12,12 @@
         @csrf
         <label for="">Nama Jurusan</label>
         <input type="text" name="nama_jurusan" value="{{ old('nama_jurusan') }}">
-        @if ($errors->has('nama_jurusan'))
-            <span style="color: red;">{{ $errors->first('nama_jurusan') }}</span>
-        @endif
         <button type="submit">Tambahkan jurusan</button>
+        @if ($errors->has('nama_jurusan'))
+        <div>
+        <span style="color: red;">{{ $errors->first('nama_jurusan') }}</span>
+        </div>
+        @endif
     </form>
 </body>
 </html>

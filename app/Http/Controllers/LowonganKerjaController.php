@@ -158,8 +158,9 @@ class LowonganKerjaController extends Controller
         $TambahLowongan->jurusan()->attach($request->jurusan);
         $TambahLowongan->tipeLoker()->attach($request->tipe_lowongan);
         $TambahLowongan->tipePersyaratan()->attach($request->persyaratan_berkas);
+       
 
-
+        // return view('lowongan_pekerjaan.create')->with('success', 'Berhasil tambah lowongan kerja');
         return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan!');
     }
 

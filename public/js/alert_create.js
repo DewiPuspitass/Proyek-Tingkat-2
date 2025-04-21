@@ -1,4 +1,5 @@
 $(function () {
+
     function highlightInvalidField(field, message) {
         $(field).addClass('border-red-500');
         const container = $(field).closest('.field-container');
@@ -90,7 +91,7 @@ $(function () {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Mohon lengkapi semua field yang diwajibkan sebelum menyimpan!'
+                text: 'Mohon lengkapi semua field yang diwajibkan sebelum menyimpan! dan perbaiki input yang salah yang ada'
             });
             return;
         }
@@ -113,6 +114,13 @@ $(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
+                if ("{{ session('success') }}") {
+                    Swal.fire({
+                        title: "Berhasil disimpan!",
+                        text: "Lowongan berhasil disimpan!",
+                        icon: "success"
+                    });
+                }
                 form.submit();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithTailwindButtons.fire({

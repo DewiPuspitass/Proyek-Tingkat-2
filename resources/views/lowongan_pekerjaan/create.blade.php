@@ -8,18 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
-    @if(session()->has('success'))
-    <div class="fixed top-4 right-4 z-50">
-        <div class="bg-green-500 text-white px-4 py-2 rounded shadow-lg">
-            {{ session('success') }}
-        </div>
-    </div>
-    <script>
-        setTimeout(() => {
-            document.querySelector('.bg-green-500').remove();
-        }, 3000);
-    </script>
-    @endif
+
     <title>Lowongan Kerja</title>
 </head>
 <body class="bg-gray-50 p-8">
