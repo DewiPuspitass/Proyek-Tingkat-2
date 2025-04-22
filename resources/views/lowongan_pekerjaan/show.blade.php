@@ -41,5 +41,7 @@
     @endif
     <p>Link submit: <a href=" {{ $lowongan_pekerjaan->persyaratan }}"> {{ $lowongan_pekerjaan->persyaratan }}</a></p>
     <p>Batas Submit: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->batas_submit)->translatedFormat('d F Y') }}</p>
+
+    <a href="{{ route('send-email', ['id' => $lowongan_pekerjaan->id]) }}">Send Email!</a>
 </body>
 </html>

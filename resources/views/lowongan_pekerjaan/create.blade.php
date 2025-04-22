@@ -18,7 +18,7 @@
         <label for="">Domisili Penempatan</label><br>
         <select name="domisili_penempatan" id="">
             @foreach ($regensi as $r)
-                <option value="{{ $r->name }}">{{ $r->name }}</option>
+                <option value="{{ $r->id }}">{{ $r->name }}</option>
             @endforeach
         </select><br><br>
         <label for="">Domisili Perusahaan</label><br>

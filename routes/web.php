@@ -7,6 +7,7 @@ use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipeLowonganController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,3 +64,7 @@ Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
 // FITUR FILTER
 Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
 Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
+
+
+// Email broadcast
+Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
