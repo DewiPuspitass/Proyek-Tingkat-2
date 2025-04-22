@@ -10,7 +10,10 @@
     <form action="{{ route('tipe_lowongan.store') }}" method="POST">
         @csrf
         <label for="">Nama Tipe Lowongan</label>
-        <input type="text" name="nama_tipe_lowongan" required>
+        <input type="text" name="nama_tipe_lowongan"  value="{{ old('nama_tipe_lowongan')}}">
+        @if ($errors->has('nama_tipe_lowongan'))
+        <span style="color: red;">{{ $errors->first('nama_tipe_lowongan') }}</span>
+        @endif
         <button type="submit">Tambah Tipe Lowongan</button>
     </form>
 </body>

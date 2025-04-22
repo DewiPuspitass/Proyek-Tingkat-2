@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/delet_alert.js') }}"></script>
     <title>Jurusan</title>
 </head>
 <body style="margin-left: 2em;">
@@ -30,7 +32,7 @@
                             <form action="{{ route('jurusan.destroy', $j->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="return confirm('Apakah anda ingin menghapus jurusan ini?')">Hapus</button>
+                                <button type="submit" onclick="confirmDelete(event, {{ $j->id }})">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -40,8 +42,8 @@
                     <td>Tidak tersedia</td>
                     <td>Tidak tersedia</td>
                 </tr>
-            @endif        
-            
+            @endif
+
         </body>
     </table>
 </body>

@@ -4,86 +4,303 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Lowongan Kerja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+        $(function () {
+            function highlightInvalidField(field, message) {
+                $(field).addClass('border-red-500');
+                const container = $(field).closest('.field-container');
+                if (container.length) {
+                    container.find('.text-red-600.text-sm').remove();
+                    container.append(`<div class="text-red-600 text-sm mt-1">${message}</div>`);
+                } else {
+                    $(field).after(`<div class="text-red-600 text-sm mt-1">${message}</div>`);
+                }
+            }
+
+            function clearHighlight() {
+                $('input, select, textarea').removeClass('border-red-500');
+                $('.text-red-600.text-sm').remove();
+            }
+
+            $(document).on('click', '#simpan', function (e) {
+                e.preventDefault();
+                clearHighlight();
+
+                let isValid = true;
+
+                // Validasi semua field yang diperlukan
+                if (!$('input[name="nama_pekerjaan"]').val()) {
+                    highlightInvalidField($('input[name="nama_pekerjaan"]'), 'Nama Pekerjaan wajib diisi');
+                    isValid = false;
+                }
+                if (!$('input[name="nama_perusahaan"]').val()) {
+                    highlightInvalidField($('input[name="nama_perusahaan"]'), 'Nama Perusahaan wajib diisi');
+                    isValid = false;
+                }
+                if (!$('select[name="domisili_penempatan"]').val()) {
+                    highlightInvalidField($('select[name="domisili_penempatan"]'), 'Domisili Penempatan wajib dipilih');
+                    isValid = false;
+                }
+                if (!$('select[name="domisili_perusahaan"]').val()) {
+                    highlightInvalidField($('select[name="domisili_perusahaan"]'), 'Domisili Perusahaan wajib dipilih');
+                    isValid = false;
+                }
+
+                const gajiVal = $('input[name="gaji"]').val();
+                if (!gajiVal) {
+                    highlightInvalidField($('input[name="gaji"]'), 'Gaji wajib diisi');
+                    isValid = false;
+                } else if (!/^\d+$/.test(gajiVal)) {
+                    highlightInvalidField($('input[name="gaji"]'), 'Gaji harus berupa angka');
+                    isValid = false;
+                }
+
+                if (!$('textarea[name="deskripsi"]').val()) {
+                    highlightInvalidField($('textarea[name="deskripsi"]'), 'Deskripsi wajib diisi');
+                    isValid = false;
+                }
+                if (!$('textarea[name="kualifikasi"]').val()) {
+                    highlightInvalidField($('textarea[name="kualifikasi"]'), 'Kualifikasi wajib diisi');
+                    isValid = false;
+                }
+                if (!$('textarea[name="persyaratan"]').val()) {
+                    highlightInvalidField($('textarea[name="persyaratan"]'), 'Persyaratan wajib diisi');
+                    isValid = false;
+                }
+                if ($('input[name="jurusan[]"]:checked').length === 0) {
+                    highlightInvalidField($('input[name="jurusan[]"]').last(), 'Pilih minimal satu jurusan');
+                    isValid = false;
+                }
+                if ($('input[name="tipe_lowongan[]"]:checked').length === 0) {
+                    highlightInvalidField($('input[name="tipe_lowongan[]"]').last(), 'Pilih minimal satu tipe lowongan');
+                    isValid = false;
+                }
+                if ($('input[name="persyaratan_berkas[]"]:checked').length === 0) {
+                    highlightInvalidField($('input[name="persyaratan_berkas[]"]').last(), 'Pilih minimal satu persyaratan berkas');
+                    isValid = false;
+                }
+                if (!$('input[name="link_submit"]').val()) {
+                    highlightInvalidField($('input[name="link_submit"]'), 'Link submit wajib diisi');
+                    isValid = false;
+                }
+                if (!$('input[name="batas_submit"]').val()) {
+                    highlightInvalidField($('input[name="batas_submit"]'), 'Batas submit wajib diisi');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Mohon lengkapi semua field yang diwajibkan sebelum menyimpan!'
+                    });
+                    return;
+                }
+
+                const swalWithTailwindButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2",
+                        cancelButton: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    },
+                    buttonsStyling: false
+                });
+
+                swalWithTailwindButtons.fire({
+                    title: "Apakah kamu yakin?",
+                    text: "Pastikan data sudah benar sebelum menyimpan perubahan!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, simpan perubahan!",
+                    cancelButtonText: "Batal",
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.querySelector("form").submit();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithTailwindButtons.fire({
+                            title: "Dibatalkan",
+                            text: "Perubahan tidak disimpan",
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </head>
-<body style="margin-left: 2em;">
-    <h1>Edit Lowongan Kerja</h1>
-    <form action="{{ route('lowongan_pekerjaan.update', $lowongan_pekerjaan->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit Lowongan Kerja</h1>
 
-        <label>Nama Pekerjaan</label>
-        <input type="text" name="nama_pekerjaan" value="{{ old('nama_pekerjaan', $lowongan_pekerjaan->nama_pekerjaan) }}" required><br>
+        <form action="{{ route('lowongan_pekerjaan.update', $lowongan_pekerjaan->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-        <label>Nama Perusahaan</label>
-        <input type="text" name="nama_perusahaan" value="{{ old('nama_perusahaan', $lowongan_pekerjaan->nama_perusahaan) }}" required><br>
+            <!-- Nama Pekerjaan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Pekerjaan <span class="text-red-500">*</span></label>
+                <input type="text" name="nama_pekerjaan" value="{{ old('nama_pekerjaan', $lowongan_pekerjaan->nama_pekerjaan) }}"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('nama_pekerjaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Domisili Penempatan</label><br>
-        <select name="domisili_penempatan">
-            @foreach ($regensi as $r)
-                <option value="{{ $r->id }}" {{ old('domisili_penempatan', $lowongan_pekerjaan->domisili_penempatan) == $r->id ? 'selected' : '' }}>
-                    {{ $r->name }}
-                </option>
-            @endforeach
-        </select><br><br>
+            <!-- Nama Perusahaan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Perusahaan <span class="text-red-500">*</span></label>
+                <input type="text" name="nama_perusahaan" value="{{ old('nama_perusahaan', $lowongan_pekerjaan->nama_perusahaan) }}"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('nama_perusahaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Domisili Perusahaan</label><br>
-        <select name="domisili_perusahaan">
-            @foreach ($regensi as $r)
-                <option value="{{ $r->id }}" {{ old('domisili_perusahaan', $lowongan_pekerjaan->domisili_perusahaan) == $r->id ? 'selected' : '' }}>
-                    {{ $r->name }}
-                </option>
-            @endforeach
-        </select><br><br>
+            <!-- Domisili Penempatan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Penempatan <span class="text-red-500">*</span></label>
+                <select name="domisili_penempatan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach ($regensi as $r)
+                        <option value="{{ $r->id }}" {{ old('domisili_penempatan', $lowongan_pekerjaan->domisili_penempatan) == $r->id ? 'selected' : '' }}>
+                            {{ $r->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('domisili_penempatan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Jurusan</label><br>
-        @foreach ($jurusan as $j)
-            <input type="checkbox" name="jurusan[]" value="{{ $j->id }}" 
-                {{ in_array($j->id, old('jurusan', $lowongan_pekerjaan->jurusan->pluck('id')->toArray())) ? 'checked' : '' }}>
-            {{ $j->nama_jurusan }}<br>
-        @endforeach
-        <br>
+            <!-- Domisili Perusahaan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Perusahaan <span class="text-red-500">*</span></label>
+                <select name="domisili_perusahaan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach ($regensi as $r)
+                        <option value="{{ $r->id }}" {{ old('domisili_perusahaan', $lowongan_pekerjaan->domisili_perusahaan) == $r->id ? 'selected' : '' }}>
+                            {{ $r->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('domisili_perusahaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Tipe Loker</label><br>
-        @foreach ($tipe_lowongan as $t)
-            <input type="checkbox" name="tipe_lowongan[]" value="{{ $t->id }}" 
-                {{ in_array($t->id, old('tipe_lowongan', $lowongan_pekerjaan->tipeLoker->pluck('id')->toArray())) ? 'checked' : '' }}>
-            {{ $t->nama_tipe_lowongan }}<br>
-        @endforeach
-        <br>
+            <!-- Jurusan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Jurusan <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    @foreach ($jurusan as $j)
+                    <div class="flex items-center">
+                        <input type="checkbox" name="jurusan[]" id="jurusan_{{ $j->id }}" value="{{ $j->id }}"
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                               {{ in_array($j->id, old('jurusan', $lowongan_pekerjaan->jurusan->pluck('id')->toArray())) ? 'checked' : '' }}>
+                        <label for="jurusan_{{ $j->id }}" class="ml-2 block text-sm text-gray-700">
+                            {{ $j->nama_jurusan }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                @error('jurusan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Gaji</label>
-        <input type="number" name="gaji" value="{{ old('gaji', $lowongan_pekerjaan->gaji) }}"><br>
+            <!-- Tipe Loker -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Tipe Loker <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    @foreach ($tipe_lowongan as $t)
+                    <div class="flex items-center">
+                        <input type="checkbox" name="tipe_lowongan[]" id="tipe_{{ $t->id }}" value="{{ $t->id }}"
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                               {{ in_array($t->id, old('tipe_lowongan', $lowongan_pekerjaan->tipeLoker->pluck('id')->toArray())) ? 'checked' : '' }}>
+                        <label for="tipe_{{ $t->id }}" class="ml-2 block text-sm text-gray-700">
+                            {{ $t->nama_tipe_lowongan }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                @error('tipe_lowongan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Deskripsi</label>
-        <textarea name="deskripsi">{{ old('deskripsi', $lowongan_pekerjaan->deskripsi) }}</textarea><br>
+            <!-- Gaji -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Gaji <span class="text-red-500">*</span></label>
+                <input type="text" name="gaji" value="{{ old('gaji', $lowongan_pekerjaan->gaji) }}"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('gaji')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Kualifikasi</label>
-        <textarea name="kualifikasi">{{ old('kualifikasi', $lowongan_pekerjaan->kualifikasi) }}</textarea><br>
+            <!-- Deskripsi -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Deskripsi <span class="text-red-500">*</span></label>
+                <textarea name="deskripsi" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('deskripsi', $lowongan_pekerjaan->deskripsi) }}</textarea>
+                @error('deskripsi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Persyaratan</label>
-        <textarea name="persyaratan">{{ old('persyaratan', $lowongan_pekerjaan->persyaratan) }}</textarea><br><br>
+            <!-- Kualifikasi -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Kualifikasi <span class="text-red-500">*</span></label>
+                <textarea name="kualifikasi" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('kualifikasi', $lowongan_pekerjaan->kualifikasi) }}</textarea>
+                @error('kualifikasi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Foto Lembaran lowongan</label>
-        <input type="file" name="foto_loker"><br><br>
-        @if (!empty($lowongan_pekerjaan->foto_loker))
-            <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" style="width: 200px; height:200px;" alt="Foto Loker">
-        @endif
+            <!-- Persyaratan -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan <span class="text-red-500">*</span></label>
+                <textarea name="persyaratan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('persyaratan', $lowongan_pekerjaan->persyaratan) }}</textarea>
+                @error('persyaratan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Persyaratan Berkas</label><br>
-        @foreach ($persyaratan_berkas as $pb)
-            <input type="checkbox" name="persyaratan_berkas[]" value="{{ $pb->id }}" 
-                {{ in_array($pb->id, old('persyaratan_berkas', $lowongan_pekerjaan->tipePersyaratan->pluck('id')->toArray())) ? 'checked' : '' }}>
-            {{ $pb->nama_berkas }}<br>
-        @endforeach
-        <br><br>
+            <!-- Foto Loker -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan</label>
+                <input type="file" name="foto_loker"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @if (!empty($lowongan_pekerjaan->foto_loker))
+                    <div class="mt-2">
+                        <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" class="w-48 h-48 object-cover" alt="Foto Loker">
+                        <p class="text-sm text-gray-500 mt-1">Foto saat ini</p>
+                    </div>
+                @endif
+                @error('foto_loker')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Link Submit</label>
-        <input type="text" name="link_submit" value="{{ old('link_submit', $lowongan_pekerjaan->link_submit) }}"><br> 
+            <!-- Persyaratan Berkas -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan Berkas <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    @foreach ($persyaratan_berkas as $pb)
+                    <div class="flex items-center">
+                        <input type="checkbox" name="persyaratan_berkas[]" id="berkas_{{ $pb->id }}" value="{{ $pb->id }}"
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                               {{ in_array($pb->id, old('persyaratan_berkas', $lowongan_pekerjaan->tipePersyaratan->pluck('id')->toArray())) ? 'checked' : '' }}>
+                        <label for="berkas_{{ $pb->id }}" class="ml-2 block text-sm text-gray-700">
+                            {{ $pb->nama_berkas }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                @error('persyaratan_berkas')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <label>Batas Submit</label>
-        <input type="date" name="batas_submit" value="{{ old('batas_submit', $lowongan_pekerjaan->batas_submit) }}"><br><br>
+            <!-- Link Submit -->
+            <div class="mb-4 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Link Submit <span class="text-red-500">*</span></label>
+                <input type="text" name="link_submit" value="{{ old('link_submit', $lowongan_pekerjaan->link_submit) }}"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('link_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
 
-        <button type="submit">Simpan Perubahan</button>
-    </form>
+            <!-- Batas Submit -->
+            <div class="mb-6 field-container">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Batas Submit <span class="text-red-500">*</span></label>
+                <input type="date" name="batas_submit" value="{{ old('batas_submit', $lowongan_pekerjaan->batas_submit) }}"
+                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit" id="simpan" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

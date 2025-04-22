@@ -15,7 +15,7 @@ class TipeLowonganController extends Controller
         return view('tipe_lowongan.index', [
             'tipe_lowongan' => TipeLowongan::all(),
         ]);
-        
+
     }
 
     /**
@@ -33,10 +33,14 @@ class TipeLowonganController extends Controller
     {
         $request->validate([
             'nama_tipe_lowongan' => 'required|max:255',
+        ],[
+            'nama_tipe_lowongan.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_tipe_lowongan.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_tipe_lowongan.max' => 'Nama pekerjaan maksimal 255 karakter.',
         ]);
 
         TipeLowongan::create([
-            'nama_tipe_lowongan' => $request->input('nama_tipe_lowongan'), 
+            'nama_tipe_lowongan' => $request->input('nama_tipe_lowongan'),
         ]);
 
         return redirect()->route('tipe_lowongan.index')->with('success', 'Tipe Berhasil di Tambahkan');
@@ -53,24 +57,44 @@ class TipeLowonganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TipeLowongan $tipeLowongan)
+    public function edit($tipeLowongan)
     {
-        //
+        return view('tipe_lowongan.edit', [
+            'tipe_lowongan' => TipeLowongan::findOrFail($tipeLowongan),
+        ]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipeLowongan $tipeLowongan)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_tipe_lowongan' => 'required|string|max:255',
+        ],[
+            'nama_tipe_lowongan.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_tipe_lowongan.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_tipe_lowongan.max' => 'Nama pekerjaan maksimal 255 karakter.',
+        ]);
+
+        $persyaratanBerkas = TipeLowongan::findOrFail($id);
+
+        $persyaratanBerkas->update([
+            'nama_tipe_lowongan' => $request->input('nama_tipe_lowongan'),
+        ]);
+
+        return redirect()->route('tipe_lowongan.index')->with('success', "Jurusan Berhasil Di Perbarui");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TipeLowongan $tipeLowongan)
+    public function destroy($id)
     {
-        //
+        $persyaratanBerkas = TipeLowongan::findOrFail($id);
+        $persyaratanBerkas->delete();
+
+        return redirect()->route('tipe_lowongan.index')->with('success', 'Jurusan Berhasil di Hapus');
     }
 }

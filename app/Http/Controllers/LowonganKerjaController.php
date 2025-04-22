@@ -62,26 +62,81 @@ class LowonganKerjaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'nama_pekerjaan' => 'required|string|max:255',
-        'nama_perusahaan' => 'required|string|max:255',
-        'domisili_perusahaan' => 'required|string',
-        'domisili_penempatan' => 'required|string',
-        'jurusan' => 'required|array',
-        'jurusan.*' => 'exists:jurusan,id',
-        'tipe_lowongan' => 'required|array',
-        'tipe_lowongan.*' => 'exists:tipe_lowongan,id',
-        'gaji' => 'required|integer',
-        'deskripsi' => 'required|string|max:255',
-        'kualifikasi' => 'required|string|max:255',
-        'persyaratan' => 'required|string|max:255',
-        'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        'persyaratan_berkas' => 'required|array',
-        'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
-        'link_submit' => 'required|string|max:255',
-        'batas_submit' => 'required|date',
-    ]);
+    {
+        $request->validate([
+            'nama_pekerjaan' => 'required|string|max:255',
+            'nama_perusahaan' => 'required|string|max:255',
+            'domisili_perusahaan' => 'required|string',
+            'domisili_penempatan' => 'required|string',
+            'jurusan' => 'required|array',
+            'jurusan.*' => 'exists:jurusan,id',
+            'tipe_lowongan' => 'required|array',
+            'tipe_lowongan.*' => 'exists:tipe_lowongan,id',
+            'gaji' => 'required|integer',
+            'deskripsi' => 'required|string|max:255',
+            'kualifikasi' => 'required|string|max:255',
+            'persyaratan' => 'required|string|max:255',
+            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'persyaratan_berkas' => 'required|array',
+            'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
+            'link_submit' => 'required|string|max:255',
+            'batas_submit' => 'required|date',
+        ], [
+            'nama_pekerjaan.required' => 'Nama pekerjaan wajib diisi.',
+            'nama_pekerjaan.string' => 'Nama pekerjaan harus berupa teks.',
+            'nama_pekerjaan.max' => 'Nama pekerjaan maksimal 255 karakter.',
+
+            'nama_perusahaan.required' => 'Nama perusahaan wajib diisi.',
+            'nama_perusahaan.string' => 'Nama perusahaan harus berupa teks.',
+            'nama_perusahaan.max' => 'Nama perusahaan maksimal 255 karakter.',
+
+            'domisili_perusahaan.required' => 'Domisili perusahaan wajib diisi.',
+            'domisili_perusahaan.string' => 'Domisili perusahaan harus berupa teks.',
+
+            'domisili_penempatan.required' => 'Domisili penempatan wajib diisi.',
+            'domisili_penempatan.string' => 'Domisili penempatan harus berupa teks.',
+
+            'jurusan.required' => 'Jurusan wajib dipilih.',
+            'jurusan.array' => 'Jurusan harus dalam format array.',
+            'jurusan.*.exists' => 'Jurusan yang dipilih tidak valid.',
+
+            'tipe_lowongan.required' => 'Tipe lowongan wajib dipilih.',
+            'tipe_lowongan.array' => 'Tipe lowongan harus dalam format array.',
+            'tipe_lowongan.*.exists' => 'Tipe lowongan yang dipilih tidak valid.',
+
+            'gaji.required' => 'Gaji wajib diisi.',
+            'gaji.integer' => 'Gaji harus berupa angka.',
+
+            'deskripsi.required' => 'Deskripsi wajib diisi.',
+            'deskripsi.string' => 'Deskripsi harus berupa teks.',
+            'deskripsi.max' => 'Deskripsi maksimal 255 karakter.',
+
+            'kualifikasi.required' => 'Kualifikasi wajib diisi.',
+            'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
+            'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
+
+            'persyaratan.required' => 'Persyaratan wajib diisi.',
+            'persyaratan.string' => 'Persyaratan harus berupa teks.',
+            'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
+
+            'foto_loker.image' => 'File harus berupa gambar.',
+            'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
+            'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
+
+            'persyaratan_berkas.required' => 'Persyaratan berkas wajib dipilih.',
+            'persyaratan_berkas.array' => 'Persyaratan berkas harus dalam format array.',
+            'persyaratan_berkas.*.exists' => 'Persyaratan berkas yang dipilih tidak valid.',
+
+            'link_submit.required' => 'Link submit wajib diisi.',
+            'link_submit.string' => 'Link submit harus berupa teks.',
+            'link_submit.max' => 'Link submit maksimal 255 karakter.',
+
+            'batas_submit.required' => 'Batas submit wajib diisi.',
+            'batas_submit.date' => 'Format batas submit tidak valid.',
+        ]
+
+    );
+
 
     $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
 
@@ -127,7 +182,7 @@ class LowonganKerjaController extends Controller
         }
     }
 
-    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan dan email dikirim!');
+    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan dan email disimpan!');
 }
 
 
@@ -177,6 +232,60 @@ class LowonganKerjaController extends Controller
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
             'link_submit' => 'required|string|max:255',
             'batas_submit' => 'required|date',
+        ],[
+            [
+                'nama_pekerjaan.required' => 'Nama pekerjaan wajib diisi.',
+                'nama_pekerjaan.string' => 'Nama pekerjaan harus berupa teks.',
+                'nama_pekerjaan.max' => 'Nama pekerjaan maksimal 255 karakter.',
+
+                'nama_perusahaan.required' => 'Nama perusahaan wajib diisi.',
+                'nama_perusahaan.string' => 'Nama perusahaan harus berupa teks.',
+                'nama_perusahaan.max' => 'Nama perusahaan maksimal 255 karakter.',
+
+                'domisili_perusahaan.required' => 'Domisili perusahaan wajib diisi.',
+                'domisili_perusahaan.string' => 'Domisili perusahaan harus berupa teks.',
+
+                'domisili_penempatan.required' => 'Domisili penempatan wajib diisi.',
+                'domisili_penempatan.string' => 'Domisili penempatan harus berupa teks.',
+
+                'jurusan.required' => 'Jurusan wajib dipilih.',
+                'jurusan.array' => 'Jurusan harus dalam format array.',
+                'jurusan.*.exists' => 'Jurusan yang dipilih tidak valid.',
+
+                'tipe_lowongan.required' => 'Tipe lowongan wajib dipilih.',
+                'tipe_lowongan.array' => 'Tipe lowongan harus dalam format array.',
+                'tipe_lowongan.*.exists' => 'Tipe lowongan yang dipilih tidak valid.',
+
+                'gaji.required' => 'Gaji wajib diisi.',
+                'gaji.integer' => 'Gaji harus berupa angka.',
+
+                'deskripsi.required' => 'Deskripsi wajib diisi.',
+                'deskripsi.string' => 'Deskripsi harus berupa teks.',
+                'deskripsi.max' => 'Deskripsi maksimal 255 karakter.',
+
+                'kualifikasi.required' => 'Kualifikasi wajib diisi.',
+                'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
+                'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
+
+                'persyaratan.required' => 'Persyaratan wajib diisi.',
+                'persyaratan.string' => 'Persyaratan harus berupa teks.',
+                'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
+
+                'foto_loker.image' => 'File harus berupa gambar.',
+                'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
+                'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
+
+                'persyaratan_berkas.required' => 'Persyaratan berkas wajib dipilih.',
+                'persyaratan_berkas.array' => 'Persyaratan berkas harus dalam format array.',
+                'persyaratan_berkas.*.exists' => 'Persyaratan berkas yang dipilih tidak valid.',
+
+                'link_submit.required' => 'Link submit wajib diisi.',
+                'link_submit.string' => 'Link submit harus berupa teks.',
+                'link_submit.max' => 'Link submit maksimal 255 karakter.',
+
+                'batas_submit.required' => 'Batas submit wajib diisi.',
+                'batas_submit.date' => 'Format batas submit tidak valid.',
+            ]
         ]);
 
         $lowongan = LowonganKerja::findOrFail($id);
@@ -212,6 +321,7 @@ class LowonganKerjaController extends Controller
         $lowongan->tipePersyaratan()->sync($request->persyaratan_berkas);
 
         return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil diperbarui!');
+
     }
 
 
