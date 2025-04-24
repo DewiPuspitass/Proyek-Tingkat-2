@@ -129,7 +129,12 @@
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">Batas Submit</label>
-                    <input type="date" name="batas_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                    <input 
+                        type="date" 
+                        name="batas_submit" 
+                        class="w-full border border-gray-300 rounded px-3 py-2"
+                        min="{{ date('Y-m-d') }}"
+                    >
                 </div>
             </div>
 

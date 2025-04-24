@@ -43,34 +43,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // CRUD JURUSAN
+    Route::resource('jurusan', JurusanController::class);
+    
+    // CRUD LOKER
+    Route::resource('lowongan_pekerjaan', LowonganKerjaController::class);
+    
+    // CRUD TIPE LOKER
+    Route::resource('tipe_lowongan', TipeLowonganController::class);
+    
+    // CRUD PERSYARATAN BERKAS
+    Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
+    
+    // FITUR PENCARIAN
+    
+    // FITUR FILTER
+    
+    // FITUR FILTER
+    Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
+    Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
+    
+    
+    // Email broadcast
+    Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
+    
+    Route::get('tampilan-email', function(){
+        return view('emails.lowonganEmail');
+    });
 });
 
 require __DIR__.'/auth.php';
-
-// CRUD JURUSAN
-Route::resource('jurusan', JurusanController::class);
-
-// CRUD LOKER
-Route::resource('lowongan_pekerjaan', LowonganKerjaController::class);
-
-// CRUD TIPE LOKER
-Route::resource('tipe_lowongan', TipeLowonganController::class);
-
-// CRUD PERSYARATAN BERKAS
-Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
-
-// FITUR PENCARIAN
-
-// FITUR FILTER
-
-// FITUR FILTER
-Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
-Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
-
-
-// Email broadcast
-Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
-
-Route::get('tampilan-email', function(){
-    return view('emails.lowonganEmail');
-});
