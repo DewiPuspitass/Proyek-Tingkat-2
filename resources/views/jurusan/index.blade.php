@@ -9,9 +9,9 @@
 </head>
 <body style="margin-left: 2em;">
     <h1>Ini Jurusan</h1>
-    @if (session()->has('success'))
+    {{-- @if (session()->has('success'))
         <span style="color: green;">{{ session('success') }}</span>
-    @endif
+    @endif --}}
     <a href="{{ route('jurusan.create') }}">Tambah Jurusan</a>
     <table style="margin-top: 1em;" border="1">
         <head>

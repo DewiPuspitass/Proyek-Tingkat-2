@@ -9,6 +9,7 @@
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
 
+
     <title>Lowongan Kerja</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>

@@ -114,14 +114,18 @@ $(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                    if ("{{ session('success') }}") {
-                        Swal.fire({
-                            title: "Berhasil disimpan!",
-                            text: "Lowongan berhasil disimpan!",
-                            icon: "success"
-                        });
+                Swal.fire({
+                    title: 'Berhasil disimpan!',
+                    text: 'Lowongan berhasil disimpan!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('lowongan_pekerjaan.index') }}";
                     }
-                form.submit();
+                });
+
+
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithTailwindButtons.fire({
                     title: "Dibatalkan",

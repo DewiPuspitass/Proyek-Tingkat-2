@@ -59,7 +59,6 @@ class JurusanController extends Controller
      */
     public function edit(Jurusan $jurusan)
     {
-        dd($jurusan->id);
         return view('jurusan.edit', [
             'jurusan' => Jurusan::findOrFail($jurusan->id),
         ]);
