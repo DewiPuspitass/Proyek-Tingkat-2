@@ -175,6 +175,7 @@ class LowonganKerjaController extends Controller
                     foto_loker: $lowongan->foto_loker,
                     tipe_lowongan: $lowongan->tipeLoker,
                     link: $lowongan->link_submit,
+                    tanggal: $lowongan->batas_submit
                 ));
 
                 $sentUserIds[] = $user->id;

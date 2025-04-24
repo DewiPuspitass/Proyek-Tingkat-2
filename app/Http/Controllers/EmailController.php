@@ -24,15 +24,18 @@ class EmailController extends Controller
 
         $sentUserIds = [];
 
+        $tipeLowongan = $lowongan->tipeLoker->pluck('nama_tipe_lowongan')->join(', ');
+
         foreach ($users as $user) {
             Mail::to($user->email)->send(new BroadcastEmail(
                 name: $user->name,
                 nama_perusahaan: $lowongan->nama_perusahaan,
                 nama_pekerjaan: $lowongan->nama_pekerjaan,
-                domisili_penempatan: $lowongan->domisili_penempatan,
+                domisili_penempatan: $lowongan->domisiliPenempatan->name,
                 foto_loker: $lowongan->foto_loker,
-                tipe_lowongan: $lowongan->tipeLoker,
+                tipe_lowongan: $tipeLowongan,
                 link: $lowongan->link_submit,
+                tanggal: $lowongan->batas_submit
             ));
 
             $sentUserIds[] = $user->id;

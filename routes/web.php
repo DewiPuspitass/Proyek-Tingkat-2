@@ -68,3 +68,7 @@ Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('fil
 
 // Email broadcast
 Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
+
+Route::get('tampilan-email', function(){
+    return view('emails.lowonganEmail');
+});

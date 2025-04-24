@@ -21,11 +21,12 @@ class BroadcastEmail extends Mailable
     public $foto_loker;
     public $tipe_lowongan;
     public $link;
+    public $tanggal;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $nama_perusahaan, $nama_pekerjaan, $domisili_penempatan, $foto_loker, $tipe_lowongan, $link)
+    public function __construct($name, $nama_perusahaan, $nama_pekerjaan, $domisili_penempatan, $foto_loker, $tipe_lowongan, $link, $tanggal)
     {
         $this->name = $name;
         $this->nama_perusahaan = $nama_perusahaan;
@@ -34,6 +35,7 @@ class BroadcastEmail extends Mailable
         $this->foto_loker = $foto_loker;
         $this->tipe_lowongan = $tipe_lowongan;
         $this->link = $link;
+        $this->tanggal = $tanggal;
     }
 
     /**
@@ -42,9 +44,9 @@ class BroadcastEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('dewibelajar10@gmail.com', 'Pengemar terberatmu'),
+            from: new Address('dewibelajar10@gmail.com', 'SMK Negeri 2 Cimahi'),
             replyTo: [
-                new Address('dewibelajar10@gmail.com', 'Pengemar terberatmu')
+                new Address('dewibelajar10@gmail.com', 'SMK Negeri 2 Cimahi')
             ],
             subject: $this->subject,
         );
