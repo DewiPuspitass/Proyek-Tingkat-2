@@ -10,166 +10,136 @@
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
 
     <title>Lowongan Kerja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 p-8">
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Tambah Lowongan Kerja</h1>
 
-        <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data">
+<body class="pt-24 bg-white min-h-screen flex flex-col">
+    {{-- Navigation --}}
+    @include('layouts.navigation')
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
-            <!-- Nama Pekerjaan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Pekerjaan <span class="text-red-500">*</span></label>
-                <input type="text" name="nama_pekerjaan" value="{{ old('nama_pekerjaan') }}"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('nama_pekerjaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Nama Pekerjaan --}}
+            <div>
+                <label class="block font-semibold mb-1">Nama Pekerjaan</label>
+                <input type="text" name="nama_pekerjaan" required class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
 
-            <!-- Nama Perusahaan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Nama Perusahaan <span class="text-red-500">*</span></label>
-                <input type="text" name="nama_perusahaan" value="{{ old('nama_perusahaan') }}"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('nama_perusahaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Nama Perusahaan --}}
+            <div>
+                <label class="block font-semibold mb-1">Nama Perusahaan</label>
+                <input type="text" name="nama_perusahaan" required class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
 
-            <!-- Domisili Penempatan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Penempatan <span class="text-red-500">*</span></label>
-                <select name="domisili_penempatan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    @foreach ($regensi as $r)
-                        <option value="{{ $r->id }}" {{ old('domisili_penempatan') == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
-                    @endforeach
-                </select>
-                @error('domisili_penempatan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Domisili Penempatan & Domisili Perusahaan --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-1">Domisili Penempatan</label>
+                    <select name="domisili_penempatan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($regensi as $r)
+                            <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Domisili Perusahaan</label>
+                    <select name="domisili_perusahaan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($regensi as $r)
+                            <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
-            <!-- Domisili Perusahaan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Perusahaan <span class="text-red-500">*</span></label>
-                <select name="domisili_perusahaan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    @foreach ($regensi as $r)
-                        <option value="{{ $r->id }}" {{ old('domisili_perusahaan') == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
-                    @endforeach
-                </select>
-                @error('domisili_perusahaan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-            </div>
-
-            <!-- Jurusan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Jurusan <span class="text-red-500">*</span></label>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {{-- Jurusan --}}
+            <div>
+                <label class="block font-semibold mb-2">Jurusan</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                     @foreach ($jurusan as $j)
-                    <div class="flex items-center">
-                        <input type="checkbox" name="jurusan[]" id="jurusan_{{ $j->id }}" value="{{ $j->id }}"
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                               {{ is_array(old('jurusan')) && in_array($j->id, old('jurusan')) ? 'checked' : '' }}>
-                        <label for="jurusan_{{ $j->id }}" class="ml-2 block text-sm text-gray-700">
-                            {{ $j->nama_jurusan }}
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="jurusan[]" value="{{ $j->id }}" class="rounded">
+                            <span>{{ $j->nama_jurusan }}</span>
                         </label>
-                    </div>
                     @endforeach
                 </div>
-                @error('jurusan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
 
-            <!-- Tipe Loker -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Tipe Loker <span class="text-red-500">*</span></label>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {{-- Tipe Lowongan --}}
+            <div>
+                <label class="block font-semibold mb-2">Tipe Loker</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                     @foreach ($tipe_lowongan as $t)
-                    <div class="flex items-center">
-                        <input type="checkbox" name="tipe_lowongan[]" id="tipe_{{ $t->id }}" value="{{ $t->id }}"
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                               {{ is_array(old('tipe_lowongan')) && in_array($t->id, old('tipe_lowongan')) ? 'checked' : '' }}>
-                        <label for="tipe_{{ $t->id }}" class="ml-2 block text-sm text-gray-700">
-                            {{ $t->nama_tipe_lowongan }}
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="tipe_lowongan[]" value="{{ $t->id }}" class="rounded">
+                            <span>{{ $t->nama_tipe_lowongan }}</span>
                         </label>
-                    </div>
                     @endforeach
                 </div>
-                @error('tipe_lowongan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
 
-            <!-- Gaji -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Gaji <span class="text-red-500">*</span></label>
-                <input type="text" name="gaji" value="{{ old('gaji') }}"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('gaji')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Gaji --}}
+            <div>
+                <label class="block font-semibold mb-1">Gaji</label>
+                <input type="number" name="gaji" class="w-full border border-gray-300 rounded px-3 py-2">
             </div>
 
-            <!-- Deskripsi -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Deskripsi <span class="text-red-500">*</span></label>
-                <textarea name="deskripsi" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('deskripsi') }}</textarea>
-                @error('deskripsi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Deskripsi, Kualifikasi, Persyaratan --}}
+            <div>
+                <label class="block font-semibold mb-1">Deskripsi</label>
+                <textarea name="deskripsi" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
             </div>
 
-            <!-- Kualifikasi -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Kualifikasi <span class="text-red-500">*</span></label>
-                <textarea name="kualifikasi" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('kualifikasi') }}</textarea>
-                @error('kualifikasi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            <div>
+                <label class="block font-semibold mb-1">Kualifikasi</label>
+                <textarea name="kualifikasi" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
             </div>
 
-            <!-- Persyaratan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan <span class="text-red-500">*</span></label>
-                <textarea name="persyaratan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('persyaratan') }}</textarea>
-                @error('persyaratan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            <div>
+                <label class="block font-semibold mb-1">Persyaratan</label>
+                <textarea name="persyaratan" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
             </div>
 
-            <!-- Foto Loker -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan <span class="text-red-500">*</span></label>
-                <input type="file" name="foto_loker"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('foto_loker')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Foto Loker --}}
+            <div>
+                <label class="block font-semibold mb-1">Foto Lembaran Lowongan</label>
+                <input type="file" name="foto_loker" class="w-full">
             </div>
 
-            <!-- Persyaratan Berkas -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan Berkas <span class="text-red-500">*</span></label>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {{-- Persyaratan Berkas --}}
+            <div>
+                <label class="block font-semibold mb-2">Persyaratan Berkas</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                     @foreach ($persyaratan_berkas as $pb)
-                    <div class="flex items-center">
-                        <input type="checkbox" name="persyaratan_berkas[]" id="berkas_{{ $pb->id }}" value="{{ $pb->id }}"
-                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                               {{ is_array(old('persyaratan_berkas')) && in_array($pb->id, old('persyaratan_berkas')) ? 'checked' : '' }}>
-                        <label for="berkas_{{ $pb->id }}" class="ml-2 block text-sm text-gray-700">
-                            {{ $pb->nama_berkas }}
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="persyaratan_berkas[]" value="{{ $pb->id }}" class="rounded">
+                            <span>{{ $pb->nama_berkas }}</span>
                         </label>
-                    </div>
                     @endforeach
                 </div>
-                @error('persyaratan_berkas')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
 
-            <!-- Link Submit -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Link Submit <span class="text-red-500">*</span></label>
-                <input type="text" name="link_submit" value="{{ old('link_submit') }}"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('link_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+            {{-- Link & Batas Submit --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-1">Link Submit</label>
+                    <input type="text" name="link_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Batas Submit</label>
+                    <input type="date" name="batas_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
             </div>
 
-            <!-- Batas Submit -->
-            <div class="mb-6 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Batas Submit <span class="text-red-500">*</span></label>
-                <input type="date" name="batas_submit" value="{{ old('batas_submit') }}"
-                       class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex justify-end">
-                <button type="submit" id="simpan" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
-                    Simpan Lowongan Kerja
-                </button>
+            {{-- Submit --}}
+            <div class="pt-4">
+                <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-500">Unggah Lowongan Pekerjaan</button>
             </div>
         </form>
-    </div>
+    </main>
+
+    {{-- Footer --}}
+    @include('layouts.footer')
 </body>
 </html>

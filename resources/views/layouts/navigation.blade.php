@@ -1,100 +1,147 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
+<head>
+<script src="//unpkg.com/alpinejs" defer></script>
+</head>
+
+@if (Route::has('login'))
+<nav x-data="{ open: false }" class="bg-white shadow fixed top-0 left-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div>
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center space-x-4">
+                <a href="/">
+                <img src="{{ asset('logoSMK.png') }}" alt="Logo" style="height: 60px; width: auto;">
+                </a>
+            </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-4 items-center">
+                @auth
+                    {{-- UNIVERSAL LINKS --}}
+                    <x-nav-link :href="route('beranda')" :active="request()->routeIs('beranda')">
+                        {{ __('Beranda') }}
                     </x-nav-link>
-                </div>
-            </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                    <x-nav-link :href="route('lowongan_pekerjaan.index')" :active="request()->routeIs('lowongan_pekerjaan.index')">
+                        {{ __('Lowongan Pekerjaan') }}
+                    </x-nav-link>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                    {{-- ADMIN --}}
+                    @hasrole('admin')
+                        <x-nav-link :href="route('lowongan_pekerjaan.create')" :active="request()->routeIs('lowongan_pekerjaan.create')">
+                            {{ __('Unggah Lowongan') }}
+                        </x-nav-link>
+                    @endhasrole
+
+                    {{-- SISWA --}}
+                    @hasrole('siswa')
+                        <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                            {{ __('Profil Saya') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('lamaran.index')" :active="request()->routeIs('lamaran.*')">
+                            {{ __('Lamaran Saya') }}
+                        </x-nav-link>
+                    @endhasrole
+
+                    <!-- Profile dropdown -->
+                    <div x-data="{ openProfile: false }" class="relative">
+                        <button @click="openProfile = !openProfile" class="flex items-center text-gray-700 hover:text-orange-600 font-semibold focus:outline-none">
+                            {{ Auth::user()->name }}
+                        <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7"/>
+                        </svg>
                         </button>
-                    </x-slot>
+    
+                    <div x-show="openProfile" @click.away="openProfile = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Edit Profil
+                        </a>
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+                    <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            Keluar
+                     </button>
+                    </form>
+                    </div>
+                    </div>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                @else
+                    {{-- GUEST --}}
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-orange-600 font-semibold transition">
+                        Masuk
+                    </a>
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
+                            Daftar
+                        </a>
+                    @endif
+                @endauth
             </div>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <!-- Mobile Hamburger -->
+            <div class="md:hidden flex items-center">
+                <button @click="open = ! open" class="focus:outline-none">
+                    <svg class="h-6 w-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path :class="{ 'hidden': open }" class="block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                        <path :class="{ 'hidden': !open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+    <!-- Mobile Navigation -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden bg-white px-4 pb-4">
+        @auth
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Beranda') }}
             </x-responsive-nav-link>
-        </div>
+            <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')" :active="request()->routeIs('lowongan_pekerjaan.*')">
+                {{ __('Lowongan Pekerjaan') }}
+            </x-responsive-nav-link>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+            @hasrole('admin')
+                <x-responsive-nav-link :href="route('lowongan_pekerjaan.create')">
+                    {{ __('Unggah Lowongan') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('jurusan.index')">
+                    {{ __('Manajemen Jurusan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('tipe_lowongan.index')">
+                    {{ __('Tipe Lowongan') }}
+                </x-responsive-nav-link>
+            @endhasrole
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+            @hasrole('siswa')
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Profil Saya') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('lamaran.index')">
+                    {{ __('Lamaran Saya') }}
+                </x-responsive-nav-link>
+            @endhasrole
 
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <x-responsive-nav-link :href="route('logout')"
+                                       onclick="event.preventDefault(); this.closest('form').submit();">
+                    {{ __('Keluar') }}
+                </x-responsive-nav-link>
+            </form>
+        @else
+            <x-responsive-nav-link :href="route('login')">
+                {{ __('Masuk') }}
+            </x-responsive-nav-link>
+            @if (Route::has('register'))
+                <x-responsive-nav-link :href="route('register')">
+                    {{ __('Daftar') }}
+                </x-responsive-nav-link>
+            @endif
+        @endauth
     </div>
 </nav>
+@endif

@@ -171,7 +171,7 @@ class LowonganKerjaController extends Controller
                     name: $user->name,
                     nama_perusahaan: $lowongan->nama_perusahaan,
                     nama_pekerjaan: $lowongan->nama_pekerjaan,
-                    domisili_penempatan: $lowongan->domisili_penempatan,
+                    domisili_penempatan: $lowongan->domisiliPenempatan->name,
                     foto_loker: $lowongan->foto_loker,
                     tipe_lowongan: $lowongan->tipeLoker,
                     link: $lowongan->link_submit,
@@ -183,7 +183,7 @@ class LowonganKerjaController extends Controller
         }
     }
 
-    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan dan email disimpan!');
+    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan!');
 }
 
 

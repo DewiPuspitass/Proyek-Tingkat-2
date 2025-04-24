@@ -4,44 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Show Lowongan Pekerjaan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Ini show lowongan</h1>
-    <p>Nama Pekerjaan: {{ $lowongan_pekerjaan->nama_pekerjaan }}</p>
-    <p>Nama Perusahaan: {{ $lowongan_pekerjaan->nama_perusahaan }}</p>
-    <p>Domisili Perusahaan: {{ $lowongan_pekerjaan->domisiliPerusahaan->name }}</p>
-    <p>Domisili Penempatan: {{ $lowongan_pekerjaan->domisiliPenempatan->name }}</p>
-    @if ($lowongan_pekerjaan->jurusan->isNotEmpty())
-        <li>Jurusan yang diterima:
-            @foreach ($lowongan_pekerjaan->jurusan as $jurusan)
-                {{ $jurusan->nama_jurusan }}
-                @endforeach
-        </li>
-    @endif
-    @if ($lowongan_pekerjaan->tipeLoker->isNotEmpty())
-        <li>Tipe Loker: 
-            @foreach ($lowongan_pekerjaan->tipeLoker as $tipeLoker)
-                    {{ $tipeLoker->nama_tipe_lowongan }}
-             @endforeach
-        </li>
+<body class="pt-24 bg-white min-h-screen flex flex-col">
 
-    @endif
-    <p>Gaji: {{ $lowongan_pekerjaan->gaji }}</p>
-    <p>Tanggal Post: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->tanggal_post)->translatedFormat('d F Y') }}</p>
-    <p>Deskripsi: {{ $lowongan_pekerjaan->deskripsi }}</p>
-    <p>Kualifikasi: {{ $lowongan_pekerjaan->kualifikasi }}</p>
-    <p>Persyaratan: {{ $lowongan_pekerjaan->persyaratan }}</p>
-    <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" style="width: 200px; height:200px;" alt="Foto Loker">
-    @if ($lowongan_pekerjaan->tipePersyaratan->isNotEmpty())
-        <li>Berkas Persyaratan: 
-            @foreach ($lowongan_pekerjaan->tipePersyaratan as $tipePersyaratan)
-                {{ $tipePersyaratan->nama_berkas }}
-            @endforeach
-        </li>
-    @endif
-    <p>Link submit: <a href=" {{ $lowongan_pekerjaan->persyaratan }}"> {{ $lowongan_pekerjaan->persyaratan }}</a></p>
-    <p>Batas Submit: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->batas_submit)->translatedFormat('d F Y') }}</p>
+    {{-- Navigation --}}
+    @include('layouts.navigation')
 
-    <a href="{{ route('send-email', ['id' => $lowongan_pekerjaan->id]) }}">Send Email!</a>
+    <main>
+    <div class="py-12">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow space-y-8">
+
+            {{-- Header: Logo + Info Umum --}}
+            <div class="flex items-center gap-6">
+                <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" class="w-24 h-24 object-contain" alt="Logo Perusahaan">
+                <div>
+                    <h1 class="text-2xl font-bold">{{ $lowongan_pekerjaan->nama_pekerjaan }}</h1>
+                    <p class="text-gray-600">{{ $lowongan_pekerjaan->nama_perusahaan }}</p>
+                    <div class="text-sm text-gray-500">
+                        <p>Lokasi: {{ $lowongan_pekerjaan->domisiliPerusahaan->name }}</p>
+                        <p>Penempatan: {{ $lowongan_pekerjaan->domisiliPenempatan->name }}</p>
+                        <p>Gaji: Rp{{ number_format($lowongan_pekerjaan->gaji, 0, ',', '.') }}</p>
+                        <p>Diposting: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->tanggal_post)->diffForHumans() }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Tipe Loker & Jurusan --}}
+            @if ($lowongan_pekerjaan->tipeLoker->isNotEmpty())
+                <div>
+                    <p class="font-semibold">Tipe Pekerjaan:</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        @foreach ($lowongan_pekerjaan->tipeLoker as $tipe)
+                            <li>{{ $tipe->nama_tipe_lowongan }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if ($lowongan_pekerjaan->jurusan->isNotEmpty())
+                <div>
+                    <p class="font-semibold">Jurusan yang diterima:</p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        @foreach ($lowongan_pekerjaan->jurusan as $jurusan)
+                            <li>{{ $jurusan->nama_jurusan }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Deskripsi Pekerjaan --}}
+            <div>
+                <h3 class="text-lg font-semibold">Deskripsi Pekerjaan</h3>
+                <p class="text-gray-700 whitespace-pre-line">{{ $lowongan_pekerjaan->deskripsi }}</p>
+            </div>
+
+            {{-- Kualifikasi --}}
+            <div>
+                <h3 class="text-lg font-semibold">Kualifikasi</h3>
+                <p class="text-gray-700 whitespace-pre-line">{{ $lowongan_pekerjaan->kualifikasi }}</p>
+            </div>
+
+            {{-- Persyaratan --}}
+            <div>
+                <h3 class="text-lg font-semibold">Persyaratan</h3>
+                <p class="text-gray-700 whitespace-pre-line">{{ $lowongan_pekerjaan->persyaratan }}</p>
+            </div>
+
+            {{-- Berkas Tambahan --}}
+            @if ($lowongan_pekerjaan->tipePersyaratan->isNotEmpty())
+                <div>
+                    <h3 class="text-lg font-semibold">Berkas yang Harus Dikirim</h3>
+                    <ul class="list-disc list-inside text-gray-700">
+                        @foreach ($lowongan_pekerjaan->tipePersyaratan as $berkas)
+                            <li>{{ $berkas->nama_berkas }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Link Submit & Batas --}}
+            <div>
+                <p class="text-sm">
+                    Link Pengumpulan: 
+                    <a href="{{ $lowongan_pekerjaan->link_submit }}" class="text-blue-500 underline">
+                        {{ $lowongan_pekerjaan->link_submit }}
+                    </a>
+                </p>
+                <p class="text-sm text-gray-600">Batas submit: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->batas_submit)->translatedFormat('d F Y') }}</p>
+            </div>
+
+            {{-- Tombol --}}
+            <div class="flex gap-4">
+                <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Lamar</button>
+                <button class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100">Markah</button>
+            </div>
+
+        </div>
+    </div>
+    </main>
+
+    {{-- Footer --}}
+    @include('layouts.footer')
 </body>
 </html>

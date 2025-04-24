@@ -6,6 +6,7 @@ use App\Http\Controllers\LowonganKerjaController;
 use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipeLowonganController;
+use App\Models\LowonganKerja;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 
@@ -21,8 +22,9 @@ use App\Http\Controllers\EmailController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $lowongan = LowonganKerja::latest()->take(4)->get();
+    return view('welcome', compact('lowongan'));
+})->name('beranda');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
