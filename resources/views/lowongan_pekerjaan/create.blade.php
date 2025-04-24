@@ -4,70 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowongan Kerja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body style="margin-left: 2em;">
-    <h1>Tambah Lowongan Kerja</h1>
-    <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <label for="">Nama Pekerjaan</label>
-        <input type="text" name="nama_pekerjaan" required><br>
 
-        <label for="">Nama Perusahaan</label>
-        <input type="text" name="nama_perusahaan" required><br>
+<body class="pt-24 bg-white min-h-screen flex flex-col">
+    {{-- Navigation --}}
+    @include('layouts.navigation')
 
-        <label for="">Domisili Penempatan</label><br>
-        <select name="domisili_penempatan" id="">
-            @foreach ($regensi as $r)
-                <option value="{{ $r->name }}">{{ $r->name }}</option>
-            @endforeach
-        </select><br><br>
-        <label for="">Domisili Perusahaan</label><br>
-        <select name="domisili_perusahaan" id="">
-            @foreach ($regensi as $r)
-                <option value="{{ $r->id }}">{{ $r->name }}</option>
-            @endforeach
-        </select><br><br>
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
-        <label for="">Jurusan</label><br>
-        @foreach ($jurusan as $j)
-        <input type="checkbox" name="jurusan[]" value="{{ $j->id }}">{{ $j->nama_jurusan }}<br>
-        @endforeach
-        <br>
+            {{-- Nama Pekerjaan --}}
+            <div>
+                <label class="block font-semibold mb-1">Nama Pekerjaan</label>
+                <input type="text" name="nama_pekerjaan" required class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
 
-        <label for="">Tipe Loker</label><br>
-        @foreach ($tipe_lowongan as $t)
-        <input type="checkbox" name="tipe_lowongan[]" value="{{ $t->id }}">{{ $t->nama_tipe_lowongan }}<br>
-        @endforeach
-        <br>
+            {{-- Nama Perusahaan --}}
+            <div>
+                <label class="block font-semibold mb-1">Nama Perusahaan</label>
+                <input type="text" name="nama_perusahaan" required class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
 
-        <label for="">Gaji</label>
-        <input type="" name="gaji"><br>
+            {{-- Domisili Penempatan & Domisili Perusahaan --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-1">Domisili Penempatan</label>
+                    <select name="domisili_penempatan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($regensi as $r)
+                            <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Domisili Perusahaan</label>
+                    <select name="domisili_perusahaan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        @foreach ($regensi as $r)
+                            <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-        <label for="">Deskripsi</label>
-        <textarea name="deskripsi" id=""></textarea><br>
+            {{-- Jurusan --}}
+            <div>
+                <label class="block font-semibold mb-2">Jurusan</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    @foreach ($jurusan as $j)
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="jurusan[]" value="{{ $j->id }}" class="rounded">
+                            <span>{{ $j->nama_jurusan }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
 
-        <label for="">Kualifikasi</label>
-        <textarea name="kualifikasi" id=""></textarea><br>
+            {{-- Tipe Lowongan --}}
+            <div>
+                <label class="block font-semibold mb-2">Tipe Loker</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    @foreach ($tipe_lowongan as $t)
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="tipe_lowongan[]" value="{{ $t->id }}" class="rounded">
+                            <span>{{ $t->nama_tipe_lowongan }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
 
-        <label for="">Persyaratan</label>
-        <textarea name="persyaratan" id=""></textarea><br><br>
+            {{-- Gaji --}}
+            <div>
+                <label class="block font-semibold mb-1">Gaji</label>
+                <input type="number" name="gaji" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
 
-        <label for="">Foto Lembaran lowongan</label>
-        <input type="file" name="foto_loker"><br><br>
+            {{-- Deskripsi, Kualifikasi, Persyaratan --}}
+            <div>
+                <label class="block font-semibold mb-1">Deskripsi</label>
+                <textarea name="deskripsi" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+            </div>
 
-        <label for="">Persyaratan Berkas</label><br>
-        @foreach ($persyaratan_berkas as $pb)
-        <input type="checkbox" name="persyaratan_berkas[]" value="{{ $pb->id }}">{{ $pb->nama_berkas }}<br>
-        @endforeach
-        <br><br>
+            <div>
+                <label class="block font-semibold mb-1">Kualifikasi</label>
+                <textarea name="kualifikasi" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+            </div>
 
-        <label for="">Link Submit</label>
-        <input type="text" name="link_submit"><br>
+            <div>
+                <label class="block font-semibold mb-1">Persyaratan</label>
+                <textarea name="persyaratan" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+            </div>
 
-        <label for="">Batas Submit</label>
-        <input type="date" name="batas_submit"><br><br>
+            {{-- Foto Loker --}}
+            <div>
+                <label class="block font-semibold mb-1">Foto Lembaran Lowongan</label>
+                <input type="file" name="foto_loker" class="w-full">
+            </div>
 
-        <button type="submit">Simpan Lowongan Kerja</button>
-    </form>
+            {{-- Persyaratan Berkas --}}
+            <div>
+                <label class="block font-semibold mb-2">Persyaratan Berkas</label>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    @foreach ($persyaratan_berkas as $pb)
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="checkbox" name="persyaratan_berkas[]" value="{{ $pb->id }}" class="rounded">
+                            <span>{{ $pb->nama_berkas }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- Link & Batas Submit --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-1">Link Submit</label>
+                    <input type="text" name="link_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Batas Submit</label>
+                    <input type="date" name="batas_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+            </div>
+
+            {{-- Submit --}}
+            <div class="pt-4">
+                <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-500">Unggah Lowongan Pekerjaan</button>
+            </div>
+        </form>
+    </main>
+
+    {{-- Footer --}}
+    @include('layouts.footer')
 </body>
 </html>

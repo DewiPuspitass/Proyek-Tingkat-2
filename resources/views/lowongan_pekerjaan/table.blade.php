@@ -1,21 +1,33 @@
 @forelse ($lowongan_pekerjaan as $l)
-    <tr>
-        <td>{{ $l->nama_pekerjaan }}</td>
-        <td>{{ $l->nama_perusahaan }}</td>
-        <td>{{ $l->domisiliPenempatan->name ?? 'Tidak ada data' }}</td>
-        <td>{{ $l->tanggal_post }}</td>
-        <td>
-            <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}">Info</a>
-            <a href="{{ route('lowongan_pekerjaan.edit', $l->id) }}">Edit</a>
-            <form action="{{ route('lowongan_pekerjaan.destroy', $l->id) }}" method="POST" style="display: inline;">
+    <div class="flex items-center border rounded-lg p-4 shadow-sm bg-white">
+        {{-- Logo perusahaan (kalau ada) --}}
+        <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden mr-4 bg-gray-100 flex items-center justify-center">
+            @if($l->logo_perusahaan)
+                <img src="{{ asset('storage/logo/' . $l->logo_perusahaan) }}" alt="Logo" class="w-full h-full object-contain">
+            @else
+                <span class="text-gray-400 text-sm">Logo</span>
+            @endif
+        </div>
+
+        {{-- Info lowongan --}}
+        <div class="flex-1">
+            <h3 class="text-base font-semibold text-gray-800">{{ $l->nama_pekerjaan }}</h3>
+            <p class="text-sm text-gray-600">{{ $l->nama_perusahaan }}</p>
+            <p class="text-xs text-gray-500">{{ $l->domisiliPenempatan->name ?? '-' }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($l->tanggal_post)->diffForHumans() }}</p>
+        </div>
+
+        {{-- Aksi --}}
+        <div class="ml-4 flex flex-col items-end gap-1 text-sm">
+            <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>
+            <a href="{{ route('lowongan_pekerjaan.edit', $l->id) }}" class="text-yellow-600 hover:underline">Edit</a>
+            <form action="{{ route('lowongan_pekerjaan.destroy', $l->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" onclick="return confirm('Apakah anda ingin menghapus Lowongan ini?')">Hapus</button>
+                <button type="submit" class="text-red-600 hover:underline">Hapus</button>
             </form>
-        </td>
-    </tr>
+        </div>
+    </div>
 @empty
-    <tr>
-        <td colspan="5" style="text-align: center;">Tidak ada data</td>
-    </tr>
+    <div class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</div>
 @endforelse
