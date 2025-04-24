@@ -9,6 +9,7 @@
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
 
+
     <title>Lowongan Kerja</title>
 </head>
 <body class="bg-gray-50 p-8">
