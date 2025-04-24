@@ -114,13 +114,13 @@ $(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                if ("{{ session('success') }}") {
-                    Swal.fire({
-                        title: "Berhasil disimpan!",
-                        text: "Lowongan berhasil disimpan!",
-                        icon: "success"
-                    });
-                }
+                    if ("{{ session('success') }}") {
+                        Swal.fire({
+                            title: "Berhasil disimpan!",
+                            text: "Lowongan berhasil disimpan!",
+                            icon: "success"
+                        });
+                    }
                 form.submit();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithTailwindButtons.fire({
