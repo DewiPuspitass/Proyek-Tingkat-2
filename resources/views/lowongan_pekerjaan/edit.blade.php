@@ -131,6 +131,8 @@
             <!-- Foto Loker -->
             <div class="mb-4 field-container">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan</label>
+                <!-- Tambahkan ini di bagian Foto Loker -->
+                <input type="hidden" name="foto_lama" value="{{ $lowongan_pekerjaan->foto_loker }}">
                 <input type="file" name="foto_loker"
                        class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @if (!empty($lowongan_pekerjaan->foto_loker))

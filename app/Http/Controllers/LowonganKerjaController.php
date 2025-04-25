@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastEmail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB; // Tambahkan kalau belum ada
+
 
 
 class LowonganKerjaController extends Controller
@@ -21,28 +24,39 @@ class LowonganKerjaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $search = $request->input('search');
-
-        $lowongan_pekerjaan = LowonganKerja::with(['domisiliPenempatan', 'jurusan'])
-            ->when($search, function ($query) use ($search) {
-                return $query->where('nama_pekerjaan', 'like', "%{$search}%")
-                            ->orWhere('nama_perusahaan', 'like', "%{$search}%")
-                            ->orWhereHas('domisiliPenempatan', function ($q) use ($search) {
-                                $q->where('name', 'like', "%{$search}%");
-                            })
-                            ->orWhereHas('jurusan', function ($q) use ($search) {
-                                $q->where('nama_jurusan', 'like', "%{$search}%");
-                            });
-            })
-            ->paginate(10);
-
-        if ($request->ajax()) {
-            return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
-        }
-
-        return view('lowongan_pekerjaan.index', compact('lowongan_pekerjaan', 'search'));
+{
+    $search = $request->input('search');
+    if ($request->has('filter') && $request->filter == 'aktif') {
+        $query->where('status', 'Aktif');
     }
+
+    // Update otomatis status Nonaktif jika batas submit lewat hari ini
+    DB::table('lowongan_kerja')
+        ->whereDate('batas_submit', '<', Carbon::today())
+        ->where('status', '!=', 'Nonaktif')
+        ->update(['status' => 'Nonaktif']);
+
+    $lowongan_pekerjaan = LowonganKerja::with(['domisiliPenempatan', 'jurusan'])
+        ->where('status', 'Aktif')
+        ->when($search, function ($query) use ($search) {
+            return $query->where('nama_pekerjaan', 'like', "%{$search}%")
+                ->orWhere('nama_perusahaan', 'like', "%{$search}%")
+                ->orWhereHas('domisiliPenempatan', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('jurusan', function ($q) use ($search) {
+                    $q->where('nama_jurusan', 'like', "%{$search}%");
+                });
+        })
+        ->paginate(21);
+
+    if ($request->ajax()) {
+        return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
+    }
+
+    return view('lowongan_pekerjaan.index', compact('lowongan_pekerjaan', 'search'));
+}
+
 
 
     /**
@@ -192,9 +206,18 @@ class LowonganKerjaController extends Controller
      */
     public function show(LowonganKerja $lowongan_pekerjaan)
     {
+        // Pastikan statusnya Aktif
+        if (strtolower($lowongan_pekerjaan->status) !== 'aktif') {
+            return redirect()->route('lowongan_pekerjaan.index')
+                             ->with('error', 'Lowongan tidak tersedia atau sudah ditutup.');
+        }
+
+        // Load relasi-relasi yang dibutuhkan
         $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);
+
         return view('lowongan_pekerjaan.show', compact('lowongan_pekerjaan'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -234,7 +257,7 @@ class LowonganKerjaController extends Controller
             'link_submit' => 'required|string|max:255',
             'batas_submit' => 'required|date',
         ],[
-            [
+
                 'nama_pekerjaan.required' => 'Nama pekerjaan wajib diisi.',
                 'nama_pekerjaan.string' => 'Nama pekerjaan harus berupa teks.',
                 'nama_pekerjaan.max' => 'Nama pekerjaan maksimal 255 karakter.',
@@ -286,8 +309,9 @@ class LowonganKerjaController extends Controller
 
                 'batas_submit.required' => 'Batas submit wajib diisi.',
                 'batas_submit.date' => 'Format batas submit tidak valid.',
-            ]
+
         ]);
+
 
         $lowongan = LowonganKerja::findOrFail($id);
 

@@ -32,7 +32,7 @@
                             <form action="{{ route('jurusan.destroy', $j->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="confirmDelete(event, {{ $j->id }})">Hapus</button>
+                                <button type="submit" onclick="confirmDelete(event, {{ $j->id }},'')">Hapus</button>
                             </form>
                         </td>
                     </tr>
