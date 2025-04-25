@@ -30,6 +30,19 @@
                         <x-nav-link :href="route('lowongan_pekerjaan.create')" :active="request()->routeIs('lowongan_pekerjaan.create')">
                             {{ __('Unggah Lowongan') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('tipe_lowongan.index')" :active="request()->routeIs('tipe_lowongan.index')">
+                            {{ __('Tipe Lowongan') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('jurusan.index')" :active="request()->routeIs('jurusan.index')">
+                            {{ __('Manage Jurusan') }}
+                        </x-nav-link>
+                    @endhasrole
+
+                    {{-- SISWA --}}
+                    @hasrole('siswa')
+                        <x-nav-link :href="route('bookmarks.index')" :active="request()->routeIs('bookmarks.index')">
+                            {{ __('Markah') }}
+                        </x-nav-link>
                     @endhasrole
 
                     {{-- SISWA --}}
@@ -99,11 +112,11 @@
                 <x-responsive-nav-link :href="route('lowongan_pekerjaan.create')">
                     {{ __('Unggah Lowongan') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('jurusan.index')">
-                    {{ __('Manajemen Jurusan') }}
-                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('tipe_lowongan.index')">
                     {{ __('Tipe Lowongan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('jurusan.index')">
+                    {{ __('Manajemen Jurusan') }}
                 </x-responsive-nav-link>
             @endhasrole
 

@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Bookmark
+    Route::get('/halaman-bookmark', [BookmarkController::class, 'index'])->name('bookmarks.index');;
     Route::post('/bookmarks/{lowonganId}', [BookmarkController::class, 'addBookmark'])->name('bookmarks.add');
     Route::delete('/bookmarks/{lowongan}', [BookmarkController::class, 'removeBookmark']);
 });
