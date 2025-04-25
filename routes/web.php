@@ -6,7 +6,9 @@ use App\Http\Controllers\LowonganKerjaController;
 use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipeLowonganController;
+use App\Models\LowonganKerja;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $lowongan = LowonganKerja::latest()->take(4)->get();
+    return view('welcome', compact('lowongan'));
+})->name('beranda');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -63,3 +66,11 @@ Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
 // FITUR FILTER
 Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
 Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
+
+
+// Email broadcast
+Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
+
+Route::get('tampilan-email', function(){
+    return view('emails.lowonganEmail');
+});

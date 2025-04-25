@@ -10,6 +10,9 @@ use App\Models\Regency;
 use App\Models\TipeLowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BroadcastEmail;
 
 
 class LowonganKerjaController extends Controller
@@ -135,34 +138,54 @@ class LowonganKerjaController extends Controller
     );
 
 
-        $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
+    $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
 
-        $TambahLowongan = LowonganKerja::create([
-            'nama_pekerjaan' => $request->nama_pekerjaan,
-            'nama_perusahaan' => $request->nama_perusahaan,
-            'domisili_perusahaan' => $request->domisili_perusahaan,
-            'domisili_penempatan' => $request->domisili_penempatan,
-            'gaji' => $request->gaji,
-            'tanggal_post' => now()->toDateString(),
-            'deskripsi' => $request->deskripsi,
-            'kualifikasi' => $request->kualifikasi,
-            'persyaratan' => $request->persyaratan,
-            'foto_loker' =>  $imagePath,
-            'link_submit' => $request->link_submit,
-            'batas_submit' => $request->batas_submit,
-            'status' => 'Aktif',
+    $lowongan = LowonganKerja::create([
+        'nama_pekerjaan' => $request->nama_pekerjaan,
+        'nama_perusahaan' => $request->nama_perusahaan,
+        'domisili_perusahaan' => $request->domisili_perusahaan,
+        'domisili_penempatan' => $request->domisili_penempatan,
+        'gaji' => $request->gaji,
+        'tanggal_post' => now()->toDateString(),
+        'deskripsi' => $request->deskripsi,
+        'kualifikasi' => $request->kualifikasi,
+        'persyaratan' => $request->persyaratan,
+        'foto_loker' =>  $imagePath,
+        'link_submit' => $request->link_submit,
+        'batas_submit' => $request->batas_submit,
+        'status' => 'Aktif',
+    ]);
 
-        ]);
+    $lowongan->jurusan()->attach($request->jurusan);
+    $lowongan->tipeLoker()->attach($request->tipe_lowongan);
+    $lowongan->tipePersyaratan()->attach($request->persyaratan_berkas);
 
+    $lowongan->load(['jurusan.users', 'tipeLoker']);
 
-        $TambahLowongan->jurusan()->attach($request->jurusan);
-        $TambahLowongan->tipeLoker()->attach($request->tipe_lowongan);
-        $TambahLowongan->tipePersyaratan()->attach($request->persyaratan_berkas);
+    $sentUserIds = [];
 
+    foreach ($lowongan->jurusan as $jurusan) {
+        foreach ($jurusan->users as $user) {
+            if ($user->email && !in_array($user->id, $sentUserIds)) {
+                Mail::to($user->email)->send(new BroadcastEmail(
+                    name: $user->name,
+                    nama_perusahaan: $lowongan->nama_perusahaan,
+                    nama_pekerjaan: $lowongan->nama_pekerjaan,
+                    domisili_penempatan: $lowongan->domisiliPenempatan->name,
+                    foto_loker: $lowongan->foto_loker,
+                    tipe_lowongan: $lowongan->tipeLoker,
+                    link: $lowongan->link_submit,
+                    tanggal: $lowongan->batas_submit
+                ));
 
-        // return view('lowongan_pekerjaan.create')->with('success', 'Berhasil tambah lowongan kerja');
-        return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan!');
+                $sentUserIds[] = $user->id;
+            }
+        }
     }
+
+    return redirect()->route('lowongan_pekerjaan.index')->with('success', 'Lowongan berhasil disimpan!');
+}
+
 
     /**
      * Display the specified resource.
