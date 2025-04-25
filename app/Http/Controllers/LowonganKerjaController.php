@@ -303,6 +303,30 @@ class LowonganKerjaController extends Controller
             'status' => 'Aktif',
         ]);
 
+        $lowongan->load(['jurusan.users', 'tipeLoker']);
+
+        $sentUserIds = [];
+
+        foreach ($lowongan->jurusan as $jurusan) {
+            foreach ($jurusan->users as $user) {
+                if ($user->email && !in_array($user->id, $sentUserIds)) {
+                    Mail::to($user->email)->send(new BroadcastEmail(
+                        name: $user->name,
+                        nama_perusahaan: $lowongan->nama_perusahaan,
+                        nama_pekerjaan: $lowongan->nama_pekerjaan,
+                        domisili_penempatan: $lowongan->domisiliPenempatan->name,
+                        foto_loker: $lowongan->foto_loker,
+                        tipe_lowongan: $lowongan->tipeLoker,
+                        link: $lowongan->link_submit,
+                        tanggal: $lowongan->batas_submit,
+                        type: 'revisi',
+                    ));
+
+                    $sentUserIds[] = $user->id;
+                }
+            }
+        }
+
         $lowongan->jurusan()->sync($request->jurusan);
         $lowongan->tipeLoker()->sync($request->tipe_lowongan);
         $lowongan->tipePersyaratan()->sync($request->persyaratan_berkas);

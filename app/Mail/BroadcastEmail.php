@@ -22,11 +22,13 @@ class BroadcastEmail extends Mailable
     public $tipe_lowongan;
     public $link;
     public $tanggal;
+    public $type;
+    public $subject;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($name, $nama_perusahaan, $nama_pekerjaan, $domisili_penempatan, $foto_loker, $tipe_lowongan, $link, $tanggal)
+    public function __construct($name, $nama_perusahaan, $nama_pekerjaan, $domisili_penempatan, $foto_loker, $tipe_lowongan, $link, $tanggal, $type = 'baru')
     {
         $this->name = $name;
         $this->nama_perusahaan = $nama_perusahaan;
@@ -36,6 +38,9 @@ class BroadcastEmail extends Mailable
         $this->tipe_lowongan = $tipe_lowongan;
         $this->link = $link;
         $this->tanggal = $tanggal;
+        $this->type = $type;
+
+        $this->subject = $type === 'revisi' ? '[Revisi] Lowongan Pekerjaan' : 'Lowongan Pekerjaan Baru Nih Buat Kamu!';
     }
 
     /**
@@ -58,7 +63,17 @@ class BroadcastEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.lowonganEmail',
+            view: $this->type === 'revisi' ? 'emails.revisilowonganEmail' : 'emails.lowonganEmail',
+            with: [
+                'name' => $this->name,
+                'nama_perusahaan' => $this->nama_perusahaan,
+                'nama_pekerjaan' => $this->nama_pekerjaan,
+                'domisili_penempatan' => $this->domisili_penempatan,
+                'foto_loker' => $this->foto_loker,
+                'tipe_lowongan' => $this->tipe_lowongan,
+                'link' => $this->link,
+                'tanggal' => $this->tanggal
+            ],
         );
     }
 
