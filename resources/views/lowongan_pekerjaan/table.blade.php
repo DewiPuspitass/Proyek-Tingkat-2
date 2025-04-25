@@ -22,12 +22,14 @@
         {{-- Aksi --}}
         <div class="ml-4 flex flex-col items-end gap-1 text-sm">
             <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>
+            @hasrole('admin')
             <a href="{{ route('lowongan_pekerjaan.edit', $l->id) }}" class="text-yellow-600 hover:underline">Edit</a>
             <form action="{{ route('lowongan_pekerjaan.destroy', $l->id) }}" method="POST" onsubmit="return confirm('Yakin mau hapus?')">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="text-red-600 hover:underline">Hapus</button>
             </form>
+            @endhasrole
         </div>
     </div>
 @empty

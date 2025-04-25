@@ -48,9 +48,9 @@ class User extends Authenticatable
     ];
 
     public function jurusan()
-    {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
-    }
+{
+    return $this->belongsTo(Jurusan::class, 'jurusan_id');
+}
 
     public function bookmarks()
     {
