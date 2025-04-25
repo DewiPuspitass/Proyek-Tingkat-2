@@ -33,15 +33,6 @@
                     @endhasrole
 
                     {{-- SISWA --}}
-                    @hasrole('siswa')
-                        <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-                            {{ __('Profil Saya') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('lamaran.index')" :active="request()->routeIs('lamaran.*')">
-                            {{ __('Lamaran Saya') }}
-                        </x-nav-link>
-                    @endhasrole
-
                     <!-- Profile dropdown -->
                     <div x-data="{ openProfile: false }" class="relative">
                         <button @click="openProfile = !openProfile" class="flex items-center text-gray-700 hover:text-orange-600 font-semibold focus:outline-none">
@@ -118,10 +109,10 @@
 
             @hasrole('siswa')
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profil Saya') }}
+                    {{ __('Profil') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('lamaran.index')">
-                    {{ __('Lamaran Saya') }}
+                <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')">
+                    {{ __('lowongan_pekerjaan') }}
                 </x-responsive-nav-link>
             @endhasrole
 

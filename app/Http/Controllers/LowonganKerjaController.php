@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use App\Models\LowonganKerja;
-use App\Models\LowonganJurusan;
 use App\Models\PersyaratanBerkas;
 use App\Models\Regency;
 use App\Models\TipeLowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastEmail;
 

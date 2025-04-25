@@ -9,6 +9,7 @@ use App\Http\Controllers\TipeLowonganController;
 use App\Models\LowonganKerja;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\BookmarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,10 @@ Route::middleware('auth')->group(function () {
     Route::get('tampilan-email', function(){
         return view('emails.lowonganEmail');
     });
+
+    // Bookmark
+    Route::post('/bookmarks/{lowonganId}', [BookmarkController::class, 'addBookmark'])->name('bookmarks.add');
+    Route::delete('/bookmarks/{lowongan}', [BookmarkController::class, 'removeBookmark']);
 });
 
 require __DIR__.'/auth.php';

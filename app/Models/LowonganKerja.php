@@ -16,6 +16,11 @@ class LowonganKerja extends Model
         return $this->belongsToMany(Jurusan::class, 'lowongan_jurusan', 'lowongan_id', 'jurusan_id');
     }
 
+    public function bookmarkedBy()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    }
+
     public function tipeLoker(){
         return $this->belongsToMany(TipeLowongan::class, 'lowongan_tipe_loker', 'lowongan_id', 'tipe_id');
     }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Show Lowongan Pekerjaan</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="pt-24 bg-white min-h-screen flex flex-col">
 
@@ -14,6 +15,20 @@
     <main>
     <div class="py-12">
         <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow space-y-8">
+                <!-- Tampilkan flash message jika ada -->
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if(session('info'))
+            <div class="alert alert-info">{{ session('info') }}</div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+
 
             {{-- Header: Logo + Info Umum --}}
             <div class="flex items-center gap-6">
@@ -91,9 +106,14 @@
             {{-- Tombol --}}
             <div class="flex gap-4">
                 <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Lamar</button>
-                <button class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100">Markah</button>
+                <button 
+                    class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
+                    id="bookmark-button" 
+                    data-lowongan-id="{{ $lowongan_pekerjaan->id }}"
+                    data-bookmarked="{{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'true' : 'false' }}">
+                    {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}
+                </button>
             </div>
-
         </div>
     </div>
     </main>
@@ -123,7 +143,41 @@
                 waButton.style.bottom = '20px';
             }
         });
-    </script>
 
+        $(document).ready(function () {
+            $('#bookmark-button').click(function () {
+                const button = $(this);
+                const lowonganId = button.data('lowongan-id');
+                const isBookmarked = button.data('bookmarked') === true || button.data('bookmarked') === 'true';
+
+                const method = isBookmarked ? 'DELETE' : 'POST';
+                const url = '/bookmarks/' + lowonganId;
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Toggle text & data-bookmarked
+                            if (isBookmarked) {
+                                button.text('Save to Bookmark').data('bookmarked', false);
+                            } else {
+                                button.text('Bookmark Saved').data('bookmarked', true);
+                            }
+                            alert(response.message);
+                        } else {
+                            alert(response.message || 'Terjadi kesalahan.');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Gagal mengupdate bookmark.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
