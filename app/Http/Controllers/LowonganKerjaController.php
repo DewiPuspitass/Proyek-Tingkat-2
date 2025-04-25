@@ -75,7 +75,6 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-            'persyaratan' => 'required|string|max:255',
             'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
@@ -115,10 +114,6 @@ class LowonganKerjaController extends Controller
             'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
             'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
 
-            'persyaratan.required' => 'Persyaratan wajib diisi.',
-            'persyaratan.string' => 'Persyaratan harus berupa teks.',
-            'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
-
             'foto_loker.image' => 'File harus berupa gambar.',
             'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
             'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
@@ -149,7 +144,6 @@ class LowonganKerjaController extends Controller
         'tanggal_post' => now()->toDateString(),
         'deskripsi' => $request->deskripsi,
         'kualifikasi' => $request->kualifikasi,
-        'persyaratan' => $request->persyaratan,
         'foto_loker' =>  $imagePath,
         'link_submit' => $request->link_submit,
         'batas_submit' => $request->batas_submit,
@@ -227,7 +221,6 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-            'persyaratan' => 'required|string|max:255',
             'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
@@ -268,10 +261,6 @@ class LowonganKerjaController extends Controller
                 'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
                 'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
 
-                'persyaratan.required' => 'Persyaratan wajib diisi.',
-                'persyaratan.string' => 'Persyaratan harus berupa teks.',
-                'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
-
                 'foto_loker.image' => 'File harus berupa gambar.',
                 'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
                 'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
@@ -310,7 +299,6 @@ class LowonganKerjaController extends Controller
             'tanggal_post' => now()->toDateString(),
             'deskripsi' => $request->deskripsi,
             'kualifikasi' => $request->kualifikasi,
-            'persyaratan' => $request->persyaratan,
             'foto_loker' => $imagePath,
             'link_submit' => $request->link_submit,
             'batas_submit' => $request->batas_submit,

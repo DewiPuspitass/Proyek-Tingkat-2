@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('tanggal_post');
             $table->text("deskripsi");
             $table->text("kualifikasi");
-            $table->text("persyaratan");
             $table->string('foto_loker');
             $table->text("link_submit");
             $table->date("batas_submit");

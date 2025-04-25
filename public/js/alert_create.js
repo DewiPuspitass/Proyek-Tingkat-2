@@ -58,10 +58,6 @@ $(function () {
             highlightInvalidField($('textarea[name="kualifikasi"]'), 'Kualifikasi wajib diisi');
             isValid = false;
         }
-        if (!$('textarea[name="persyaratan"]').val()) {
-            highlightInvalidField($('textarea[name="persyaratan"]'), 'Persyaratan wajib diisi');
-            isValid = false;
-        }
         if (!$('input[name="foto_loker"]').val()) {
             highlightInvalidField($('input[name="foto_loker"]'), 'Foto wajib diunggah');
             isValid = false;
@@ -121,7 +117,7 @@ $(function () {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "{{ route('lowongan_pekerjaan.index') }}";
+                        form.submit();
                     }
                 });
 

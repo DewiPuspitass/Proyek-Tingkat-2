@@ -6,6 +6,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
 
@@ -39,6 +41,7 @@
                 <div>
                     <label class="block font-semibold mb-1">Domisili Penempatan</label>
                     <select name="domisili_penempatan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        <option value="">-- Pilih --</option>
                         @foreach ($regensi as $r)
                             <option value="{{ $r->id }}">{{ $r->name }}</option>
                         @endforeach
@@ -47,6 +50,7 @@
                 <div>
                     <label class="block font-semibold mb-1">Domisili Perusahaan</label>
                     <select name="domisili_perusahaan" class="w-full border border-gray-300 rounded px-3 py-2">
+                        <option value="">-- Pilih --</option>
                         @foreach ($regensi as $r)
                             <option value="{{ $r->id }}">{{ $r->name }}</option>
                         @endforeach
@@ -97,11 +101,6 @@
                 <textarea name="kualifikasi" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
             </div>
 
-            <div>
-                <label class="block font-semibold mb-1">Persyaratan</label>
-                <textarea name="persyaratan" rows="4" class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
-            </div>
-
             {{-- Foto Loker --}}
             <div>
                 <label class="block font-semibold mb-1">Foto Lembaran Lowongan</label>
@@ -147,5 +146,13 @@
 
     {{-- Footer --}}
     @include('layouts.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new TomSelect('select[name="domisili_penempatan"]');
+            new TomSelect('select[name="domisili_perusahaan"]');
+        });
+    </script>
 </body>
 </html>

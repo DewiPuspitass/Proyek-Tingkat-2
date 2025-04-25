@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Lowongan Kerja</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -40,7 +42,8 @@
             <!-- Domisili Penempatan -->
             <div class="mb-4 field-container">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Penempatan <span class="text-red-500">*</span></label>
-                <select name="domisili_penempatan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="domisili_penempatan" name="domisili_penempatan" class="tom-select w-full px-3 py-2 border rounded shadow text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">-- Pilih --</option>
                     @foreach ($regensi as $r)
                         <option value="{{ $r->id }}" {{ old('domisili_penempatan', $lowongan_pekerjaan->domisili_penempatan) == $r->id ? 'selected' : '' }}>
                             {{ $r->name }}
@@ -53,7 +56,8 @@
             <!-- Domisili Perusahaan -->
             <div class="mb-4 field-container">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Perusahaan <span class="text-red-500">*</span></label>
-                <select name="domisili_perusahaan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <select id="domisili_perusahaan" name="domisili_perusahaan" class="tom-select w-full px-3 py-2 border rounded shadow text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">-- Pilih --</option>
                     @foreach ($regensi as $r)
                         <option value="{{ $r->id }}" {{ old('domisili_perusahaan', $lowongan_pekerjaan->domisili_perusahaan) == $r->id ? 'selected' : '' }}>
                             {{ $r->name }}
@@ -121,13 +125,6 @@
                 @error('kualifikasi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
 
-            <!-- Persyaratan -->
-            <div class="mb-4 field-container">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan <span class="text-red-500">*</span></label>
-                <textarea name="persyaratan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('persyaratan', $lowongan_pekerjaan->persyaratan) }}</textarea>
-                @error('persyaratan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-            </div>
-
             <!-- Foto Loker -->
             <div class="mb-4 field-container">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan</label>
@@ -184,6 +181,13 @@
             </div>
         </form>
     </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new TomSelect('#domisili_penempatan');
+        new TomSelect('#domisili_perusahaan');
+    });
+</script>
 </body>
 </html>
 

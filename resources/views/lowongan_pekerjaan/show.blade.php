@@ -65,12 +65,6 @@
                 <p class="text-gray-700 whitespace-pre-line">{{ $lowongan_pekerjaan->kualifikasi }}</p>
             </div>
 
-            {{-- Persyaratan --}}
-            <div>
-                <h3 class="text-lg font-semibold">Persyaratan</h3>
-                <p class="text-gray-700 whitespace-pre-line">{{ $lowongan_pekerjaan->persyaratan }}</p>
-            </div>
-
             {{-- Berkas Tambahan --}}
             @if ($lowongan_pekerjaan->tipePersyaratan->isNotEmpty())
                 <div>
