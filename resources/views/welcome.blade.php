@@ -31,8 +31,21 @@
     </div>
 </section>
 
-<section class="py-12 px-6 bg-white text-gray-800">
-    <h2 class="text-2xl font-semibold text-orange-600 mb-6">Lowongan Pekerjaan yang Tersedia</h2>
+<section class="py-8 px-6 bg-white text-gray-800">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-extrabold text-orange-600">
+            Lowongan Pekerjaan <span class="text-black">yang Tersedia</span>
+        </h1>
+        @if(auth()->check())
+            <a href="{{ route('lowongan_pekerjaan.index') }}" class="text-base text-orange-600 hover:translate-x-1 transition-transform px-8">
+                Lihat lebih banyak →
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                Login untuk Lihat Semua Lowongan
+            </a>
+        @endif
+    </div>
 
     <div class="grid md:grid-cols-2 gap-6">
         @forelse ($lowongan as $loker)
@@ -45,35 +58,30 @@
     </div>
 </section>
 
-<!-- Space antara div lowongan dan tombol -->
-<div class="mt-8 text-center">
-    @if(auth()->check())
-        <a href="{{ route('lowongan_pekerjaan.index') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-        Lihat Semua Lowongan
-        </a>
-    @else
-        <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-        Login untuk Lihat Semua Lowongan
-        </a>
-@endif
-    </div>
-</section>
-
 <section class="py-8 px-6 bg-white">
-    <h2 class="text-lg font-semibold mb-4">Bidang yang Banyak Dicari</h2>
-    <div class="flex flex-wrap gap-3 items-center">
-        @foreach ($jurusan as $j)
-            <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">{{ $j->nama_jurusan }}</span>        
+    <h1 class="text-3xl font-extrabold mb-4 text-center mb-8">
+        Sesuai dengan <span class="text-orange-600">Bidang</span> yang Kamu Cari
+    </h1>
+
+    <div class="flex flex-col items-center gap-4">
+        @foreach ($jurusan->chunk(3) as $row)
+            <div class="flex justify-center gap-3">
+                @foreach ($row as $j)
+                    <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">
+                        {{ $j->nama_jurusan }}
+                    </span>
+                @endforeach
+            </div>
         @endforeach
     </div>
 </section>
 
-<section class="py-8 px-6 bg-white">
-    <h2 class="text-lg font-semibold mb-4">Mitra Perusahaan</h2>
+<section class="pt-8 px-6 bg-white">
+    <h2 class="text-3xl font-extrabold mb-4 text-center mb-6">Perusahaan yang Bekerja Sama dengan SMKN 2 Cimahi</h2>
     <div class="flex justify-around items-center gap-4">
-        <img src="{{ asset('atejaLogo.png') }}" class="h-10">
-        <img src="{{ asset('densoLogo.png') }}" class="h-10">
-        <img src="{{ asset('medionLogo.png') }}" class="h-10">
+        <img src="{{ asset('atejaLogo.png') }}" class="h-8">
+        <img src="{{ asset('densoLogo.png') }}" class="h-20">
+        <img src="{{ asset('medionLogo.png') }}" class="h-8">
     </div>
 </section>
 
