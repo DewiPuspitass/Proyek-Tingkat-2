@@ -7,6 +7,7 @@ use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipeLowonganController;
 use App\Models\LowonganKerja;
+use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\BookmarkController;
@@ -24,7 +25,8 @@ use App\Http\Controllers\BookmarkController;
 
 Route::get('/', function () {
     $lowongan = LowonganKerja::latest()->take(4)->get();
-    return view('welcome', compact('lowongan'));
+    $jurusan = Jurusan::all();
+    return view('welcome', compact('lowongan', 'jurusan'));
 })->name('beranda');
 
 Route::get('/dashboard', function () {

@@ -61,11 +61,10 @@
 
 <section class="py-8 px-6 bg-white">
     <h2 class="text-lg font-semibold mb-4">Bidang yang Banyak Dicari</h2>
-    <div class="flex flex-wrap gap-3">
-        <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">Animasi</span>
-        <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">RPL</span>
-        <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">DKV</span>
-        <!-- Tambah lainnya -->
+    <div class="flex flex-wrap gap-3 items-center">
+        @foreach ($jurusan as $j)
+            <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">{{ $j->nama_jurusan }}</span>        
+        @endforeach
     </div>
 </section>
 
@@ -77,6 +76,36 @@
         <img src="{{ asset('medionLogo.png') }}" class="h-10">
     </div>
 </section>
+
+<!-- <section class="py-8 px-6 bg-white">
+    <h2 class="text-lg font-semibold mb-6">Bidang yang disediakan</h2>
+    <div class="flex justify-around items-start gap-4">
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('animasi.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">ANIMASI</p>
+        </div>
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('multimedia.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">MULTIMEDIA</p>
+        </div>
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('rpl.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">REKAYASA PERANGKAT LUNAK</p>
+        </div>
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('tekdus.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">TEKNIK KIMIA INDUSTRI</p>
+        </div>
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('meka.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">TEKNIK MEKATRONIKA</p>
+        </div>
+        <div class="flex flex-col items-center text-center w-90">
+            <img src="{{ asset('mesin.png') }}" class="h-20">
+            <p class="text-sm font-semibold mt-5">TEKNIK PERMESINAN</p>
+        </div>
+    </div>
+</section> -->
 
 @include('layouts.footer')
 
