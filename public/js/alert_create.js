@@ -58,10 +58,6 @@ $(function () {
             highlightInvalidField($('textarea[name="kualifikasi"]'), 'Kualifikasi wajib diisi');
             isValid = false;
         }
-        if (!$('textarea[name="persyaratan"]').val()) {
-            highlightInvalidField($('textarea[name="persyaratan"]'), 'Persyaratan wajib diisi');
-            isValid = false;
-        }
 
       // Hanya validasi foto jika ini form create
 if (window.location.pathname.includes('create')) {

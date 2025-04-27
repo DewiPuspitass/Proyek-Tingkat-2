@@ -77,13 +77,15 @@
 </section>
 
 <section class="pt-8 px-6 bg-white">
-    <h2 class="text-3xl font-extrabold mb-4 text-center mb-6">Perusahaan yang Bekerja Sama dengan SMKN 2 Cimahi</h2>
+    <h2 class="text-3xl font-extrabold mb-4 text-center">Perusahaan yang Bekerja Sama dengan SMKN 2 Cimahi</h2>
+
     <div class="flex justify-around items-center gap-4">
-        <img src="{{ asset('atejaLogo.png') }}" class="h-8">
-        <img src="{{ asset('densoLogo.png') }}" class="h-20">
-        <img src="{{ asset('medionLogo.png') }}" class="h-8">
+        <img src="{{ asset('atejaLogo.png') }}" class="h-10">
+        <img src="{{ asset('densoLogo.png') }}" class="h-48"> <!-- DENSO lebih GEDE lagi -->
+        <img src="{{ asset('medionLogo.png') }}" class="h-10">
     </div>
 </section>
+
 
 <!-- <section class="py-8 px-6 bg-white">
     <h2 class="text-lg font-semibold mb-6">Bidang yang disediakan</h2>

@@ -121,13 +121,6 @@
             @error('kualifikasi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
         </div>
 
-        <!-- Persyaratan -->
-        <div class="mb-4 field-container">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan <span class="text-red-500">*</span></label>
-            <textarea name="persyaratan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('persyaratan') }}</textarea>
-            @error('persyaratan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-        </div>
-
         <!-- Foto Loker -->
         <div class="mb-4 field-container">
             <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan <span class="text-red-500">*</span></label>
