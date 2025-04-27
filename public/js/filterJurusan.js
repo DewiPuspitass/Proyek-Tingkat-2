@@ -69,7 +69,7 @@ $(document).ready(function() {
                             <div class="flex-1">
                                 <h3 class="text-base font-semibold text-gray-800">${job.nama_pekerjaan}</h3>
                                 <p class="text-sm text-gray-600">${job.nama_perusahaan}</p>
-                                <p class="text-xs text-gray-500">${job.domisili_penempatan || '-'}</p>
+                                <p class="text-xs text-gray-500">${job.domisili_penempatan}</p>
                                 <p class="text-xs text-gray-400 mt-1">${formattedDate}</p>
                                 <p class="text-xs font-semibold mt-1">
                                     Status:
