@@ -47,9 +47,10 @@
                     <!-- Tombol Lamar & Bookmark -->
                     @hasrole('siswa')
                         <div class="flex items-center gap-2 mt-6">
-                                <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
-                                    Lamar
-                                </button>
+                        <a href="{{ $lowongan_pekerjaan->link_submit }}" target="_blank" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 text-center">
+                            Lamar
+                        </a>
+
                                 <button 
                                     class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
                                     id="bookmark-button" 
