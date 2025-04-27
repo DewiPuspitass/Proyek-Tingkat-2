@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookmark;
 use App\Models\LowonganKerja;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -86,6 +87,12 @@ class BookmarkController extends Controller
         }
         
         return response()->json(['message' => 'Lowongan berhasil dihapus dari bookmark']);
+    }
+
+    public function index()
+    {
+        $bookmarks = Bookmark::with(['user', 'lowongan_kerja'])->paginate(9);
+        return view('bookmarks.index', compact('bookmarks'));
     }
 
 }
