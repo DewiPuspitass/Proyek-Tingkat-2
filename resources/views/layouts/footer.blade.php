@@ -4,13 +4,14 @@
         <!-- Kolom Kiri (Kosong) -->
         <div class="flex-1 hidden md:block">
             <!-- Kosong untuk sekarang -->
+             <h3 class="text-2xl"><b>Kontak</b></h3>
+            <p class="font-semibold text-base">SMKN 2 Cimahi & Diversity in Unity Team</p>
+            <p>Email: <a href="mailto:smkn2cimahi@gmail.com" class="text-orange-500 hover:underline">smkn2cimahi@gmail.com</a></p>
+            <p class="text-gray-400">&copy; 2025 All rights reserved.</p>
         </div>
 
         <!-- Kolom Tengah (Teks Info) -->
         <div class="flex-1 space-y-2 text-center md:text-left">
-            <p class="font-semibold text-base">SMKN 2 Cimahi & Diversity in Unity Team</p>
-            <p>Email: <a href="mailto:smkn2cimahi@gmail.com" class="text-orange-500 hover:underline">smkn2cimahi@gmail.com</a></p>
-            <p class="text-gray-400">&copy; 2025 All rights reserved.</p>
         </div>
 
         <!-- Kolom Kanan (Iframe) -->

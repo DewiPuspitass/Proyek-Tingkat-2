@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="text/javascript" src="{{ asset('js/alet_succes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/alert_succes_p.js') }}"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
 

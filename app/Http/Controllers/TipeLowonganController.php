@@ -84,7 +84,7 @@ class TipeLowonganController extends Controller
             'nama_tipe_lowongan' => $request->input('nama_tipe_lowongan'),
         ]);
 
-        return redirect()->route('tipe_lowongan.index')->with('success', "Jurusan Berhasil Di Perbarui");
+        return redirect()->route('tipe_lowongan.index')->with('success', "Tipe Lowongan Berhasil Di Perbarui");
     }
 
     /**
@@ -95,6 +95,6 @@ class TipeLowonganController extends Controller
         $persyaratanBerkas = TipeLowongan::findOrFail($id);
         $persyaratanBerkas->delete();
 
-        return redirect()->route('tipe_lowongan.index')->with('success', 'Jurusan Berhasil di Hapus');
+        return redirect()->route('tipe_lowongan.index')->with('success', 'Tipe Lowongan Berhasil di Hapus');
     }
 }

@@ -104,6 +104,7 @@
             </div>
 
             {{-- Tombol --}}
+            @hasrole('siswa')
             <div class="flex gap-4">
                 <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Lamar</button>
                 <button 
@@ -114,6 +115,7 @@
                     {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}
                 </button>
             </div>
+            @endhasrole
         </div>
     </div>
     </main>

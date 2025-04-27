@@ -88,7 +88,7 @@ class PersyaratanBerkasController extends Controller
             'nama_berkas' => $request->input('nama_berkas'),
         ]);
 
-        return redirect()->route('persyaratan_berkas.index')->with('success', "Jurusan Berhasil Di Perbarui");
+        return redirect()->route('persyaratan_berkas.index')->with('success', "Persyaratan Berkas Berhasil Di Perbarui");
     }
 
     /**
@@ -99,6 +99,6 @@ class PersyaratanBerkasController extends Controller
         $persyaratanBerkas = PersyaratanBerkas::findOrFail($id);
         $persyaratanBerkas->delete();
 
-        return redirect()->route('persyaratan_berkas.index')->with('success', 'Jurusan Berhasil di Hapus');
+        return redirect()->route('persyaratan_berkas.index')->with('success', 'Persyaratan Berkas Berhasil di Hapus');
     }
 }
