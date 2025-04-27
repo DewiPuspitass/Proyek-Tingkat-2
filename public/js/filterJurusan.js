@@ -10,18 +10,15 @@ $(document).ready(function() {
             `);
         });
 
-        // Menambahkan event listener untuk checkbox
-        $(".filter-jurusan").change(function() {
-            filterLowongan();
-        });
+        $(".filter-jurusan").change(filterLowongan);
     });
 
-    // Menampilkan atau menyembunyikan dropdown
+    // Toggle dropdown
     $("#dropdownCheckboxButton").click(function() {
         $("#dropdownJurusan").toggleClass("hidden");
     });
 
-    // Fungsi untuk memfilter lowongan berdasarkan jurusan yang dipilih
+    // Fungsi filter lowongan
     function filterLowongan() {
         let selectedJurusan = $(".filter-jurusan:checked").map(function() {
             return $(this).val();
@@ -29,6 +26,7 @@ $(document).ready(function() {
 
         if (selectedJurusan.length == 0) {
             location.reload();
+            return;
         }
 
         $.ajax({
@@ -37,40 +35,65 @@ $(document).ready(function() {
             data: { jurusan: selectedJurusan },
             success: function(response) {
                 const jobList = $("#job-list");
-                jobList.empty(); // Kosongkan konten card sebelumnya
-            
-                if (response.length === 0) {
+                jobList.empty();
+
+                const activeLowongan = response.filter(l => l.lowongan_kerja.status === 'Aktif');
+
+                if (activeLowongan.length === 0) {
                     jobList.html(`<div class="col-span-3 text-center text-gray-500">Tidak ada lowongan untuk jurusan ini</div>`);
                     return;
                 }
-            
-                response.forEach(l => {
-                    jobList.append(`
-                        <div class="bg-white rounded-lg shadow p-5 border border-gray-200">
-                            <h3 class="text-lg font-bold text-gray-800">${l.lowongan_kerja.nama_pekerjaan}</h3>
-                            <p class="text-sm text-gray-500">${l.lowongan_kerja.nama_perusahaan}</p>
-                            <p class="text-sm text-gray-600">📍 ${l.lowongan_kerja.domisili_penempatan}</p>
-                            <p class="text-xs text-gray-500 mb-4">🗓️ ${l.lowongan_kerja.tanggal_post}</p>
-            
-                            <div class="flex justify-between items-center mt-4">
-                                <a href="/lowongan_pekerjaan/${l.lowongan_kerja.id}" class="text-blue-600 hover:underline text-sm font-medium">Info</a>
-                                <a href="/lowongan_pekerjaan/${l.lowongan_kerja.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">Edit</a>
-                                <form action="/lowongan_pekerjaan/${l.lowongan_kerja.id}" method="POST" onsubmit="return confirm('Apakah anda ingin menghapus Lowongan ini?')">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}">
-                                    <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Hapus</button>
-                                </form>
+
+                activeLowongan.forEach(l => {
+                    const job = l.lowongan_kerja;
+                    const isPastDeadline = new Date(job.batas_submit) < new Date();
+                    const logoHtml = job.foto_loker ?
+                        `<img src="/storage/${job.foto_loker}" alt="Logo" class="w-full h-full object-contain">` :
+                        `<span class="text-gray-400 text-sm">Logo</span>`;
+
+                    // Format date
+                    const postDate = new Date(job.tanggal_post);
+                    const formattedDate = postDate.toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    // Card HTML
+                    const cardHtml = `
+                        <div class="flex items-start p-4 border-b border-gray-200 hover:bg-gray-50">
+                            <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden mr-4 bg-gray-100 flex items-center justify-center">
+                                ${logoHtml}
+                            </div>
+
+                            <div class="flex-1">
+                                <h3 class="text-base font-semibold text-gray-800">${job.nama_pekerjaan}</h3>
+                                <p class="text-sm text-gray-600">${job.nama_perusahaan}</p>
+                                <p class="text-xs text-gray-500">${job.domisili_penempatan || '-'}</p>
+                                <p class="text-xs text-gray-400 mt-1">${formattedDate}</p>
+                                <p class="text-xs font-semibold mt-1">
+                                    Status:
+                                    <span class="${job.status === 'Aktif' ? 'text-green-600' : 'text-red-600'}">
+                                        ${job.status}
+                                    </span>
+                                    ${job.status === 'Aktif' && isPastDeadline ?
+                                        '<span class="text-yellow-600">(batas submit lewat)</span>' : ''}
+                                </p>
+                            </div>
+
+                            <div class="ml-4">
+                                <a href="/lowongan_pekerjaan/${job.id}" class="text-blue-600 hover:underline text-sm">Info</a>
                             </div>
                         </div>
-                    `);
+                    `;
+
+                    jobList.append(cardHtml);
                 });
             }
+        });
+    }
 
-        }); 
-    } 
-        
-
-    // Menutup dropdown saat klik di luar dropdown
+    // Close dropdown when clicking outside
     $(document).click(function(event) {
         if (!$(event.target).closest("#dropdownCheckboxButton, #dropdownJurusan").length) {
             $("#dropdownJurusan").addClass("hidden");

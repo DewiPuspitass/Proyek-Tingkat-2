@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowongan Kerja</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/filterJurusan.js') }}"></script>
+
+    <style>
+        .opacity-50 { opacity: 0.5; }
+        .pointer-events-none { pointer-events: none; }
+        .cursor-not-allowed { cursor: not-allowed; }
+    </style>
     <script src="{{ asset('js/delet_alert.js') }}"></script>
 </head>
 
-<body class="pt-24 bg-white min-h-screen flex flex-col">
-
+<body class="pt-24 bg-white min-h-screen flex flex-col"  data-is-admin="{{ auth()->check() && auth()->user()->hasRole('') ? 'true' : 'false' }}">
     {{-- Navigation --}}
     @include('layouts.navigation')
 
@@ -35,10 +40,8 @@
                 <button id="dropdownCheckboxButton" type="button"
                     class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
                     Filter Jurusan
-                    <svg class="w-2.5 h-2.5 ml-2 inline-block" fill="none" viewBox="0 0 10 6"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
+                    <svg class="w-2.5 h-2.5 ml-2 inline-block" fill="none" viewBox="0 0 10 6">
+                        <path d="m1 1 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
 
@@ -61,7 +64,7 @@
             {{ $lowongan_pekerjaan->links() }}
         </div>
 
-        {{-- Search Real-time Script --}}
+        {{-- Script --}}
         <script>
             $(document).ready(function () {
                 $('#search').on('keyup', function () {
@@ -72,16 +75,47 @@
                         type: "GET",
                         data: { search: query },
                         success: function (data) {
-                            $('#job-list').html(data);
+                            $('#job-list').html($(data).find('#job-list').html());
+                            checkJobDeadlines();
                         }
                     });
                 });
+
+                function checkJobDeadlines() {
+                    const jobItems = document.querySelectorAll('#job-list .job-item');
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    jobItems.forEach(item => {
+                        const deadlineStr = item.getAttribute('data-deadline');
+                        if (!deadlineStr) return;
+
+                        const deadline = new Date(deadlineStr);
+                        deadline.setHours(0, 0, 0, 0);
+
+                        if (deadline < today) {
+                            item.classList.add('opacity-50', 'pointer-events-none');
+
+                            const closedBadge = document.createElement('span');
+                            closedBadge.className = 'absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded';
+                            closedBadge.textContent = 'Ditutup';
+                            item.appendChild(closedBadge);
+
+                            const applyButton = item.querySelector('.apply-button');
+                            if (applyButton) {
+                                applyButton.disabled = true;
+                                applyButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                                applyButton.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+                            }
+                        }
+                    });
+                }
+
+                checkJobDeadlines();
             });
         </script>
     </main>
 
-    {{-- Footer --}}
     @include('layouts.footer')
-
 </body>
 </html>

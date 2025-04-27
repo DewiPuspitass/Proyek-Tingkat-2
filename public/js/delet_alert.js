@@ -1,8 +1,8 @@
-function confirmDelete(event, id) {
+function confirmDelete(event, id, text) {
     event.preventDefault(); // Menghentikan form submit default
     Swal.fire({
         title: "Apakah anda yakin?",
-        text: "Lowongan ini akan dihapus secara permanen!",
+        text: "Data ini akan dihapus secara permanen!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
