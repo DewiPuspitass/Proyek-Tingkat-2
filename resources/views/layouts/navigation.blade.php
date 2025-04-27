@@ -30,18 +30,25 @@
                         <x-nav-link :href="route('lowongan_pekerjaan.create')" :active="request()->routeIs('lowongan_pekerjaan.create')">
                             {{ __('Unggah Lowongan') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('persyaratan_berkas.index')" :active="request()->routeIs('persyaratan_berkas.index')">
+                            {{ __('Manage Persyaratan Berkas') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('tipe_lowongan.index')" :active="request()->routeIs('tipe_lowongan.index')">
+                            {{ __('Manage Tipe Lowongan') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('jurusan.index')" :active="request()->routeIs('jurusan.index')">
+                            {{ __('Manage Jurusan') }}
+                        </x-nav-link>
                     @endhasrole
 
                     {{-- SISWA --}}
                     @hasrole('siswa')
-                        <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-                            {{ __('Profil Saya') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('lamaran.index')" :active="request()->routeIs('lamaran.*')">
-                            {{ __('Lamaran Saya') }}
+                        <x-nav-link :href="route('bookmarks.index')" :active="request()->routeIs('bookmarks.index')">
+                            {{ __('Markah') }}
                         </x-nav-link>
                     @endhasrole
 
+                    {{-- SISWA --}}
                     <!-- Profile dropdown -->
                     <div x-data="{ openProfile: false }" class="relative">
                         <button @click="openProfile = !openProfile" class="flex items-center text-gray-700 hover:text-orange-600 font-semibold focus:outline-none">
@@ -108,20 +115,20 @@
                 <x-responsive-nav-link :href="route('lowongan_pekerjaan.create')">
                     {{ __('Unggah Lowongan') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('jurusan.index')">
-                    {{ __('Manajemen Jurusan') }}
-                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('tipe_lowongan.index')">
                     {{ __('Tipe Lowongan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('jurusan.index')">
+                    {{ __('Manajemen Jurusan') }}
                 </x-responsive-nav-link>
             @endhasrole
 
             @hasrole('siswa')
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profil Saya') }}
+                    {{ __('Profil') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('lamaran.index')">
-                    {{ __('Lamaran Saya') }}
+                <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')">
+                    {{ __('lowongan_pekerjaan') }}
                 </x-responsive-nav-link>
             @endhasrole
 

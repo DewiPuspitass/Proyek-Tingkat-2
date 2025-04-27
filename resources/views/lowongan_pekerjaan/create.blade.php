@@ -6,14 +6,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
     <title>Lowongan Kerja</title>
 </head>
-<body style="margin-left: 2em;">
-    <h1>Tambah Lowongan Kerja</h1>
-    <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+
+<body class="pt-24 bg-white min-h-screen flex flex-col">
+    {{-- Navigation --}}
+    @include('layouts.navigation')
+
+
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        <h2 class="text-2xl font-bold text-black mb-8">Masukkan Informasi Lowongan Pekerjaan</h2>
+        <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
         <!-- Nama Pekerjaan -->
         <div class="mb-4 field-container">
@@ -35,6 +43,7 @@
         <div class="mb-4 field-container">
             <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Penempatan <span class="text-red-500">*</span></label>
             <select name="domisili_penempatan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="">-- Pilih --</option>
                 @foreach ($regensi as $r)
                     <option value="{{ $r->id }}" {{ old('domisili_penempatan') == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
                 @endforeach
@@ -46,6 +55,7 @@
         <div class="mb-4 field-container">
             <label class="block text-gray-700 text-sm font-bold mb-2">Domisili Perusahaan <span class="text-red-500">*</span></label>
             <select name="domisili_perusahaan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="">-- Pilih --</option>
                 @foreach ($regensi as $r)
                     <option value="{{ $r->id }}" {{ old('domisili_perusahaan') == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
                 @endforeach
@@ -160,6 +170,23 @@
             @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
         </div>
 
+            {{-- Link & Batas Submit
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold mb-1">Link Submit</label>
+                    <input type="text" name="link_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Batas Submit</label>
+                    <input
+                        type="date"
+                        name="batas_submit"
+                        class="w-full border border-gray-300 rounded px-3 py-2"
+                        min="{{ date('Y-m-d') }}"
+                    >
+                </div>
+            </div> --}}
+
         <!-- Submit Button -->
         <div class="flex justify-end">
             <button type="submit" id="simpan" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
@@ -167,5 +194,13 @@
             </button>
         </div>
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new TomSelect('select[name="domisili_penempatan"]');
+            new TomSelect('select[name="domisili_perusahaan"]');
+        });
+    </script>
 </body>
 </html>

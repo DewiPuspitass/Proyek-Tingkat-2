@@ -5,27 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LowonganJurusan extends Model
+class Bookmark extends Model
 {
     use HasFactory;
-    protected $table = 'lowongan_jurusan';
+    protected $table = 'bookmark';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'lowongan_id',
-        'jurusan_id'
+        'user_id',
+        'lowongan_id'
     ];
 
-    public function jurusan()
+    public function user()
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function lowongan_kerja()
     {
         return $this->belongsTo(LowonganKerja::class, 'lowongan_id');
-    }
-
-    public function bookmark(){
-        return $this->belongsToMany(Bookmark::class, 'bookmark', 'lowongan_id', 'user_id');
     }
 }

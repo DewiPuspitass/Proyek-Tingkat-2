@@ -15,6 +15,7 @@
         .pointer-events-none { pointer-events: none; }
         .cursor-not-allowed { cursor: not-allowed; }
     </style>
+    <script src="{{ asset('js/delet_alert.js') }}"></script>
 </head>
 
 <body class="pt-24 bg-white min-h-screen flex flex-col"  data-is-admin="{{ auth()->check() && auth()->user()->hasRole('') ? 'true' : 'false' }}">

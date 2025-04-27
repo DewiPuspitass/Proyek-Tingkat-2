@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jurusan Create</title>
+    <title>Tambah Jurusan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -12,11 +12,14 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
 
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-        <h1 class="text-2xl font-bold mb-4 text-gray-800">Tambah Jurusan</h1>
-
-        <a href="{{ route('jurusan.index') }}" class="text-blue-500 hover:underline text-sm mb-4 inline-block">
-            &larr; Kembali
+        <a href="{{ route('jurusan.index') }}" class="text-blue-600/100 px-4 py-1 rounded block mb-4 w-max flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Kembali
         </a>
+
+        <h1 class="text-2xl font-bold mb-4 text-gray-800 text-center">Tambah Jurusan</h1>
 
         <form action="{{ route('jurusan.store') }}" method="POST" class="space-y-4">
             @csrf
@@ -38,9 +41,9 @@
                 <button
                     type="submit"
                     id="simpan"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 >
-                    Tambahkan Jurusan
+                    Tambah
                 </button>
             </div>
         </form>

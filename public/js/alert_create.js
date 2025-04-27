@@ -63,7 +63,7 @@ $(function () {
             isValid = false;
         }
 
-      // Hanya validasi foto jika ini form create
+
 if (window.location.pathname.includes('create')) {
     const fotoBaru = $('input[name="foto_loker"]')[0].files[0];
     if (!fotoBaru) {

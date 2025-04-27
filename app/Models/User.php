@@ -48,7 +48,12 @@ class User extends Authenticatable
     ];
 
     public function jurusan()
+{
+    return $this->belongsTo(Jurusan::class, 'jurusan_id');
+}
+
+    public function bookmarks()
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+        return $this->belongsToMany(LowonganKerja::class, 'bookmarks', 'user_id', 'lowongan_id')->withTimestamps();
     }
 }

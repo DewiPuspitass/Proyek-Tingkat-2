@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use App\Models\LowonganKerja;
-use App\Models\LowonganJurusan;
 use App\Models\PersyaratanBerkas;
 use App\Models\Regency;
 use App\Models\TipeLowongan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastEmail;
 use Carbon\Carbon;
@@ -89,8 +87,7 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-            'persyaratan' => 'required|string|max:255',
-            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
             'link_submit' => 'required|string|max:255',
@@ -129,10 +126,6 @@ class LowonganKerjaController extends Controller
             'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
             'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
 
-            'persyaratan.required' => 'Persyaratan wajib diisi.',
-            'persyaratan.string' => 'Persyaratan harus berupa teks.',
-            'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
-
             'foto_loker.image' => 'File harus berupa gambar.',
             'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
             'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
@@ -163,7 +156,6 @@ class LowonganKerjaController extends Controller
         'tanggal_post' => now()->toDateString(),
         'deskripsi' => $request->deskripsi,
         'kualifikasi' => $request->kualifikasi,
-        'persyaratan' => $request->persyaratan,
         'foto_loker' =>  $imagePath,
         'link_submit' => $request->link_submit,
         'batas_submit' => $request->batas_submit,
@@ -224,6 +216,7 @@ class LowonganKerjaController extends Controller
      */
     public function edit(LowonganKerja $lowongan_pekerjaan)
     {
+
         $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);
         return view('lowongan_pekerjaan.edit', [
             'jurusan' => Jurusan::all(),
@@ -250,8 +243,7 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-            'persyaratan' => 'required|string|max:255',
-            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
             'link_submit' => 'required|string|max:255',
@@ -290,10 +282,6 @@ class LowonganKerjaController extends Controller
                 'kualifikasi.required' => 'Kualifikasi wajib diisi.',
                 'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
                 'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
-
-                'persyaratan.required' => 'Persyaratan wajib diisi.',
-                'persyaratan.string' => 'Persyaratan harus berupa teks.',
-                'persyaratan.max' => 'Persyaratan maksimal 255 karakter.',
 
                 'foto_loker.image' => 'File harus berupa gambar.',
                 'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
@@ -334,12 +322,35 @@ class LowonganKerjaController extends Controller
             'tanggal_post' => now()->toDateString(),
             'deskripsi' => $request->deskripsi,
             'kualifikasi' => $request->kualifikasi,
-            'persyaratan' => $request->persyaratan,
             'foto_loker' => $imagePath,
             'link_submit' => $request->link_submit,
             'batas_submit' => $request->batas_submit,
             'status' => 'Aktif',
         ]);
+
+        $lowongan->load(['jurusan.users', 'tipeLoker']);
+
+        $sentUserIds = [];
+
+        foreach ($lowongan->jurusan as $jurusan) {
+            foreach ($jurusan->users as $user) {
+                if ($user->email && !in_array($user->id, $sentUserIds)) {
+                    Mail::to($user->email)->send(new BroadcastEmail(
+                        name: $user->name,
+                        nama_perusahaan: $lowongan->nama_perusahaan,
+                        nama_pekerjaan: $lowongan->nama_pekerjaan,
+                        domisili_penempatan: $lowongan->domisiliPenempatan->name,
+                        foto_loker: $lowongan->foto_loker,
+                        tipe_lowongan: $lowongan->tipeLoker,
+                        link: $lowongan->link_submit,
+                        tanggal: $lowongan->batas_submit,
+                        type: 'revisi',
+                    ));
+
+                    $sentUserIds[] = $user->id;
+                }
+            }
+        }
 
         $lowongan->jurusan()->sync($request->jurusan);
         $lowongan->tipeLoker()->sync($request->tipe_lowongan);

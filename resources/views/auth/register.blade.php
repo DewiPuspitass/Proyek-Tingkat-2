@@ -48,10 +48,10 @@
         <!-- Jurusan -->
         <div>
             <x-input-label for="jurusan" :value="__('Jurusan')" class="text-white" />
-            <select id="jurusan" name="jurusan" required class="block mt-1 w-full bg-white bg-opacity-20 border border-gray-300 text-black placeholder-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 rounded-md shadow-sm">
+            <select id="jurusan" name="jurusan" required class="block mt-1 w-full bg-white bg-opacity-20 border border-gray-300 placeholder-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 rounded-md shadow-sm">
                 <option value="" disabled selected>Pilih Jurusan</option>
                 @foreach ($jurusanList as $jurusan)
-                    <option value="{{ $jurusan->id }}" {{ old('jurusan') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->nama_jurusan }}</option>
+                    <option value="{{ $jurusan->id }}" class="text-black" {{ old('jurusan') == $jurusan->id ? 'selected' : '' }}>{{ $jurusan->nama_jurusan }}</option>
                 @endforeach
             </select>
             <x-input-error :messages="$errors->get('jurusan')" class="mt-2 text-red-400" />
@@ -60,10 +60,10 @@
          <!-- Tahun Angkatan -->
         <div>
             <x-input-label for="tahun_angkatan" :value="__('Tahun Angkatan')" class="text-white" />
-            <select id="tahun_angkatan" name="tahun_angkatan" required class="block mt-1 w-full bg-white bg-opacity-20 border border-gray-300 text-black placeholder-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 rounded-md shadow-sm">
+            <select id="tahun_angkatan" name="tahun_angkatan" required class="block mt-1 w-full bg-white bg-opacity-20 border border-gray-300 placeholder-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 rounded-md shadow-sm">
                 <option value="" disabled selected>Pilih Tahun Angkatan</option>
                 @for ($year = date('Y'); $year >= 2000; $year--)
-                    <option value="{{ $year }}" {{ old('tahun_angkatan') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                    <option value="{{ $year }}" class="text-black" {{ old('tahun_angkatan') == $year ? 'selected' : '' }}>{{ $year }}</option>
                 @endfor
             </select>
             <x-input-error :messages="$errors->get('tahun_angkatan')" class="mt-2 text-red-400" />

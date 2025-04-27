@@ -38,6 +38,7 @@
         {{-- Aksi --}}
         <div class="ml-4 flex flex-col items-end gap-1 text-sm">
             <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>
+            @hasrole('admin')
             <a href="{{ route('lowongan_pekerjaan.edit', $l->id) }}" class="text-yellow-600 hover:underline">Edit</a>
 
             {{-- Tombol Hapus --}}
@@ -45,8 +46,9 @@
                   onsubmit="return confirm('Yakin mau hapus?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="text-red-600 hover:underline" onclick="confirmDelete(event, {{ $l->id }})">Hapus</button>
+                <button type="submit" class="text-red-600 hover:underline" onclick="confirmDelete(event, '{{ $l->id }}')">Hapus</button>
             </form>
+            @endhasrole
         </div>
     </div>
 @empty
