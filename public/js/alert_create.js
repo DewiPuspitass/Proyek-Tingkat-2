@@ -58,10 +58,15 @@ $(function () {
             highlightInvalidField($('textarea[name="kualifikasi"]'), 'Kualifikasi wajib diisi');
             isValid = false;
         }
-        if (!$('input[name="foto_loker"]').val()) {
-            highlightInvalidField($('input[name="foto_loker"]'), 'Foto wajib diunggah');
-            isValid = false;
-        }
+
+      // Hanya validasi foto jika ini form create
+if (window.location.pathname.includes('create')) {
+    const fotoBaru = $('input[name="foto_loker"]')[0].files[0];
+    if (!fotoBaru) {
+        highlightInvalidField($('input[name="foto_loker"]'), 'Foto wajib diunggah');
+        isValid = false;
+    }
+}
         if (!$('input[name="link_submit"]').val()) {
             highlightInvalidField($('input[name="link_submit"]'), 'Link submit wajib diisi');
             isValid = false;
