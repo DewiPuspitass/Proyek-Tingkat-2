@@ -32,20 +32,32 @@
 </section>
 
 <section class="py-12 px-6 bg-white text-gray-800">
-    <h2 class="text-2xl font-semibold text-orange-600 mb-6">Lowongan Pekerjaan yang Tersedia</h2>
+<div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-semibold text-orange-600">Lowongan Pekerjaan yang Tersedia</h2>
+
+    @if(auth()->check())
+        <a href="{{ route('lowongan_pekerjaan.index') }}" class="text-orange-500 hover:underline text-sm sm:text-base">
+            Lihat Semua Lowongan
+        </a>
+    @else
+        <a href="{{ route('login') }}" class="text-orange-500 hover:underline text-sm sm:text-base">
+            Login untuk Lihat Semua Lowongan
+        </a>
+    @endif
+</div>
+
 
     <div class="grid md:grid-cols-2 gap-6">
-        @forelse ($lowongan as $loker)
-            <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                @include('lowongan_pekerjaan.table', ['lowongan_pekerjaan' => [$loker]])
-            </div>
-        @empty
-            <p class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</p>
-        @endforelse
-    </div>
+    @forelse ($lowongan as $loker)
+        @include('lowongan_pekerjaan.table', ['lowongan_pekerjaan' => [$loker]])
+    @empty
+        <p class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</p>
+    @endforelse
+</div>
+
 </section>
 
-<!-- Space antara div lowongan dan tombol -->
+<!-- Space antara div lowongan dan tombol
 <div class="mt-8 text-center">
     @if(auth()->check())
         <a href="{{ route('lowongan_pekerjaan.index') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
@@ -56,7 +68,7 @@
         Login untuk Lihat Semua Lowongan
         </a>
 @endif
-    </div>
+    </div> -->
 </section>
 
 <section class="py-8 px-6 bg-white">
