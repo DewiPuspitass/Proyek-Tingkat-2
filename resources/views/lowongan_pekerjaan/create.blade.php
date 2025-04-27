@@ -168,7 +168,7 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end">
-                <button type="submit" id="simpan" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
+                <button type="submit" id="simpan" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded focus:outline-none focus:shadow-outline">
                     Simpan Lowongan Kerja
                 </button>
             </div>
