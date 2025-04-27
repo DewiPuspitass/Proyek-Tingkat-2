@@ -102,53 +102,62 @@
     </div>
 
     <!-- Mobile Navigation -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden bg-white px-4 pb-4">
-        @auth
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Beranda') }}
+<div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden bg-white px-4 pb-4">
+    @auth
+        <x-responsive-nav-link :href="route('beranda')" :active="request()->routeIs('beranda')">
+            {{ __('Beranda') }}
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')" :active="request()->routeIs('lowongan_pekerjaan.*')">
+            {{ __('Lowongan Pekerjaan') }}
+        </x-responsive-nav-link>
+
+        @hasrole('admin')
+            <x-responsive-nav-link :href="route('lowongan_pekerjaan.create')">
+                {{ __('Unggah Lowongan') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')" :active="request()->routeIs('lowongan_pekerjaan.*')">
-                {{ __('Lowongan Pekerjaan') }}
+            <x-responsive-nav-link :href="route('tipe_lowongan.index')">
+                {{ __('Tipe Lowongan') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('jurusan.index')">
+                {{ __('Manajemen Jurusan') }}
+            </x-responsive-nav-link>
+        @endhasrole
 
-            @hasrole('admin')
-                <x-responsive-nav-link :href="route('lowongan_pekerjaan.create')">
-                    {{ __('Unggah Lowongan') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('tipe_lowongan.index')">
-                    {{ __('Tipe Lowongan') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('jurusan.index')">
-                    {{ __('Manajemen Jurusan') }}
-                </x-responsive-nav-link>
-            @endhasrole
+        @hasrole('siswa')
+            <x-responsive-nav-link :href="route('bookmarks.index')">
+                {{ __('Markah') }}
+            </x-responsive-nav-link>
+        @endhasrole
 
-            @hasrole('siswa')
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profil') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('lowongan_pekerjaan.index')">
-                    {{ __('lowongan_pekerjaan') }}
-                </x-responsive-nav-link>
-            @endhasrole
-
+        <!-- Profile Info -->
+        <div class="border-t border-gray-200 mt-4 pt-4">
+            <div class="text-gray-700 font-semibold mb-2">
+                {{ Auth::user()->name }}
+            </div>
+            <x-responsive-nav-link :href="route('profile.edit')">
+                {{ __('Edit Profil') }}
+            </x-responsive-nav-link>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <x-responsive-nav-link :href="route('logout')"
-                                       onclick="event.preventDefault(); this.closest('form').submit();">
+                    onclick="event.preventDefault(); this.closest('form').submit();">
                     {{ __('Keluar') }}
                 </x-responsive-nav-link>
             </form>
-        @else
-            <x-responsive-nav-link :href="route('login')">
-                {{ __('Masuk') }}
+        </div>
+
+    @else
+        <x-responsive-nav-link :href="route('login')">
+            {{ __('Masuk') }}
+        </x-responsive-nav-link>
+        @if (Route::has('register'))
+            <x-responsive-nav-link :href="route('register')">
+                {{ __('Daftar') }}
             </x-responsive-nav-link>
-            @if (Route::has('register'))
-                <x-responsive-nav-link :href="route('register')">
-                    {{ __('Daftar') }}
-                </x-responsive-nav-link>
-            @endif
-        @endauth
-    </div>
+        @endif
+    @endauth
+</div>
+
 </nav>
 @endif
