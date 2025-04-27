@@ -20,7 +20,9 @@
     {{-- Navigation --}}
     @include('layouts.navigation')
 
-    <main class="max-w-4xl mx-auto px-6 py-12">
+    
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        <h2 class="text-2xl font-bold text-black mb-8">Masukkan Informasi Lowongan Pekerjaan</h2>
         <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
