@@ -75,6 +75,7 @@ class LowonganKerjaController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama_pekerjaan' => 'required|string|max:255',
             'nama_perusahaan' => 'required|string|max:255',
@@ -87,7 +88,7 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-
+            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
             'link_submit' => 'required|string|max:255',
@@ -159,6 +160,7 @@ class LowonganKerjaController extends Controller
         'foto_loker' =>  $imagePath,
         'link_submit' => $request->link_submit,
         'batas_submit' => $request->batas_submit,
+        'persyaratan' => 'asdasdasdasd',
         'status' => 'Aktif',
     ]);
 
@@ -243,7 +245,7 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-
+            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
             'link_submit' => 'required|string|max:255',

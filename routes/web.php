@@ -11,6 +11,7 @@ use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\BookmarkController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,31 +47,55 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // CRUD JURUSAN
     Route::resource('jurusan', JurusanController::class);
-    
+
     // CRUD LOKER
     Route::resource('lowongan_pekerjaan', LowonganKerjaController::class);
-    
+
     // CRUD TIPE LOKER
     Route::resource('tipe_lowongan', TipeLowonganController::class);
-    
+
     // CRUD PERSYARATAN BERKAS
     Route::resource('persyaratan_berkas', PersyaratanBerkasController::class);
-    
+
     // FITUR PENCARIAN
-    
+
     // FITUR FILTER
-    
+
+
+
+    // Route::get('/get-user-role', [FilterController::class,'getRole']);
+    Route::get('/get-user-role', function () {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Debug lebih detail
+            \Log::info('User Info', [
+                'id' => $user->id,
+                'roles' => $user->roles->pluck('name'), // Cara alternatif
+                'all_roles' => $user->getRoleNames()
+            ]);
+
+            return response()->json([
+                'role' => $user->roles->first()?->name ?? null // Cara lebih aman
+            ]);
+        }
+        return response()->json(['role' => null], 401);
+    });
+
+
+
+
     // FITUR FILTER
     Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
     Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
-    
-    
+
+
     // Email broadcast
     Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
-    
+
     Route::get('tampilan-email', function(){
         return view('emails.lowonganEmail');
     });

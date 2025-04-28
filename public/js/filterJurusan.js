@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    // Mengambil data jurusan untuk dropdown
+    const userRole = $('#userRole').data('role'); // Ambil dari HTML seperti biasa
+
+    // Ambil jurusan untuk dropdown
     $.get("/get-jurusan", function(data) {
         data.forEach(jurusan => {
             $("#jurusanList").append(`
@@ -24,7 +26,7 @@ $(document).ready(function() {
             return $(this).val();
         }).get();
 
-        if (selectedJurusan.length == 0) {
+        if (selectedJurusan.length === 0) {
             location.reload();
             return;
         }
@@ -51,7 +53,6 @@ $(document).ready(function() {
                         `<img src="/storage/${job.foto_loker}" alt="Logo" class="w-full h-full object-contain">` :
                         `<span class="text-gray-400 text-sm">Logo</span>`;
 
-                    // Format date
                     const postDate = new Date(job.tanggal_post);
                     const formattedDate = postDate.toLocaleDateString('id-ID', {
                         day: 'numeric',
@@ -59,7 +60,6 @@ $(document).ready(function() {
                         year: 'numeric'
                     });
 
-                    // Card HTML
                     const cardHtml = `
                         <div class="flex items-start p-4 border-b border-gray-200 hover:bg-gray-50">
                             <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden mr-4 bg-gray-100 flex items-center justify-center">
@@ -81,19 +81,52 @@ $(document).ready(function() {
                                 </p>
                             </div>
 
-                            <div class="ml-4">
+                            <div class="ml-4 flex flex-col gap-1">
                                 <a href="/lowongan_pekerjaan/${job.id}" class="text-blue-600 hover:underline text-sm">Info</a>
+                                <span id="admin-action-${job.id}"></span> <!-- tempat inject edit/delete -->
                             </div>
                         </div>
                     `;
 
                     jobList.append(cardHtml);
+
+                    // Setelah card ditambahkan, cek role
+                    checkRoleForActions(job.id);
                 });
             }
         });
     }
 
-    // Close dropdown when clicking outside
+    // Function cek role lagi ke server saat mau tampilkan tombol Edit dan Delete
+    function checkRoleForActions(jobId) {
+        $.get('/get-user-role', function(response) {
+            if (response.role === 'admin') {
+                $(`#admin-action-${jobId}`).html(`
+                    <button class="text-red-600 hover:underline text-sm" onclick="deleteJob(${jobId})">Delete</button>
+                    <a href="/lowongan_pekerjaan/edit/${jobId}" class="text-yellow-600 hover:underline text-sm">Edit</a>
+                `);
+            }
+        });
+    }
+
+    // Fungsi hapus lowongan
+    window.deleteJob = function(jobId) {
+        if (confirm("Are you sure you want to delete this job?")) {
+            $.ajax({
+                url: `/delete-lowongan/${jobId}`,
+                type: "DELETE",
+                success: function(response) {
+                    alert("Lowongan deleted successfully!");
+                    location.reload();
+                },
+                error: function(err) {
+                    alert("An error occurred while deleting the job.");
+                }
+            });
+        }
+    }
+
+    // Close dropdown saat klik di luar
     $(document).click(function(event) {
         if (!$(event.target).closest("#dropdownCheckboxButton, #dropdownJurusan").length) {
             $("#dropdownJurusan").addClass("hidden");

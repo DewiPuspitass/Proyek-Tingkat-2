@@ -7,6 +7,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <script>
+        const indexRoute = "{{ route('lowongan_pekerjaan.index') }}";
+    </script>
+
+
 
 
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
@@ -121,13 +126,6 @@
             @error('kualifikasi')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
         </div>
 
-        <!-- Persyaratan -->
-        <div class="mb-4 field-container">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Persyaratan <span class="text-red-500">*</span></label>
-            <textarea name="persyaratan" class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32">{{ old('persyaratan') }}</textarea>
-            @error('persyaratan')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-        </div>
-
         <!-- Foto Loker -->
         <div class="mb-4 field-container">
             <label class="block text-gray-700 text-sm font-bold mb-2">Foto Lembaran Lowongan <span class="text-red-500">*</span></label>
@@ -154,38 +152,26 @@
             @error('persyaratan_berkas')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
         </div>
 
-        <!-- Link Submit -->
-        <div class="mb-4 field-container">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Link Submit <span class="text-red-500">*</span></label>
-            <input type="text" name="link_submit" value="{{ old('link_submit') }}"
-                   class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @error('link_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-        </div>
-
-        <!-- Batas Submit -->
-        <div class="mb-6 field-container">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Batas Submit <span class="text-red-500">*</span></label>
-            <input type="date" name="batas_submit" value="{{ old('batas_submit') }}"
-                   class="w-full px-3 py-2 border rounded shadow appearance-none text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
-        </div>
-
-            {{-- Link & Batas Submit
+            {{-- Link & Batas Submit --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-1">Link Submit</label>
+                    <label class="block font-semibold mb-1">Link Submit <span class="text-red-500">*</span></label>
                     <input type="text" name="link_submit" class="w-full border border-gray-300 rounded px-3 py-2">
+                    @error('link_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
                 </div>
                 <div>
-                    <label class="block font-semibold mb-1">Batas Submit</label>
+                    <label class="block font-semibold mb-1">Batas Submit <span class="text-red-500">*</span></label>
                     <input
                         type="date"
                         name="batas_submit"
-                        class="w-full border border-gray-300 rounded px-3 py-2"
+                        value="{{ old('batas_submit') }}"
+                        class="w-full border border-gray-300 rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
                         min="{{ date('Y-m-d') }}"
                     >
+                    @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+
                 </div>
-            </div> --}}
+            </div>
 
         <!-- Submit Button -->
         <div class="flex justify-end">
