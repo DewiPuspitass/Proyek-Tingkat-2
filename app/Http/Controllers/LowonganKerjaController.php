@@ -74,7 +74,6 @@ class LowonganKerjaController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nama_pekerjaan' => 'required|string|max:255',
             'nama_perusahaan' => 'required|string|max:255',
@@ -146,8 +145,6 @@ class LowonganKerjaController extends Controller
 
 
     $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
-
-    dd($request->all());
     
     $lowongan = LowonganKerja::create([
         'nama_pekerjaan' => $request->nama_pekerjaan,

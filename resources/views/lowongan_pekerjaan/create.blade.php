@@ -165,7 +165,7 @@
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">Batas Submit <span class="text-red-500">*</span></label>
-                    <inputtype="date"name="batas_submit"value="{{ old('batas_submit') }}"
+                    <input type="date"name="batas_submit"value="{{ old('batas_submit') }}"
                         class="w-full border border-black rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
                         min="{{ date('Y-m-d') }}">
                     @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror

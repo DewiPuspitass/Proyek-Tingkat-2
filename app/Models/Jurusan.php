@@ -24,6 +24,6 @@ class Jurusan extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'jurusan');
+        return $this->hasMany(User::class, 'jurusan_id');
     }
 }
