@@ -15,7 +15,7 @@
 
 </head>
 <body class="bg-gray-50 p-8">
-    <div id="session-success" data-message="{{ session('success') }}"></div>
+    {{-- <div id="session-success" data-message="{{ session('success') }}"></div> --}}
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit Lowongan Kerja</h1>
 
@@ -183,7 +183,7 @@
             </div>
         </form>
     </div>
-    
+
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         new TomSelect('#domisili_penempatan');

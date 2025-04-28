@@ -74,6 +74,7 @@ class LowonganKerjaController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama_pekerjaan' => 'required|string|max:255',
             'nama_perusahaan' => 'required|string|max:255',
@@ -160,6 +161,7 @@ class LowonganKerjaController extends Controller
         'foto_loker' =>  $imagePath,
         'link_submit' => $request->link_submit,
         'batas_submit' => $request->batas_submit,
+        'persyaratan' => 'asdasdasdasd',
         'status' => 'Aktif',
     ]);
 
@@ -217,6 +219,7 @@ class LowonganKerjaController extends Controller
      */
     public function edit(LowonganKerja $lowongan_pekerjaan)
     {
+
         $lowongan_pekerjaan->load(['jurusan', 'tipeLoker', 'tipePersyaratan']);
         return view('lowongan_pekerjaan.edit', [
             'jurusan' => Jurusan::all(),

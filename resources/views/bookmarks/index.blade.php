@@ -33,19 +33,21 @@
         {{-- Daftar Bookmarks --}}
         <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($bookmarks as $bookmark)
-                @if($bookmark->user && $bookmark->lowongan_kerja)  {{-- Pastikan objek user dan lowongan_kerja tidak null --}}
+                @if($bookmark->user && $bookmark->lowongan_kerja)
                     <div class="job-item relative bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
                         <h3 class="text-lg font-semibold text-orange-600">{{ $bookmark->lowongan_kerja->title ?? 'No Title' }}</h3>
                         <p class="text-sm text-gray-600">{{ $bookmark->lowongan_kerja->nama_perusahaan ?? 'No Company' }}</p>
-                        <p class="text-sm text-gray-500 mt-2">{{ \Carbon\Carbon::parse($bookmark->lowongan_kerja->deadline)->format('d M Y') ?? 'No Deadline' }}</p>
+                        <p class="text-sm text-gray-500 mt-2">{{ \Carbon\Carbon::parse($bookmark->lowongan_kerja->batas_submit)->format('d M Y') ?? 'No Deadline' }}</p>
 
-                        {{-- Ditutup jika deadline lewat --}}
                         @php
-                            $deadline = \Carbon\Carbon::parse($bookmark->lowongan_kerja->deadline);
-                            $now = \Carbon\Carbon::now();
+                            $deadline = \Carbon\Carbon::parse($bookmark->lowongan_kerja->batas_submit);
+                            $now = \Carbon\Carbon::today();
+                            $akhir = $deadline->lt($now);
                         @endphp
 
-                        @if ($deadline->isPast())
+                        @if ($akhir)
+                            <p>Lowongan telah ditutup.</p>
+                    
                             <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Ditutup</span>
                         @endif
 

@@ -7,12 +7,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    <script>
+        const indexRoute = "{{ route('lowongan_pekerjaan.index') }}";
+    </script>
+
+
     <script type="text/javascript" src="{{ asset('js/alert_create.js') }}"></script>
     <title>Lowongan Kerja</title>
 </head>
 
 <body class="pt-24 bg-white min-h-screen flex flex-col">
     @include('layouts.navigation')
+
 
     <main class="max-w-4xl mx-auto px-6 py-8">
         <h2 class="text-2xl font-bold text-black mb-8">Masukkan Informasi Lowongan Pekerjaan</h2>
@@ -159,7 +165,7 @@
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">Batas Submit <span class="text-red-500">*</span></label>
-                    <input type="date" name="batas_submit" value="{{ old('batas_submit') }}"
+                    <inputtype="date"name="batas_submit"value="{{ old('batas_submit') }}"
                         class="w-full border border-black rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
                         min="{{ date('Y-m-d') }}">
                     @error('batas_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror

@@ -18,7 +18,7 @@
     <script src="{{ asset('js/delet_alert.js') }}"></script>
 </head>
 
-<body class="pt-24 bg-white min-h-screen flex flex-col"  data-is-admin="{{ auth()->check() && auth()->user()->hasRole('') ? 'true' : 'false' }}">
+<body class="pt-24 bg-white min-h-screen flex flex-col" >
     {{-- Navigation --}}
     @include('layouts.navigation')
 
@@ -58,6 +58,9 @@
         <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @include('lowongan_pekerjaan.table')
         </div>
+        <!-- Misalnya, ini disisipkan di HTML dengan status pengguna -->
+        <div id="userRole" data-role="{{ auth()->user()->role }}"></div>
+
 
         {{-- Pagination --}}
         <div class="mt-6">
@@ -66,6 +69,7 @@
 
         {{-- Script --}}
         <script>
+            
             $(document).ready(function () {
                 $('#search').on('keyup', function () {
                     let query = $(this).val();

@@ -34,7 +34,7 @@
             </p>
             @endhasrole
         </div>
-
+        
         {{-- Aksi --}}
         <div class="ml-4 flex flex-col items-end gap-1 text-sm">
             <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>

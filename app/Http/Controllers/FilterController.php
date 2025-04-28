@@ -44,5 +44,12 @@ class FilterController extends Controller
 //     return response()->json($lowongan);
 // }
 
+public function getRole()
+{
+    return response()->json([
+        'role' => 'admin'
+    ]);
+}
+
 
 }
