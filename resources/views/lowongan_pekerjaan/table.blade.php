@@ -25,7 +25,12 @@
                 Status:
                 @if ($l->status === 'Aktif')
                     <span class="text-green-600">Aktif</span>
-                    @if (\Carbon\Carbon::parse($l->batas_submit)->isPast())
+                    @php
+                        $deadline = \Carbon\Carbon::parse($l->batas_submit);
+                        $now = \Carbon\Carbon::today();
+                        $akhir = $deadline->lt($now);
+                    @endphp
+                    @if (\Carbon\Carbon::parse($l->batas_submit)->lt($now))
                         <span class="text-yellow-600">(batas submit lewat)</span>
                     @endif
                 @else

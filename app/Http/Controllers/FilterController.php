@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Jurusan;
 use App\Models\LowonganJurusan;
+use Illuminate\Support\Facades\Auth;
 
 class FilterController extends Controller
 {
+    public function getRole()
+    {
+        $user = Auth::user();
+
+        $role = $user->getRoleNames()->first();
+
+        return response()->json([
+            'role' => $role
+        ]);
+    }
+
     public function getJurusan()
     {
         $jurusan = Jurusan::all();
@@ -43,13 +55,5 @@ class FilterController extends Controller
 
 //     return response()->json($lowongan);
 // }
-
-public function getRole()
-{
-    return response()->json([
-        'role' => 'admin'
-    ]);
-}
-
 
 }

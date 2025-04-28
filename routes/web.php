@@ -63,30 +63,7 @@ Route::middleware('auth')->group(function () {
     // FITUR PENCARIAN
 
     // FITUR FILTER
-
-
-
-    // Route::get('/get-user-role', [FilterController::class,'getRole']);
-    Route::get('/get-user-role', function () {
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            // Debug lebih detail
-            \Log::info('User Info', [
-                'id' => $user->id,
-                'roles' => $user->roles->pluck('name'), // Cara alternatif
-                'all_roles' => $user->getRoleNames()
-            ]);
-
-            return response()->json([
-                'role' => $user->roles->first()?->name ?? null // Cara lebih aman
-            ]);
-        }
-        return response()->json(['role' => null], 401);
-    });
-
-
-
+    Route::get('/get-user-role', [FilterController::class, 'getRole'])->middleware('auth');
 
     // FITUR FILTER
     Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');

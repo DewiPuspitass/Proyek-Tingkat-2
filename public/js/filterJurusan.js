@@ -83,7 +83,7 @@ $(document).ready(function() {
 
                             <div class="ml-4 flex flex-col gap-1">
                                 <a href="/lowongan_pekerjaan/${job.id}" class="text-blue-600 hover:underline text-sm">Info</a>
-                                <span id="admin-action-${job.id}"></span> <!-- tempat inject edit/delete -->
+                                <span id="admin-action-${job.id}"></span>
                             </div>
                         </div>
                     `;
@@ -102,8 +102,8 @@ $(document).ready(function() {
         $.get('/get-user-role', function(response) {
             if (response.role === 'admin') {
                 $(`#admin-action-${jobId}`).html(`
-                    <button class="text-red-600 hover:underline text-sm" onclick="deleteJob(${jobId})">Delete</button>
-                    <a href="/lowongan_pekerjaan/edit/${jobId}" class="text-yellow-600 hover:underline text-sm">Edit</a>
+                    <a href="/lowongan_pekerjaan/edit/${jobId}" class="text-yellow-600 hover:underline text-sm">Edit</a></br>
+                    <button class="text-red-600 hover:underline text-sm" onclick="deleteJob(${jobId})">Hapus</button>
                 `);
             }
         });
