@@ -44,7 +44,7 @@
                     {{-- SISWA --}}
                     @hasrole('siswa')
                         <x-nav-link :href="route('bookmarks.index')" :active="request()->routeIs('bookmarks.index')">
-                            {{ __('Markah') }}
+                            {{ __('Lowongan Tersimpan') }}
                         </x-nav-link>
                     @endhasrole
 

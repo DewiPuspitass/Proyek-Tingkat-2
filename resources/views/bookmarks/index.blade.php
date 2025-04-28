@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Bookmarks</title>
+    <title>Lowongan Tersimpan</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -28,7 +28,7 @@
             <span class="flex flex-wrap items-center gap-4 mb-6 justify-center text-green-600">{{ session('success') }}</span>
         @endif
 
-        <h2 class="text-2xl font-semibold text-orange-600 mb-6 text-center">Daftar Bookmarks</h2>
+        <h2 class="text-2xl font-semibold text-orange-600 mb-6 text-center">Daftar Lowongan yang Disimpan</h2>
 
         {{-- Daftar Bookmarks --}}
         <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
