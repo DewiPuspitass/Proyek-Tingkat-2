@@ -1,4 +1,5 @@
 <script src="{{ asset('js/delet_alert.js') }}"></script>
+
 @forelse ($lowongan_pekerjaan as $l)
     <div class="job-item relative flex items-center border rounded-lg p-4 shadow-sm bg-white"
          data-deadline="{{ $l->tanggal_tutup }}">
@@ -28,9 +29,8 @@
                     @php
                         $deadline = \Carbon\Carbon::parse($l->batas_submit);
                         $now = \Carbon\Carbon::today();
-                        $akhir = $deadline->lt($now);
                     @endphp
-                    @if (\Carbon\Carbon::parse($l->batas_submit)->lt($now))
+                    @if ($deadline->lt($now))
                         <span class="text-yellow-600">(batas submit lewat)</span>
                     @endif
                 @else
@@ -39,7 +39,7 @@
             </p>
             @endhasrole
         </div>
-        
+
         {{-- Aksi --}}
         <div class="ml-4 flex flex-col items-end gap-1 text-sm">
             <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>
@@ -51,7 +51,8 @@
                   onsubmit="return confirm('Yakin mau hapus?')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="text-red-600 hover:underline" onclick="confirmDelete(event, '{{ $l->id }}')">Hapus</button>
+                <button type="submit" class="text-red-600 hover:underline"
+                        onclick="confirmDelete(event, '{{ $l->id }}')">Hapus</button>
             </form>
             @endhasrole
         </div>
@@ -59,4 +60,3 @@
 @empty
     <div class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</div>
 @endforelse
-

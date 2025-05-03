@@ -31,13 +31,13 @@
                             {{ __('Unggah Lowongan') }}
                         </x-nav-link>
                         <x-nav-link :href="route('persyaratan_berkas.index')" :active="request()->routeIs('persyaratan_berkas.index')">
-                            {{ __('Manage Persyaratan Berkas') }}
+                            {{ __('Atur Persyaratan Berkas') }}
                         </x-nav-link>
                         <x-nav-link :href="route('tipe_lowongan.index')" :active="request()->routeIs('tipe_lowongan.index')">
-                            {{ __('Manage Tipe Lowongan') }}
+                            {{ __('Atur Tipe Lowongan') }}
                         </x-nav-link>
                         <x-nav-link :href="route('jurusan.index')" :active="request()->routeIs('jurusan.index')">
-                            {{ __('Manage Jurusan') }}
+                            {{ __('Atur Jurusan') }}
                         </x-nav-link>
                     @endhasrole
 

@@ -45,7 +45,7 @@ class LowonganKerjaController extends Controller
                         $q->where('nama_jurusan', 'like', "%{$search}%");
                     });
             })
-            ->paginate(21);
+            ->paginate(6);
 
         if ($request->ajax()) {
             return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
