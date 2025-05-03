@@ -126,7 +126,7 @@
 
         @hasrole('siswa')
             <x-responsive-nav-link :href="route('bookmarks.index')">
-                {{ __('Markah') }}
+                {{ __('Lowongan Tersimpan') }}
             </x-responsive-nav-link>
         @endhasrole
 

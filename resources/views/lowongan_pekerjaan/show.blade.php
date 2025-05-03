@@ -172,9 +172,9 @@
                     success: function(response) {
                         if (response.status === 'success') {
                             if (isBookmarked) {
-                                button.text('Save to Bookmark').data('bookmarked', false);
+                                button.text('Simpan Lowongan').data('bookmarked', false);
                             } else {
-                                button.text('Bookmark Saved').data('bookmarked', true);
+                                button.text('Lowongan Disimpan').data('bookmarked', true);
                             }
                             alert(response.message);
                         } else {
