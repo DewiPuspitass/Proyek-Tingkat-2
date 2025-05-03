@@ -48,11 +48,12 @@
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
-    @forelse ($lowongan as $loker)
+    @forelse ($lowongan->where('status', 'Aktif') as $loker)
         @include('lowongan_pekerjaan.table', ['lowongan_pekerjaan' => [$loker]])
     @empty
         <p class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</p>
     @endforelse
+
 </div>
 
 </section>
