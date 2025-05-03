@@ -80,7 +80,9 @@ Route::middleware('auth')->group(function () {
     // Bookmark
     Route::get('/halaman-bookmark', [BookmarkController::class, 'index'])->name('bookmarks.index');;
     Route::post('/bookmarks/{lowonganId}', [BookmarkController::class, 'addBookmark'])->name('bookmarks.add');
-    Route::delete('/bookmarks/{lowongan}', [BookmarkController::class, 'removeBookmark']);
+    Route::delete('/bookmarks/{lowonganId}', [BookmarkController::class, 'removeBookmark'])->name('bookmarks.remove');
+    
+
 });
 
 require __DIR__.'/auth.php';

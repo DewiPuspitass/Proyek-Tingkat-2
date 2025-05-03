@@ -32,28 +32,54 @@
 
         {{-- Daftar Bookmarks --}}
         <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($bookmarks as $bookmark)
-                @if($bookmark->user && $bookmark->lowongan_kerja)
-                    <div class="job-item relative bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-                        <h3 class="text-lg font-semibold text-orange-600">{{ $bookmark->lowongan_kerja->title ?? 'No Title' }}</h3>
-                        <p class="text-sm text-gray-600">{{ $bookmark->lowongan_kerja->nama_perusahaan ?? 'No Company' }}</p>
-                        <p class="text-sm text-gray-500 mt-2">{{ \Carbon\Carbon::parse($bookmark->lowongan_kerja->batas_submit)->format('d M Y') ?? 'No Deadline' }}</p>
+        @forelse($bookmarks as $bookmark)
+            @if($bookmark->user && $bookmark->lowongan_kerja)
+            <div class="job-item relative flex items-center border rounded-lg p-4 shadow-sm bg-white"
+                 data-deadline="{{ $bookmark->lowongan_kerja->batas_submit }}">
 
-                        @php
-                            $deadline = \Carbon\Carbon::parse($bookmark->lowongan_kerja->batas_submit);
-                            $now = \Carbon\Carbon::today();
-                            $akhir = $deadline->lt($now);
-                        @endphp
+                {{-- Logo --}}
+                <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden mr-4 bg-gray-100 flex items-center justify-center">
+                    @if($bookmark->lowongan_kerja->foto_loker)
+                        <img src="{{ asset('storage/' . $bookmark->lowongan_kerja->foto_loker) }}" alt="Logo" class="w-full h-full object-contain">
+                    @else
+                        <span class="text-gray-400 text-sm">Logo</span>
+                    @endif
+                </div>
 
-                        @if ($akhir)
-                            <p>Lowongan telah ditutup.</p>
-                    
-                            <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Ditutup</span>
-                        @endif
+                {{-- Info --}}
+                <div class="flex-1">
+                    <h3 class="text-base font-semibold text-gray-800">{{ $bookmark->lowongan_kerja->nama_pekerjaan ?? 'No Title' }}</h3>
+                    <p class="text-sm text-gray-600">{{ $bookmark->lowongan_kerja->nama_perusahaan ?? 'No Company' }}</p>
+                    <p class="text-xs text-gray-500">
+                        {{ $bookmark->lowongan_kerja->domisiliPenempatan->name ?? '-' }}
+                    </p>
+                    <p class="text-xs text-gray-400 mt-1">
+                        {{ \Carbon\Carbon::parse($bookmark->lowongan_kerja->created_at)->diffForHumans() }}
+                    </p>
 
-                    </div>
-                @endif
-            @endforeach
+                    @php
+                        $deadline = \Carbon\Carbon::parse($bookmark->lowongan_kerja->batas_submit);
+                        $now = \Carbon\Carbon::today();
+                        $akhir = $deadline->lt($now);
+                    @endphp
+
+                    @if ($akhir)
+                        <p class="text-xs text-red-600 font-semibold mt-1">Lowongan telah ditutup</p>
+                    @endif
+                </div>
+
+                {{-- Aksi --}}
+                <div class="ml-4 flex flex-col gap-1 text-sm text-right">
+                    <a href="{{ route('lowongan_pekerjaan.show', $bookmark->lowongan_kerja->id) }}" class="text-blue-600 hover:underline">Info</a>
+                    <button onclick="hapusBookmark({{ $bookmark->lowongan_kerja->id }})" class="text-red-600 hover:underline">Hapus</button>
+                </div>
+            </div>
+            @endif
+        @empty
+            <div class="col-span-full text-center text-gray-500 py-12">
+                <p class="text-lg font-medium">Tidak ada Lowongan Pekerjaan yang Disimpan</p>
+            </div>
+        @endforelse
         </div>
 
         {{-- Pagination --}}
@@ -67,3 +93,35 @@
 
 </body>
 </html>
+
+<script>
+function hapusBookmark(lowonganId) {
+    Swal.fire({
+        title: 'Hapus Bookmark?',
+        text: "Apakah kamu yakin ingin menghapus lowongan ini dari bookmark?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/bookmarks/${lowonganId}`,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus bookmark.', 'error');
+                }
+            });
+        }
+    });
+}
+</script>

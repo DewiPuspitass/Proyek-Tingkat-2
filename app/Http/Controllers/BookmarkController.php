@@ -51,43 +51,41 @@ class BookmarkController extends Controller
         }
     }
 
-    public function removeBookmark(LowonganKerja $lowongan)
+    public function removeBookmark($lowonganId)
     {
-        $userId = auth()->user()->id;
-        $user = User::find($userId);
-        
-        if ($user) {
-            $lowongan = LowonganKerja::find($lowongan->id);
-
-            if ($lowongan) {
-                if ($user->bookmarks->contains($lowongan->id)) {
-                    $user->bookmarks()->detach($lowongan->id);
-
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Bookmark berhasil dihapus!'
-                    ]);
-                } else {
-                    return response()->json([
-                        'status' => 'info',
-                        'message' => 'Lowongan sudah hilang di bookmark Anda.'
-                    ]);
-                }
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Lowongan tidak ditemukan.'
-                ]);
-            }
-        } else {
+        $user = auth()->user();
+    
+        if (!$user) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'User tidak ditemukan.'
+            ], 404);
+        }
+    
+        $lowongan = LowonganKerja::find($lowonganId);
+    
+        if (!$lowongan) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Lowongan tidak ditemukan.'
+            ], 404);
+        }
+    
+        if (!$user->bookmarks()->where('lowongan_id', $lowonganId)->exists()) {
+            return response()->json([
+                'status' => 'info',
+                'message' => 'Lowongan tidak ada di bookmark Anda.'
             ]);
         }
-        
-        return response()->json(['message' => 'Lowongan berhasil dihapus dari bookmark']);
+    
+        $user->bookmarks()->detach($lowonganId);
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Bookmark berhasil dihapus!'
+        ]);
     }
+    
 
     public function index()
     {
