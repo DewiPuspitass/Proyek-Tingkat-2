@@ -137,7 +137,7 @@
         <div class="flex items-center justify-between mt-6">
             <a class="underline text-sm text-gray-300 hover:text-white"
                href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                {{ __('Sudah Punya Akun?') }}
             </a>
 
             <x-primary-button class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded-md">
