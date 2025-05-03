@@ -89,7 +89,7 @@ class BookmarkController extends Controller
 
     public function index()
     {
-        $bookmarks = Bookmark::with(['user', 'lowongan_kerja'])->paginate(9);
+        $bookmarks = Bookmark::with(['user', 'lowongan_kerja'])->paginate(6);
         return view('bookmarks.index', compact('bookmarks'));
     }
 
