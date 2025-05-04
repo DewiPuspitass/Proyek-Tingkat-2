@@ -5,6 +5,7 @@ use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LowonganKerjaController;
 use App\Http\Controllers\PersyaratanBerkasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\TipeLowonganController;
 use App\Models\LowonganKerja;
 use App\Models\Jurusan;
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
 
     // CRUD JURUSAN
     Route::resource('jurusan', JurusanController::class);

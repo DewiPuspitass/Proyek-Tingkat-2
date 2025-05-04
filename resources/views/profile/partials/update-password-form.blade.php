@@ -12,6 +12,10 @@
             <input type="password" id="current_password" name="current_password"
                    class="mt-1 block w-full border border-orange-500 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
                    autocomplete="current-password">
+                   @error('current_password', 'updatePassword')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+
         </div>
 
         <div>

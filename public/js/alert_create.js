@@ -14,7 +14,14 @@ $(function () {
         }
     }
 
-    // Fungsi untuk menghapus highlight error
+    function highlightInvalidField2(element, message) {
+        let errorMessage = `<div class="text-red-600 text-sm mt-2">${message}</div>`;
+    
+        element.closest('.mb-4').find('.text-red-600').remove();
+    
+        element.closest('.mb-4').append(errorMessage);
+    }
+
     function clearHighlight() {
         $('input, select, textarea').removeClass('border-red-500');
         $('.text-red-600.text-sm').remove();
@@ -71,11 +78,11 @@ $(function () {
             isValid = false;
         }
         if ($('input[name="jurusan[]"]:checked').length === 0) {
-            highlightInvalidField($('input[name="jurusan[]"]').last(), 'Pilih minimal satu jurusan');
+            highlightInvalidField2($('input[name="jurusan[]"]').last(), 'Pilih minimal satu jurusan');
             isValid = false;
         }
         if ($('input[name="tipe_lowongan[]"]:checked').length === 0) {
-            highlightInvalidField($('input[name="tipe_lowongan[]"]').last(), 'Pilih minimal satu tipe lowongan');
+            highlightInvalidField2($('input[name="tipe_lowongan[]"]').last(), 'Pilih minimal satu tipe lowongan');
             isValid = false;
         }
 
