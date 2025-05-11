@@ -59,7 +59,7 @@
             @include('lowongan_pekerjaan.table')
         </div>
         <!-- Misalnya, ini disisipkan di HTML dengan status pengguna -->
-        <div id="userRole" data-role="{{ auth()->user()->role }}"></div>
+        <div id="userRole" data-role="{{ auth()->user()->name }}"></div>
 
 
         {{-- Pagination --}}

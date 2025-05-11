@@ -40,7 +40,17 @@
                         <p>Lokasi: {{ $lowongan_pekerjaan->domisiliPerusahaan->name }}</p>
                         <p>Penempatan: {{ $lowongan_pekerjaan->domisiliPenempatan->name }}</p>
                         <p>Gaji: Rp{{ number_format($lowongan_pekerjaan->gaji, 0, ',', '.') }}</p>
-                        <p>Diposting: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->tanggal_post)->diffForHumans() }}</p>
+                        @php
+                        $deadline = \Carbon\Carbon::parse($l->batas_submit)->endOfDay();
+                    @endphp
+
+                    @if (now()->gt($deadline))
+                        <p class="text-xs text-red-500 mt-1">Batas submit sudah lewat</p>
+                    @else
+                        <p class="text-xs text-gray-400 mt-1">
+                            {{ now()->diffForHumans($deadline, true) }} lagi batas akan berakhir
+                        </p>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -95,7 +105,7 @@
             {{-- Link Submit & Batas --}}
             <div>
                 <p class="text-sm">
-                    Link Pengumpulan: 
+                    Link Pengumpulan:
                     <a href="{{ $lowongan_pekerjaan->link_submit }}" class="text-blue-500 underline">
                         {{ $lowongan_pekerjaan->link_submit }}
                     </a>
@@ -106,9 +116,9 @@
             {{-- Tombol --}}
             <div class="flex gap-4">
                 <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Lamar</button>
-                <button 
+                <button
                     class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
-                    id="bookmark-button" 
+                    id="bookmark-button"
                     data-lowongan-id="{{ $lowongan_pekerjaan->id }}"
                     data-bookmarked="{{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'true' : 'false' }}">
                     {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}

@@ -1,6 +1,5 @@
 $(document).ready(function() {
-    const userRole = $('#userRole').data('role'); // Ambil dari HTML seperti biasa
-
+  
     // Ambil jurusan untuk dropdown
     $.get("/get-jurusan", function(data) {
         data.forEach(jurusan => {

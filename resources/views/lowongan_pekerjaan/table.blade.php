@@ -17,7 +17,20 @@
             <h3 class="text-base font-semibold text-gray-800">{{ $l->nama_pekerjaan }}</h3>
             <p class="text-sm text-gray-600">{{ $l->nama_perusahaan }}</p>
             <p class="text-xs text-gray-500">{{ $l->domisiliPenempatan->name ?? '-' }}</p>
-            <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($l->tanggal_post)->diffForHumans() }}</p>
+            @php
+            $deadline = \Carbon\Carbon::parse($l->batas_submit)->endOfDay();
+        @endphp
+
+        @if (now()->gt($deadline))
+            <p class="text-xs text-red-500 mt-1">Batas submit sudah lewat</p>
+        @else
+            <p class="text-xs text-gray-400 mt-1">
+                {{ now()->diffForHumans($deadline, true) }} lagi batas akan berakhir
+            </p>
+        @endif
+
+
+
 
             {{-- Status --}}
             @hasrole('admin')
@@ -34,7 +47,7 @@
             </p>
             @endhasrole
         </div>
-        
+
         {{-- Aksi --}}
         <div class="ml-4 flex flex-col items-end gap-1 text-sm">
             <a href="{{ route('lowongan_pekerjaan.show', $l->id) }}" class="text-blue-600 hover:underline">Info</a>

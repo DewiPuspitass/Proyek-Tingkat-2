@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Jurusan;
 use App\Models\LowonganJurusan;
+use Illuminate\Support\Facades\Auth;
+
 
 class FilterController extends Controller
 {
@@ -46,8 +48,20 @@ class FilterController extends Controller
 
 public function getRole()
 {
+    $user = Auth::user(); // Ambil user yang sedang login
+
+    if (!$user) {
+        return response()->json(['error' => 'User not authenticated'], 401);
+    }
+
+    // Debugging
+    logger('User:', ['id' => $user->id, 'name' => $user->name, 'role' => $user->getRoleNames()]);
+
+    // Ambil role pertama (gunakan getRoleNames jika menggunakan Spatie)
+    $role = $user->getRoleNames()->first(); // Jika menggunakan Spatie Laravel Permission
+
     return response()->json([
-        'role' => 'admin'
+        'role' => $role
     ]);
 }
 

@@ -13,16 +13,20 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB; // Tambahkan kalau belum ada
+use Illuminate\Support\Facades\Auth;
 
 
 
 class LowonganKerjaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+
+   function index(Request $request)
 {
+
+
+
+
+
     $search = $request->input('search');
     if ($request->has('filter') && $request->filter == 'aktif') {
         $query->where('status', 'Aktif');
