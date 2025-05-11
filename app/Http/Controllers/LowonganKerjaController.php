@@ -24,6 +24,7 @@ class LowonganKerjaController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $query = LowonganKerja::query();
         if ($request->has('filter') && $request->filter == 'aktif') {
             $query->where('status', 'Aktif');
         }

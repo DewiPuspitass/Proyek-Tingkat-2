@@ -9,16 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FilterController extends Controller
 {
-    public function getRole()
-    {
-        $user = Auth::user();
-
-        $role = $user->getRoleNames()->first();
-
-        return response()->json([
-            'role' => $role
-        ]);
-    }
+    // Removed duplicate getRole method to avoid redeclaration error
 
     public function getJurusan()
     {
