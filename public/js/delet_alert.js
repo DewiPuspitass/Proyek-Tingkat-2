@@ -1,5 +1,5 @@
 function confirmDelete(event, id, text) {
-    event.preventDefault(); // Menghentikan form submit default
+    event.preventDefault();
     Swal.fire({
         title: "Apakah anda yakin?",
         text: "Data ini akan dihapus secara permanen!",
@@ -11,8 +11,7 @@ function confirmDelete(event, id, text) {
         cancelButtonText: "Batal"
     }).then((result) => {
         if (result.isConfirmed) {
-            // Submit form secara manual jika konfirmasi
-            event.target.form.submit();
+            event.target.closest('form').submit();
         }
     });
 }

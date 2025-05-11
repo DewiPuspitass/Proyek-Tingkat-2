@@ -12,52 +12,47 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BroadcastEmail;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB; // Tambahkan kalau belum ada
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 
 class LowonganKerjaController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        if ($request->has('filter') && $request->filter == 'aktif') {
+            $query->where('status', 'Aktif');
+        }
 
-   function index(Request $request)
-{
+        DB::table('lowongan_kerja')
+            ->whereDate('batas_submit', '<', Carbon::today())
+            ->where('status', '!=', 'Nonaktif')
+            ->update(['status' => 'Nonaktif']);
 
+        $lowongan_pekerjaan = LowonganKerja::with(['domisiliPenempatan', 'jurusan'])
+            ->where('status', 'Aktif')
+            ->when($search, function ($query) use ($search) {
+                return $query->where('nama_pekerjaan', 'like', "%{$search}%")
+                    ->orWhere('nama_perusahaan', 'like', "%{$search}%")
+                    ->orWhereHas('domisiliPenempatan', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('jurusan', function ($q) use ($search) {
+                        $q->where('nama_jurusan', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate(6);
 
+        if ($request->ajax()) {
+            return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
+        }
 
-
-
-    $search = $request->input('search');
-    if ($request->has('filter') && $request->filter == 'aktif') {
-        $query->where('status', 'Aktif');
+        return view('lowongan_pekerjaan.index', compact('lowongan_pekerjaan', 'search'));
     }
-
-    // Update otomatis status Nonaktif jika batas submit lewat hari ini
-    DB::table('lowongan_kerja')
-        ->whereDate('batas_submit', '<', Carbon::today())
-        ->where('status', '!=', 'Nonaktif')
-        ->update(['status' => 'Nonaktif']);
-
-    $lowongan_pekerjaan = LowonganKerja::with(['domisiliPenempatan', 'jurusan'])
-        ->where('status', 'Aktif')
-        ->when($search, function ($query) use ($search) {
-            return $query->where('nama_pekerjaan', 'like', "%{$search}%")
-                ->orWhere('nama_perusahaan', 'like', "%{$search}%")
-                ->orWhereHas('domisiliPenempatan', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('jurusan', function ($q) use ($search) {
-                    $q->where('nama_jurusan', 'like', "%{$search}%");
-                });
-        })
-        ->paginate(21);
-
-    if ($request->ajax()) {
-        return view('lowongan_pekerjaan.table', compact('lowongan_pekerjaan'))->render();
-    }
-
-    return view('lowongan_pekerjaan.index', compact('lowongan_pekerjaan', 'search'));
-}
 
 
 
@@ -79,7 +74,6 @@ class LowonganKerjaController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nama_pekerjaan' => 'required|string|max:255',
             'nama_perusahaan' => 'required|string|max:255',

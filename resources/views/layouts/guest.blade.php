@@ -15,12 +15,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-gray-900 text-white">
-    <div class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('loginbg.png')">
-        <div class="w-full max-w-md bg-black bg-opacity-70 rounded-lg shadow-lg p-8 backdrop-blur-sm">
+    <div class="min-h-screen flex items-center justify-center bg-cover bg-center py-10" style="background-image: url('{{ asset('loginbg.png') }}')">
+        <div class="w-full max-w-2xl bg-black bg-opacity-70 rounded-lg shadow-lg p-10 backdrop-blur-sm">
             <div class="flex flex-col items-center mb-6">
-                <!-- Ganti src sesuai logo kamu -->
+                <!-- Logo -->
                 <a href="/">
-                    <img src="logoSMK.png" alt="Logo" class="w-20 h-20 mb-4">
+                    <img src="{{ asset('logoSMK.png') }}" alt="Logo" class="w-20 h-20 mb-4">
                 </a>
                 <a href="/" class="text-white font-semibold text-lg">Beranda</a>
             </div>

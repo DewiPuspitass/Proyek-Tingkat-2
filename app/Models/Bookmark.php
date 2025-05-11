@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bookmark extends Model
 {
     use HasFactory;
-    protected $table = 'bookmark';
+    protected $table = 'bookmarks';
     protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',

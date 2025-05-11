@@ -20,7 +20,7 @@ $(function () {
         let isValid = true;
 
         if (!$('input[name="nama_berkas"]').val()) {
-            highlightInvalidField($('input[name="nama_berkas"]'), 'Nama Pekerjaan wajib diisi');
+            highlightInvalidField($('input[name="nama_berkas"]'), 'Nama berkas wajib diisi');
             isValid = false;
         }
 
@@ -34,8 +34,7 @@ $(function () {
             return;
         }
 
-        const form = document.querySelector("form");
-
+        const form = e.target.closest("form");
 
         const swalWithTailwindButtons = Swal.mixin({
             customClass: {

@@ -61,7 +61,7 @@
                     {{ __('Lupa Kata Sandi?') }}
                 </a>
             @endif
-
+            
             <x-primary-button class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded-md">
                 {{ __('Masuk') }}
             </x-primary-button>

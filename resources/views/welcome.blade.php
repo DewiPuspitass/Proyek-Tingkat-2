@@ -42,7 +42,7 @@
             </a>
         @else
             <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-                Login untuk Lihat Semua Lowongan
+                Masuk untuk Lihat Semua Lowongan
             </a>
         @endif
     </div>
