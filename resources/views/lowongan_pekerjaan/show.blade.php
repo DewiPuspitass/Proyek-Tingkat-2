@@ -38,7 +38,7 @@
                                 <p>Lokasi: {{ $lowongan_pekerjaan->domisiliPerusahaan->name }}</p>
                                 <p>Penempatan: {{ $lowongan_pekerjaan->domisiliPenempatan->name }}</p>
                                 <p>Gaji: Rp{{ number_format($lowongan_pekerjaan->gaji, 0, ',', '.') }}</p>
-                                <p>Diposting: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->tanggal_post)->diffForHumans() }}</p>
+                                <p>Diposting: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->created_at)->diffForHumans() }}</p>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,7 @@
             <h3 class="text-base font-semibold text-gray-800">{{ $l->nama_pekerjaan }}</h3>
             <p class="text-sm text-gray-600">{{ $l->nama_perusahaan }}</p>
             <p class="text-xs text-gray-500">{{ $l->domisiliPenempatan->name ?? '-' }}</p>
-            <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($l->tanggal_post)->diffForHumans() }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($l->created_at)->diffForHumans() }}</p>
 
             {{-- Status --}}
             @hasrole('admin')

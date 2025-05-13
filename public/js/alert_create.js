@@ -85,6 +85,17 @@ $(function () {
             highlightInvalidField2($('input[name="tipe_lowongan[]"]').last(), 'Pilih minimal satu tipe lowongan');
             isValid = false;
         }
+        if ($('input[name="persyaratan_berkas[]"]:checked').length === 0) {
+            highlightInvalidField2($('input[name="persyaratan_berkas[]"]').last(), 'Pilih minimal satu tipe lowongan');
+            isValid = false;
+        }
+        // Validasi foto lowongan hanya untuk halaman create
+const pageContext = $('#page-context').val();
+const fotoLoker = $('input[name="foto_loker"]').val();
+if (pageContext === 'create' && !fotoLoker) {
+    highlightInvalidField($('input[name="foto_loker"]'), 'Foto lowongan wajib diunggah');
+    isValid = false;
+}
 
         // Jika form tidak valid, tampilkan pesan kesalahan
         if (!isValid) {
