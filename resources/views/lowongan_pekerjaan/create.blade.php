@@ -24,7 +24,7 @@
         <h2 class="text-2xl font-bold text-black mb-8">Masukkan Informasi Lowongan Pekerjaan</h2>
         <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            
+
             <!-- Nama Pekerjaan -->
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Nama Pekerjaan <span class="text-red-500">*</span></label>
@@ -172,17 +172,6 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-        <!-- Submit Button -->
-        <input type="hidden" id="page-context" value="create">
-
-        <div class="flex justify-end">
-            <button type="submit" id="simpan" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline">
-                Simpan Lowongan Kerja
-            </button>
-        </div>
-    </form>
-=======
             <!-- Submit Button -->
             <div class="flex justify-end">
                 <button type="submit" id="simpan" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded focus:outline-none focus:shadow-outline">
@@ -190,7 +179,6 @@
                 </button>
             </div>
         </form>
->>>>>>> 0521b9a40f96356bdf6e2e2955a081efa28b9deb
 
         <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
         <script>

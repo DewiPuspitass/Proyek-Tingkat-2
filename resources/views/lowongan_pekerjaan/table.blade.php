@@ -2,7 +2,7 @@
 
 @forelse ($lowongan_pekerjaan as $l)
     <div class="job-item relative flex items-center border rounded-lg p-4 shadow-sm bg-white"
-         data-deadline="{{ $l->tanggal_tutup }}">
+         data-deadline="{{ $l->batas_submit }}">
 
         {{-- Logo --}}
         <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden mr-4 bg-gray-100 flex items-center justify-center">
@@ -19,19 +19,17 @@
             <p class="text-sm text-gray-600">{{ $l->nama_perusahaan }}</p>
             <p class="text-xs text-gray-500">{{ $l->domisiliPenempatan->name ?? '-' }}</p>
             @php
-            $deadline = \Carbon\Carbon::parse($l->batas_submit)->endOfDay();
-        @endphp
+            $deadline = \Carbon\Carbon::parse($l->batas_submit)->endOfDay()->locale('id');
+            $deadline->settings(['diff_now' => true, 'syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+            @endphp
 
-        @if (now()->gt($deadline))
-            <p class="text-xs text-red-500 mt-1">Batas submit sudah lewat</p>
-        @else
-            <p class="text-xs text-gray-400 mt-1">
-                {{ now()->diffForHumans($deadline, true) }} lagi batas akan berakhir
-            </p>
-        @endif
-
-
-
+            @if (now()->gt($deadline))
+                <p class="text-xs text-red-500 mt-1">Batas submit sudah lewat</p>
+            @else
+                <p class="text-xs text-gray-400 mt-1">
+                    {{ $deadline->translatedFormat('d F Y') }} ({{ now()->diffForHumans($deadline, true) }} lagi)
+                </p>
+            @endif
 
             {{-- Status --}}
             @hasrole('admin')

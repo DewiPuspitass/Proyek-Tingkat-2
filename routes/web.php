@@ -76,6 +76,7 @@ Route::middleware('auth')->group(function () {
     // FITUR FILTER
     Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
     Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
+    Route::get('/get-domisili', [FilterController::class, 'getDomisili'])->name('filter.getDomisili');
 
 
     // Email broadcast

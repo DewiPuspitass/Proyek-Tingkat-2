@@ -69,7 +69,7 @@
 
         {{-- Script --}}
         <script>
-            
+
             $(document).ready(function () {
                 $('#search').on('keyup', function () {
                     let query = $(this).val();
