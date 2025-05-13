@@ -28,31 +28,6 @@
                 {{-- Header: Logo, Info, Tombol --}}
                 <div class="flex justify-between items-start gap-6 flex-wrap">
 
-<<<<<<< HEAD
-
-
-            {{-- Header: Logo + Info Umum --}}
-            <div class="flex items-center gap-6">
-                <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" class="w-24 h-24 object-contain" alt="Logo Perusahaan">
-                <div>
-                    <h1 class="text-2xl font-bold">{{ $lowongan_pekerjaan->nama_pekerjaan }}</h1>
-                    <p class="text-gray-600">{{ $lowongan_pekerjaan->nama_perusahaan }}</p>
-                    <div class="text-sm text-gray-500">
-                        <p>Lokasi: {{ $lowongan_pekerjaan->domisiliPerusahaan->name }}</p>
-                        <p>Penempatan: {{ $lowongan_pekerjaan->domisiliPenempatan->name }}</p>
-                        <p>Gaji: Rp{{ number_format($lowongan_pekerjaan->gaji, 0, ',', '.') }}</p>
-                        @php
-                        $deadline = \Carbon\Carbon::parse($l->batas_submit)->endOfDay();
-                    @endphp
-
-                    @if (now()->gt($deadline))
-                        <p class="text-xs text-red-500 mt-1">Batas submit sudah lewat</p>
-                    @else
-                        <p class="text-xs text-gray-400 mt-1">
-                            {{ now()->diffForHumans($deadline, true) }} lagi batas akan berakhir
-                        </p>
-                    @endif
-=======
                     {{-- Kiri: Logo + Informasi --}}
                     <div class="flex items-start gap-6">
                         <img src="{{ asset('storage/' . $lowongan_pekerjaan->foto_loker) }}" class="w-24 h-24 object-contain" alt="Logo Perusahaan">
@@ -66,7 +41,6 @@
                                 <p>Diposting: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->tanggal_post)->diffForHumans() }}</p>
                             </div>
                         </div>
->>>>>>> 0521b9a40f96356bdf6e2e2955a081efa28b9deb
                     </div>
 
                     {{-- Kanan: Tombol --}}
@@ -77,9 +51,9 @@
                             Lamar
                         </a>
 
-                                <button 
+                                <button
                                     class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
-                                    id="bookmark-button" 
+                                    id="bookmark-button"
                                     data-lowongan-id="{{ $lowongan_pekerjaan->id }}"
                                     data-bookmarked="{{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'true' : 'false' }}">
                                     {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}
@@ -140,7 +114,7 @@
                 {{-- Link Submit & Batas Submit --}}
                 <div class="space-y-1">
                     <p class="text-sm">
-                        Link Pengumpulan: 
+                        Link Pengumpulan:
                         <a href="{{ $lowongan_pekerjaan->link_submit }}" class="text-blue-500 underline">
                             {{ $lowongan_pekerjaan->link_submit }}
                         </a>
@@ -150,30 +124,6 @@
                     </p>
                 </div>
 
-<<<<<<< HEAD
-            {{-- Link Submit & Batas --}}
-            <div>
-                <p class="text-sm">
-                    Link Pengumpulan:
-                    <a href="{{ $lowongan_pekerjaan->link_submit }}" class="text-blue-500 underline">
-                        {{ $lowongan_pekerjaan->link_submit }}
-                    </a>
-                </p>
-                <p class="text-sm text-gray-600">Batas submit: {{ \Carbon\Carbon::parse($lowongan_pekerjaan->batas_submit)->translatedFormat('d F Y') }}</p>
-            </div>
-
-            {{-- Tombol --}}
-            <div class="flex gap-4">
-                <button class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Lamar</button>
-                <button
-                    class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
-                    id="bookmark-button"
-                    data-lowongan-id="{{ $lowongan_pekerjaan->id }}"
-                    data-bookmarked="{{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'true' : 'false' }}">
-                    {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}
-                </button>
-=======
->>>>>>> 0521b9a40f96356bdf6e2e2955a081efa28b9deb
             </div>
         </div>
     </main>
