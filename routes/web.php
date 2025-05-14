@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-domisili', [FilterController::class, 'getDomisili'])->name('filter.getDomisili');
 
 
+
+
     // Email broadcast
     Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
 
