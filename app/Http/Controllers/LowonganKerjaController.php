@@ -24,10 +24,11 @@ class LowonganKerjaController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $query = LowonganKerja::query();
         if ($request->has('filter') && $request->filter == 'aktif') {
             $query->where('status', 'Aktif');
         }
-        
+
         DB::table('lowongan_kerja')
             ->whereDate('batas_submit', '<', Carbon::today())
             ->where('status', '!=', 'Nonaktif')
@@ -145,7 +146,7 @@ class LowonganKerjaController extends Controller
 
 
     $imagePath = $request->file('foto_loker') ? $request->file('foto_loker')->store('foto_loker', 'public') : null;
-    
+
     $lowongan = LowonganKerja::create([
         'nama_pekerjaan' => $request->nama_pekerjaan,
         'nama_perusahaan' => $request->nama_perusahaan,

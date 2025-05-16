@@ -51,9 +51,9 @@
                             Lamar
                         </a>
 
-                                <button 
+                                <button
                                     class="px-4 py-2 border border-yellow-400 text-yellow-500 rounded-lg hover:bg-yellow-100"
-                                    id="bookmark-button" 
+                                    id="bookmark-button"
                                     data-lowongan-id="{{ $lowongan_pekerjaan->id }}"
                                     data-bookmarked="{{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'true' : 'false' }}">
                                     {{ auth()->check() && auth()->user()->bookmarks->contains($lowongan_pekerjaan->id) ? 'Bookmark Saved' : 'Save to Bookmark' }}
@@ -114,7 +114,7 @@
                 {{-- Link Submit & Batas Submit --}}
                 <div class="space-y-1">
                     <p class="text-sm">
-                        Link Pengumpulan: 
+                        Link Pengumpulan:
                         <a href="{{ $lowongan_pekerjaan->link_submit }}" class="text-blue-500 underline">
                             {{ $lowongan_pekerjaan->link_submit }}
                         </a>

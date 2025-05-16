@@ -24,7 +24,7 @@
         <h2 class="text-2xl font-bold text-black mb-8">Masukkan Informasi Lowongan Pekerjaan</h2>
         <form action="{{ route('lowongan_pekerjaan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            
+
             <!-- Nama Pekerjaan -->
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Nama Pekerjaan <span class="text-red-500">*</span></label>
