@@ -11,6 +11,7 @@ use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -82,7 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookmarks/{lowonganId}', [BookmarkController::class, 'addBookmark'])->name('bookmarks.add');
     Route::delete('/bookmarks/{lowonganId}', [BookmarkController::class, 'removeBookmark'])->name('bookmarks.remove');
     
-
+    Route::get('/', [WelcomeController::class, 'index'])->name('beranda');
 });
 
 require __DIR__.'/auth.php';
