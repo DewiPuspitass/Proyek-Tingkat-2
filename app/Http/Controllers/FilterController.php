@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Jurusan;
 use App\Models\LowonganJurusan;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Regency; // Pastikan model ini sesuai dengan nama model untuk tabel regensi
+use App\Models\Regency;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use App\Models\LowonganKerja; // Pastikan model ini sesuai dengan nama model untuk tabel regensi
 
 class FilterController extends Controller
 {
@@ -72,7 +75,5 @@ class FilterController extends Controller
             'nama' => $domisili->name
         ]);
     }
-
-
 
 }

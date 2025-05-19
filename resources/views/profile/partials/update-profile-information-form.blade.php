@@ -8,6 +8,13 @@
         @method('patch')
 
         <div>
+            <label for="nis" class="block text-sm font-medium text-gray-700">Nis</label>
+            <input type="text" id="nis" name="nis"
+                   class="mt-1 block w-full border border-orange-500 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                   value="{{ old('nis', auth()->user()->nis) }}" disabled required>
+        </div>
+        
+        <div>
             <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
             <input type="text" id="name" name="name"
                    class="mt-1 block w-full border border-orange-500 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -45,13 +52,6 @@
             <input type="text" id="tahun_angkatan" name="tahun_angkatan"
                    class="mt-1 block w-full border border-orange-500 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
                    value="{{ old('tahun_angkatan', auth()->user()->tahun_angkatan) }}" disabled required>
-        </div>
-
-        <div>
-            <label for="nis" class="block text-sm font-medium text-gray-700">Nis</label>
-            <input type="text" id="nis" name="nis"
-                   class="mt-1 block w-full border border-orange-500 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                   value="{{ old('nis', auth()->user()->nis) }}" disabled required>
         </div>
         @endhasrole
 

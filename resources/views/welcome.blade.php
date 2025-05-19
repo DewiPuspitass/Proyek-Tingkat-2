@@ -48,13 +48,8 @@
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
-
-
-
         @forelse ($lowongan as $loker)
-            <div id="job-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @include('lowongan_pekerjaan.table', ['lowongan_pekerjaan' => [$loker]])
-            </div>
         @empty
             <p class="col-span-full text-center text-gray-500">Tidak ada lowongan tersedia saat ini.</p>
         @endforelse
@@ -89,37 +84,6 @@
         <img src="{{ asset('medionLogo.png') }}" class="h-10">
     </div>
 </section>
-
-
-<!-- <section class="py-8 px-6 bg-white">
-    <h2 class="text-lg font-semibold mb-6">Bidang yang disediakan</h2>
-    <div class="flex justify-around items-start gap-4">
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('animasi.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">ANIMASI</p>
-        </div>
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('multimedia.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">MULTIMEDIA</p>
-        </div>
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('rpl.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">REKAYASA PERANGKAT LUNAK</p>
-        </div>
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('tekdus.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">TEKNIK KIMIA INDUSTRI</p>
-        </div>
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('meka.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">TEKNIK MEKATRONIKA</p>
-        </div>
-        <div class="flex flex-col items-center text-center w-90">
-            <img src="{{ asset('mesin.png') }}" class="h-20">
-            <p class="text-sm font-semibold mt-5">TEKNIK PERMESINAN</p>
-        </div>
-    </div>
-</section> -->
 
 @include('layouts.footer')
 

@@ -84,6 +84,19 @@
 
         </div>
 
+        <div class="mt-6">
+            <x-input-label for="alamat" :value="__('Alamat')" class="text-white" />
+            
+            <textarea id="alamat" name="alamat" rows="3" required autocomplete="alamat"
+                class="mt-1 block w-full bg-white bg-opacity-20 border border-gray-300 text-white 
+                    placeholder-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 
+                    rounded-md shadow-sm"
+                placeholder="Masukkan Alamat">{{ old('alamat') }}</textarea>
+
+            <x-input-error :messages="$errors->get('alamat')" class="mt-2 text-red-400" />
+        </div>
+
+
         <!-- Password & Confirm Password -->
         <div class="mt-6">
             <x-input-label for="password" :value="__('Password')" class="text-white" />

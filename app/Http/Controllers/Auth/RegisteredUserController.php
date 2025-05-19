@@ -40,7 +40,8 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'jurusan' => ['required', 'string', 'max:255'],
             'tahun_angkatan' => ['required', 'integer'],
-            'no_telp' => ['required', 'numeric', 'max:12', 'min:10','unique:'.User::class],
+            'no_telp' => ['required', 'string', 'max:12', 'min:10','unique:'.User::class],
+            'alamat' => ['required','string', 'max:255'],
             'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@smkn2cmi\.sch\.id$/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
@@ -61,15 +62,19 @@ class RegisteredUserController extends Controller
             'tahun_angkatan.integer' => 'Tahun angkatan harus berupa angka.',
 
             'no_telp.required' => 'No. telepon wajib diisi.',
+            'no_telp.min' => 'No. telepon tidak boleh kurang dari 10 karakter.',
             'no_telp.max' => 'No. telepon tidak boleh lebih dari 12 karakter.',
             'no_telp.unique' => 'No. telepon sudah digunakan.',
             'no_tlp.numeric'=> 'No. telepon harus berupa angka.',
-            'no_telp.min' => 'No. telepon tidak boleh kurang dari 10 karakter.',
 
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.regex' => 'Email harus menggunakan domain @smkn2cmi.sch.id.',
             'email.unique' => 'Email sudah digunakan.',
+
+            'alamat.required' => 'Alamat wajib diisi.',
+            'alamat.string' => 'Alamat harus berupa teks.',
+            'alamat.max' => 'Alamat tidak boleh lebih dari 255 karakter.',
 
             'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
@@ -83,6 +88,7 @@ class RegisteredUserController extends Controller
             'tahun_angkatan' => $request->tahun_angkatan,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
+            'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
         ]);
 
