@@ -17,23 +17,29 @@
     {{-- Navigation --}}
     @include('layouts.navigation')
 
-    <main class="flex-grow w-full px-12 mb-12">
+    <main class="flex-grow min-h-[calc(100vh-6rem)]">
+    <div class="max-w-7xl mx-auto px-4 lg:px-6">
         {{-- Flash Message --}}
         @if (session()->has('success'))
-            <span class="flex flex-wrap items-center gap-4 mb-6 justify-center text-green-600">{{ session('success') }}</span>
+            <span class="flex flex-wrap items-center gap-4 mb-6 justify-center text-green-600">
+                {{ session('success') }}
+            </span>
         @endif 
 
-        <h2 class="text-2xl font-semibold text-orange-600 mb-6 mt-8 text-center">Tipe Lowongan yang Tersedia</h2>
-        
-        <a href="{{ route('tipe_lowongan.create') }}" class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-400 block mb-6 w-max flex items-center gap-2">
+        <h2 class="text-2xl font-semibold text-orange-600 mb-6 mt-8 text-center">
+            Tipe Lowongan yang Tersedia
+        </h2>
+
+        <a href="{{ route('tipe_lowongan.create') }}"
+           class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-400 block mb-6 w-max flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             Tambah Tipe Lowongan
         </a>
 
-        <div class="w-full">
-            <table class="table-auto border-collapse border border-gray-300 w-full shadow-lg rounded-lg">
+        <div class="overflow-x-auto">
+            <table class="table-auto border-collapse border border-gray-300 w-full shadow-lg rounded-lg min-w-[600px]">
                 <thead class="bg-slate-950 text-white text-left">
                     <tr>
                         <th class="p-4 text-sm font-bold uppercase">No</th>
@@ -47,18 +53,20 @@
                             <tr class="hover:bg-gray-100 transition duration-200">
                                 <td class="p-4 text-sm text-gray-700">{{ $t->id }}</td>
                                 <td class="p-4 text-sm text-gray-700">{{ $t->nama_tipe_lowongan }}</td>
-                                <td class="p-4 text-sm px-4">
+                                <td class="p-4 text-sm">
                                     <a href="{{ route('tipe_lowongan.edit', $t->id) }}" class="text-white">
                                         <span class="bg-orange-500 text-white px-4 py-1 rounded-full text-sm mr-2 hover:bg-orange-400">
                                             Edit                                    
                                         </span>
                                     </a>
 
-                                    <form action="{{ route('tipe_lowongan.destroy', $t->id) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('tipe_lowongan.destroy', $t->id) }}"
+                                          method="POST"
+                                          style="display: inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm cursor-pointer hover:bg-red-400" 
-                                            onclick="confirmDelete(event, '{{ $t->id }}')">
+                                        <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm cursor-pointer hover:bg-red-400"
+                                              onclick="confirmDelete(event, '{{ $t->id }}')">
                                             Hapus
                                         </span>
                                     </form>
@@ -73,7 +81,8 @@
                 </tbody>
             </table>
         </div>
-    </main>
+    </div>
+</main>
 
     {{-- Footer --}}
     @include('layouts.footer')

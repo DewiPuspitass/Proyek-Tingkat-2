@@ -10,6 +10,8 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
 
         <!-- Styles -->
         <!-- <style>
@@ -22,14 +24,39 @@
 {{-- Navigation muncul di semua halaman yang extend layout ini --}}
 @include('layouts.navigation')
 
-<section class="relative h-screen w-full">
-    <img src="{{ asset('pict1.jpg') }}" class="w-full h-full object-cover absolute inset-0 z-0" alt="">
-    <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10">
-        <h1 class="text-white text-4xl sm:text-5xl font-bold text-center leading-relaxed">
-            Peluang Kerja <br> Khusus untuk Kamu!
-        </h1>
-    </div>
+<section class="relative h-screen w-full font-sans" style="font-family: 'Poppins', sans-serif;">
+    @if(auth()->check() && auth()->user()->hasRole('admin'))
+        <div class="w-full h-full relative" 
+             style="background: url('{{ asset('pict1.jpg') }}') no-repeat center center/cover;">
+            <div class="absolute inset-0 bg-black bg-opacity-60 z-0"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full w-full px-6">
+                <h1 class="text-4xl font-bold text-white mb-10 text-center drop-shadow-md">
+                    Selamat datang, {{ auth()->user()->name }}!
+                </h1>
+                <div class="flex flex-col sm:flex-row gap-10 max-w-4xl w-full justify-center">
+                    <div 
+                        class="bg-black bg-opacity-70 p-10 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 text-center flex-1 text-white">
+                        <h2 class="text-3xl font-semibold mb-6">Total Lowongan Aktif</h2>
+                        <p class="text-6xl font-extrabold">{{ $jumlahLowonganAktif }}</p>
+                    </div>
+                    <div 
+                        class="bg-black bg-opacity-70 p-10 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 text-center flex-1 text-white">
+                        <h2 class="text-3xl font-semibold mb-6">Total Pengguna</h2>
+                        <p class="text-6xl font-extrabold">{{ $pengguna->count() }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <img src="{{ asset('pict1.jpg') }}" class="w-full h-full object-cover absolute inset-0 z-0" alt="Background">
+        <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10 px-6">
+            <h1 class="text-white text-5xl font-bold text-center leading-relaxed drop-shadow-md">
+                Peluang Kerja <br> Khusus untuk Kamu!
+            </h1>
+        </div>
+    @endif
 </section>
+
 
 <section class="py-8 px-6 bg-white text-gray-800">
     <div class="flex justify-between items-center mb-6">

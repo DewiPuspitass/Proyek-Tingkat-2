@@ -32,6 +32,6 @@
 
   <!-- Copyright -->
   <div class="text-center text-gray-400 text-xs">
-    &copy; 2025 SMKN 2 Cimahi & Diversity in Unity Team
+    &copy; 2025 Diversity in Unity Team Telkom University & SMKN 2 Cimahi
   </div>
 </footer>

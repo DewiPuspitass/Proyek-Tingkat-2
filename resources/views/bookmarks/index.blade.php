@@ -22,7 +22,7 @@
     {{-- Navigation --}}
     @include('layouts.navigation')
 
-    <main class="flex-grow max-w-7xl mx-auto px-4">
+    <main class="flex-grow max-w-7xl mx-auto px-4 min-h-[calc(100vh-6rem)]">
         {{-- Flash Message --}}
         @if (session()->has('success'))
             <span class="flex flex-wrap items-center gap-4 mb-6 justify-center text-green-600">{{ session('success') }}</span>
