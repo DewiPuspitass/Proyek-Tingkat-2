@@ -7,7 +7,7 @@
       <p class="text-gray-300">Informasi Lebih Lanjut</p>
       <div class="flex items-center justify-center md:justify-start gap-2">
         <img src="/Phone.png" alt="Phone Icon" class="h-5 w-5">
-        <span>Admin +6285397813660</span>
+        <span>Admin +6287827129247</span>
       </div>
       <div class="flex items-center justify-center md:justify-start gap-2">
         <img src="/Email.png" alt="Email Icon" class="h-5 w-5">

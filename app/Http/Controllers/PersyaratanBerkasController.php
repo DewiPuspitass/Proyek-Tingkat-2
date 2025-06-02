@@ -31,12 +31,13 @@ class PersyaratanBerkasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_berkas' => 'required|string|max:255'
+            'nama_berkas' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'unique:'.PersyaratanBerkas::class],
         ],[
 
-            'nama_berkas.required' => 'Nama pekerjaan wajib diisi.',
-            'nama_berkas.string' => 'Nama pekerjaan harus berupa teks.',
-            'nama_berkas.max' => 'Nama pekerjaan maksimal 255 karakter.',
+            'nama_berkas.required' => 'Nama berkas wajib diisi.',
+            'nama_berkas.regex' => 'Nama berkas hanya boleh berisi huruf dan spasi.',
+            'nama_berkas.max' => 'Nama berkas maksimal 255 karakter.',
+            'nama_berkas.unique' => 'Nama berkas sudah tersedia.',
         ]);
 
         PersyaratanBerkas::create([

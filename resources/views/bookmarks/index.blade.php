@@ -70,7 +70,9 @@
 
                 {{-- Aksi --}}
                 <div class="ml-4 flex flex-col gap-1 text-sm text-right">
+                    @if (!$akhir)
                     <a href="{{ route('lowongan_pekerjaan.show', $bookmark->lowongan_kerja->id) }}" class="text-blue-600 hover:underline">Info</a>
+                    @endif
                     <button onclick="hapusBookmark('{{ $bookmark->lowongan_kerja->id }}')" class="text-red-600 hover:underline">Hapus</button>
                 </div>
             </div>

@@ -32,11 +32,12 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_jurusan' => 'required|string|max:255',
+            'nama_jurusan' => ['required','string','max:255', 'unique:'.Jurusan::class],
         ], [
-            'nama_jurusan.required' => 'Nama pekerjaan wajib diisi.',
-            'nama_jurusan.string' => 'Nama pekerjaan harus berupa teks.',
-            'nama_jurusan.max' => 'Nama pekerjaan maksimal 255 karakter.',
+            'nama_jurusan.required' => 'Nama jurusan wajib diisi.',
+            'nama_jurusan.string' => 'Nama jurusan harus berupa teks.',
+            'nama_jurusan.max' => 'Nama jurusan maksimal 255 karakter.',
+            'nama_jurusan.unique' => 'Nama jurusan sudah tersedia.',
         ]);
 
         Jurusan::create([

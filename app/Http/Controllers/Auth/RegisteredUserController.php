@@ -37,10 +37,10 @@ class RegisteredUserController extends Controller
 
         $request->validate([
             'nis' => ['required', 'string', 'max:255', 'unique:'.User::class],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'regex:/^a-zA-Z\s]+$/', 'max:255'],
             'jurusan' => ['required', 'string', 'max:255'],
             'tahun_angkatan' => ['required', 'integer'],
-            'no_telp' => ['required', 'string', 'max:12', 'min:10','unique:'.User::class],
+            'no_telp' => ['required', 'string', 'regex:/^[0-9]+$/','min:10', 'max:12', 'unique:'.User::class],
             'alamat' => ['required','string', 'max:255'],
             'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@smkn2cmi\.sch\.id$/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
             'nis.unique' => 'NIS sudah digunakan.',
 
             'name.required' => 'Nama wajib diisi.',
-            'name.string' => 'Nama harus berupa teks.',
+            'name.regex' => 'Nama harus berupa teks.',
             'name.max' => 'Nama tidak boleh lebih dari 255 karakter.',
 
             'jurusan.required' => 'Jurusan wajib diisi.',
@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
             'no_telp.min' => 'No. telepon tidak boleh kurang dari 10 karakter.',
             'no_telp.max' => 'No. telepon tidak boleh lebih dari 12 karakter.',
             'no_telp.unique' => 'No. telepon sudah digunakan.',
-            'no_tlp.numeric'=> 'No. telepon harus berupa angka.',
+            'no_telp.regex' => 'Nomor telepon hanya boleh berisi angka.',   
 
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',

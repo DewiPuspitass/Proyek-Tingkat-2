@@ -14,8 +14,6 @@ use App\Mail\BroadcastEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-
-
 class LowonganKerjaController extends Controller
 {
     /**
@@ -30,7 +28,7 @@ class LowonganKerjaController extends Controller
         }
 
         DB::table('lowongan_kerja')
-            ->whereDate('batas_submit', '<', Carbon::today())
+            ->where('batas_submit', '<', Carbon::now())
             ->where('status', '!=', 'Nonaktif')
             ->update(['status' => 'Nonaktif']);
 
@@ -87,10 +85,10 @@ class LowonganKerjaController extends Controller
             'gaji' => 'required|integer',
             'deskripsi' => 'required|string|max:255',
             'kualifikasi' => 'required|string|max:255',
-            'foto_loker' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_loker' => 'required|nullable|image|mimes:jpeg,png,jpg|max:2048',
             'persyaratan_berkas' => 'required|array',
             'persyaratan_berkas.*' => 'exists:persyaratan_berkas,id',
-            'link_submit' => 'required|string|max:255',
+            'link_submit' => 'required|url|max:255',
             'batas_submit' => 'required|date',
         ], [
             'nama_pekerjaan.required' => 'Nama pekerjaan wajib diisi.',
@@ -126,6 +124,7 @@ class LowonganKerjaController extends Controller
             'kualifikasi.string' => 'Kualifikasi harus berupa teks.',
             'kualifikasi.max' => 'Kualifikasi maksimal 255 karakter.',
 
+            'foto_loker.required' => 'Foto Loker wajib diisi.',
             'foto_loker.image' => 'File harus berupa gambar.',
             'foto_loker.mimes' => 'Gambar harus berformat jpeg, png, atau jpg.',
             'foto_loker.max' => 'Ukuran gambar maksimal 2MB.',
@@ -137,6 +136,7 @@ class LowonganKerjaController extends Controller
             'link_submit.required' => 'Link submit wajib diisi.',
             'link_submit.string' => 'Link submit harus berupa teks.',
             'link_submit.max' => 'Link submit maksimal 255 karakter.',
+            'link_submit.url' => 'Link harus berupa URL yang valid, contoh: https://google.com atau link WhatsApp.',
 
             'batas_submit.required' => 'Batas submit wajib diisi.',
             'batas_submit.date' => 'Format batas submit tidak valid.',

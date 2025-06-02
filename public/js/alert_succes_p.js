@@ -1,6 +1,5 @@
 $(function () {
 
-
     function clearHighlight() {
         $('input, select, textarea').removeClass('border-red-500');
         $('.text-red-600.text-sm').remove();
@@ -11,71 +10,34 @@ $(function () {
         field.after('<span class="text-red-600 text-sm">' + message + '</span>');
     }
 
-
     $(document).on('click', '#simpan', function (e) {
         e.preventDefault();
 
         clearHighlight();
-
         let isValid = true;
 
-        if (!$('input[name="nama_berkas"]').val()) {
+        const namaBerkas = $('input[name="nama_berkas"]').val();
+        const hurufSaja = /^[A-Za-z\s]+$/;
+
+        if (!namaBerkas) {
             highlightInvalidField($('input[name="nama_berkas"]'), 'Nama berkas wajib diisi');
             isValid = false;
+        } else if (!hurufSaja.test(namaBerkas)) {
+            highlightInvalidField($('input[name="nama_berkas"]'), 'Nama berkas hanya boleh berisi huruf dan spasi');
+            isValid = false;
         }
-
 
         if (!isValid) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Mohon lengkapi semua field yang diwajibkan sebelum menyimpan! dan perbaiki input yang salah yang ada'
+                text: 'Mohon Perbaiki Inputan Yang Salah!'
             });
             return;
         }
 
         const form = e.target.closest("form");
-
-        const swalWithTailwindButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2",
-                cancelButton: "bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            },
-            buttonsStyling: false
-        });
-
-
-        swalWithTailwindButtons.fire({
-            title: "Apakah kamu yakin?",
-            text: "Pastikan data sudah benar!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Ya, simpan!",
-            cancelButtonText: "Batal",
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                Swal.fire({
-                    title: 'Berhasil disimpan!',
-                    text: 'Lowongan berhasil disimpan!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-
-                swalWithTailwindButtons.fire({
-                    title: "Dibatalkan",
-                    text: "Data tidak jadi disimpan",
-                    icon: "info"
-                });
-            }
-        });
+        form.submit();
     });
 
 });

@@ -74,9 +74,6 @@
     </script>
 @endif
 
-
-
-
 <script>
     const form = document.getElementById('password-form');
 

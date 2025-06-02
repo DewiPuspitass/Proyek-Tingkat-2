@@ -4,15 +4,12 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LowonganKerjaController;
 use App\Http\Controllers\PersyaratanBerkasController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileController2;
 use App\Http\Controllers\TipeLowonganController;
-use App\Models\LowonganKerja;
-use App\Models\Jurusan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\WelcomeController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,29 +22,16 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    $lowongan = LowonganKerja::where('status','Aktif')->latest()->take(4)->get();
-    $jurusan = Jurusan::all();
-    return view('welcome', compact('lowongan', 'jurusan'));
-})->name('beranda');
+Route::get('/', [WelcomeController::class, 'index'])->name('beranda');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('/dashboard-siswa', function () {
-//     return view('siswa.dashboard');
-// })->middleware('role:siswa');
-
-// Route::get('/dashboard-siswa', function () {
-//     return 'Anda berada di Dashboard Siswa';
-// })->middleware('role:siswa');
-
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController2::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController2::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController2::class, 'destroy'])->name('profile.destroy');
 
     // CRUD JURUSAN
     Route::resource('jurusan', JurusanController::class);
@@ -65,22 +49,14 @@ Route::middleware('auth')->group(function () {
 
     // FITUR FILTER
 
-
-
     // Route::get('/get-user-role', [FilterController::class,'getRole']);
 
     Route::get('/get-user-role', [FilterController::class, 'getRole'])->middleware('auth');
-
-
-
 
     // FITUR FILTER
     Route::get('/get-jurusan', [FilterController::class, 'getJurusan'])->name('filter.getJurusan');
     Route::get('/get-lowongan', [FilterController::class, 'getLowongan'])->name('filter.getLowongan');
     Route::get('/get-domisili', [FilterController::class, 'getDomisili'])->name('filter.getDomisili');
-
-
-
 
     // Email broadcast
     Route::get('send-email/{id}', [EmailController::class, 'sendLowonganEmail'])->name('send-email');
@@ -94,7 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookmarks/{lowonganId}', [BookmarkController::class, 'addBookmark'])->name('bookmarks.add');
     Route::delete('/bookmarks/{lowonganId}', [BookmarkController::class, 'removeBookmark'])->name('bookmarks.remove');
     
-    Route::get('/', [WelcomeController::class, 'index'])->name('beranda');
     Route::delete('/bookmarks/{lowongan}', [BookmarkController::class, 'removeBookmark']);
 });
 

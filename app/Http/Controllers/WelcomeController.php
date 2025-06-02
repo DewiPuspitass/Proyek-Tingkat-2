@@ -13,7 +13,7 @@ class WelcomeController extends Controller
     {
         $pengguna = User::all();
         $jumlahLowonganAktif = LowonganKerja::where('status', 'Aktif')->count(); // hitung total lowongan aktif
-        $lowongan = LowonganKerja::latest()->take(4)->get(); // buat tampilan lowongan terbaru (boleh disaring status juga kalau mau)
+        $lowongan = LowonganKerja::where('status', 'aktif')->latest()->take(4)->get();
         $jurusan = Jurusan::all();
 
         return view('welcome', compact('pengguna', 'lowongan', 'jumlahLowonganAktif', 'jurusan'));

@@ -159,8 +159,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block font-semibold mb-1">Link Submit <span class="text-red-500">*</span></label>
-                    <input type="text" name="link_submit"
-                        class="w-full border border-black rounded px-3 py-2">
+                    <input type="text" name="link_submit" value="{{ old('link_submit') }}"
+                        class="w-full border border-black rounded px-3 py-2"
+                        placeholder="https://wa.me/62x atau www.xx.com">
                     @error('link_submit')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
                 </div>
                 <div>

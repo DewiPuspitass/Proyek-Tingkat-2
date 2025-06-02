@@ -20,8 +20,16 @@ $(function () {
         let isValid = true;
 
         if (!$('input[name="nama_jurusan"]').val()) {
-            highlightInvalidField($('input[name="nama_jurusan"]'), 'Nama Pekerjaan wajib diisi');
+            highlightInvalidField($('input[name="nama_jurusan"]'), 'Nama jurusan wajib diisi');
             isValid = false;
+        } else {
+            const namaBerkas = $('input[name="nama_jurusan"]').val();
+            const hurufSaja = /^[A-Za-z\s]+$/;
+
+            if (!hurufSaja.test(namaBerkas)) {
+                highlightInvalidField($('input[name="nama_jurusan"]'), 'Nama jurusan hanya boleh berisi huruf dan spasi');
+                isValid = false;
+            }
         }
 
 
@@ -29,7 +37,7 @@ $(function () {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Mohon lengkapi semua field yang diwajibkan sebelum menyimpan! dan perbaiki input yang salah yang ada'
+                text: 'Mohon Perbaiki Inputan Yang Salah'
             });
             return;
         }
