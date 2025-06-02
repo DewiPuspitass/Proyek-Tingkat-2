@@ -17,12 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         new TomSelect(domisiliPerusahaan);
     }
 
-    // Jika kamu punya select lain untuk form profil (misalnya jurusan), kamu bisa tambahkan di sini
-    const jurusan = document.querySelector('select[name="jurusan"]');
-    if (jurusan) {
-        new TomSelect(jurusan);
-    }
-
     // Atau bisa juga general, inisialisasi semua dengan class tertentu
     // document.querySelectorAll('.tomselect').forEach(el => {
     //     new TomSelect(el);

@@ -9,6 +9,20 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    // 👇 Ini bagian yang ditambahkan
+    safelist: [
+        'text-white',
+        'text-black',
+        'bg-white',
+        'bg-opacity-20',
+        'placeholder-gray-300',
+        'focus:ring-2',
+        'focus:ring-orange-500',
+        'focus:border-orange-500',
+        'rounded-md',
+        'shadow-sm',
+    ],
+
     theme: {
         extend: {
             fontFamily: {
