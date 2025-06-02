@@ -33,11 +33,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
-
         $request->validate([
             'nis' => ['required', 'string', 'max:255', 'unique:'.User::class],
-            'name' => ['required', 'string', 'regex:/^a-zA-Z\s]+$/', 'max:255'],
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
             'jurusan' => ['required', 'string', 'max:255'],
             'tahun_angkatan' => ['required', 'integer'],
             'no_telp' => ['required', 'string', 'regex:/^[0-9]+$/','min:10', 'max:12', 'unique:'.User::class],
@@ -69,7 +67,7 @@ class RegisteredUserController extends Controller
 
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
-            'email.regex' => 'Email harus menggunakan domain @smkn2cmi.sch.id.',
+            'email.regex' => 'Email harus menggunakan domain @smkn2cmi.sch.id',
             'email.unique' => 'Email sudah digunakan.',
 
             'alamat.required' => 'Alamat wajib diisi.',

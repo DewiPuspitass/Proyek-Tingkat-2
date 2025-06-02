@@ -68,8 +68,8 @@
                 Lihat lebih banyak →
             </a>
         @else
-            <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-                Masuk untuk Lihat Semua Lowongan
+            <a href="{{ route('login') }}" class="text-base text-orange-600 hover:translate-x-1 transition-transform px-8">
+                Lihat lebih banyak →
             </a>
         @endif
     </div>
